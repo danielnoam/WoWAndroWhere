@@ -2,6 +2,7 @@ package app.gamenative.wow.addons.provider
 
 import app.gamenative.BuildConfig
 import app.gamenative.utils.Net
+import app.gamenative.wow.AppName
 import app.gamenative.wow.addons.AddonCategory
 import app.gamenative.wow.addons.AddonFlavor
 import app.gamenative.wow.addons.AddonTarget
@@ -33,7 +34,7 @@ class CurseForgeProvider(
     private val headers by lazy {
         Headers.Builder()
             .add("Accept", "application/json")
-            .add("User-Agent", "WoWForeverywhere/${BuildConfig.VERSION_NAME}")
+            .add("User-Agent", "${AppName.FILE}/${BuildConfig.VERSION_NAME}")
             .apply { if (apiKey.isNotBlank()) add("x-api-key", apiKey) }
             .build()
     }

@@ -4,7 +4,7 @@ Only work that's left. Shipped items move to DONE.md, rejected ones to DROPPED.m
 
 ## Fork housekeeping
 
-1. **Other upstream links.** The GitHub addon catalog (`GitHubProvider.CATALOG_URL`) and the README (badges, download links, issues) still point at upstream. Decide per link: the catalog can stay on upstream's nightly build (no cost, but it's their branch) or the fork's `addon-catalog` workflow can publish its own; the README should point at the fork's releases.
+1. **Addon catalog link.** The GitHub addon catalog (`GitHubProvider.CATALOG_URL`) still points at upstream. It can stay on upstream's nightly build (no cost, but it's their branch) or the fork's `addon-catalog` workflow can publish its own.
 
 ## Private servers (3.3.5a)
 

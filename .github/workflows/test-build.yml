@@ -83,9 +83,9 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p dist
-          cp app/build/outputs/apk/modern/release/app-modern-release.apk dist/WoW-Foreverywhere-test.apk
+          cp app/build/outputs/apk/modern/release/app-modern-release.apk dist/WoW-AndroWhere-test.apk
           gh release delete test-build --cleanup-tag --yes || true
-          gh release create test-build dist/WoW-Foreverywhere-test.apk --prerelease --target "$GITHUB_SHA" \
+          gh release create test-build dist/WoW-AndroWhere-test.apk --prerelease --target "$GITHUB_SHA" \
             --title "Test build ($(git rev-parse --short HEAD), ${{ github.ref_name }})" \
             --notes "Test APK from ${{ github.ref_name }}. Not a release; the app never offers it as an update."
       - name: Remove signing material

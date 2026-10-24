@@ -36,6 +36,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.LocalCafe
 import androidx.compose.ui.platform.LocalContext
+import app.gamenative.wow.AppName
 import app.gamenative.wow.ui.components.FwButton
 import app.gamenative.wow.ui.components.Links
 import app.gamenative.wow.ui.components.FwButtonKind
@@ -93,7 +94,7 @@ fun AccountScreen(launcher: LauncherController, onBack: () -> Unit, onEditLogin:
 fun SettingsScreen(launcher: LauncherController, onBack: () -> Unit, onVersionChanged: () -> Unit = {}) {
     FwPage("Settings", onBack) {
         FwSection("App") {
-            Text("WoW Foreverywhere v${BuildConfig.VERSION_NAME}", style = Fw.Text)
+            Text("${AppName.FULL} v${BuildConfig.VERSION_NAME}", style = Fw.Text)
             val update = launcher.appUpdate
             if (update == null) {
                 Text("No app update found.", style = Fw.Secondary)
@@ -110,9 +111,9 @@ fun SettingsScreen(launcher: LauncherController, onBack: () -> Unit, onVersionCh
             }
         }
         GameVersionSection(launcher, onVersionChanged)
-        FwSection("Support Foreverywhere") {
+        FwSection("Support WoW Foreverywhere") {
             val context = LocalContext.current
-            Text("Foreverywhere is free and open source. If it saves you some time, you can support its development on Ko-fi.", style = Fw.Text)
+            Text("${AppName.FULL} is built on WoW Foreverywhere, a free and open source project. If it saves you some time, you can support its development on Ko-fi.", style = Fw.Text)
             FwButton("Support on Ko-fi", { Links.open(context, Links.KOFI) }, kind = FwButtonKind.Ghost, icon = Icons.Filled.LocalCafe)
         }
         FwSection("Addon sources") {
@@ -147,7 +148,7 @@ private fun GameVersionSection(launcher: LauncherController, onVersionChanged: (
         if (launcher.switchVersion(to)) onVersionChanged()
     }
     FwSection("Game version") {
-        Text("Foreverywhere is made for WoW Forever. You can also try other official versions of WoW, which are experimental.", style = Fw.Secondary)
+        Text("${AppName.FULL} is made for WoW Forever. You can also try other official versions of WoW, which are experimental.", style = Fw.Secondary)
         Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             GameVersion.entries.forEach { v ->
                 val current = v == launcher.version
@@ -176,7 +177,7 @@ private fun GameVersionSection(launcher: LauncherController, onVersionChanged: (
     pending?.let { v ->
         FwDialog(
             title = "Other WoW versions are experimental",
-            message = "Foreverywhere is made for WoW Forever. Other versions may run poorly or not start at all, and they get little support. Your WoW Forever install and addons stay as they are, and you can switch back any time.",
+            message = "${AppName.FULL} is made for WoW Forever. Other versions may run poorly or not start at all, and they get little support. Your WoW Forever install and addons stay as they are, and you can switch back any time.",
             confirm = "Switch to ${v.displayName}",
             onConfirm = { switch(v) },
             onDismiss = { pending = null },

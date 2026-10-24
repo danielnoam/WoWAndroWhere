@@ -2,6 +2,10 @@
 
 Why things are the way they are, newest first.
 
+## 2026-10-24: Renamed to WoW AndroWhere, but only what people see
+
+The name lives in `wow/AppName.kt` and `app_name` (no longer translated, since the translations still said GameNative). The package id `app.wowforeverywhere`, the Keystore alias `foreverywhere_battle_net_v2` and the on-disk files (`.foreverywhere-install.json`, `.foreverywhere-addons.json`) keep the old name: changing them would break updates, drop the saved login, or make the app forget installs and addons. Kotlin names like `ForeverywhereApp` stay so upstream merges stay clean. Ko-fi links still go to upstream's author and say so, since the fork takes no donations. The user agent sent to CurseForge's proxy and GitHub is now `WoW-AndroWhere`.
+
 ## 2026-10-24: Claude releases by a manual run, not a tag push
 
 Claude's container can only push its own working branch, not tags. So a release from Claude is a manual run of `release.yml` on `main` with the version as input: it builds `main` and creates the tag on that commit when it publishes. A pushed tag still works the same as before.

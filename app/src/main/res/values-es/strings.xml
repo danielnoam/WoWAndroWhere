@@ -1,5 +1,4 @@
 ﻿<resources>
-    <string name="app_name">GameNative</string>
     <string name="home">Inicio</string>
     <string name="download">Descargar</string>
     <string name="install">Instalar</string>

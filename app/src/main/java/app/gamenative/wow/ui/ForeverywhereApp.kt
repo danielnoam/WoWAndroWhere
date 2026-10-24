@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import app.gamenative.PluviaApp
 import app.gamenative.events.AndroidEvent
 import app.gamenative.ui.screen.wow.BattleNetCredentialDialog
+import app.gamenative.wow.AppName
 import app.gamenative.wow.ui.addons.AddonsRoute
 import app.gamenative.wow.ui.addons.addonsControllerFor
 import app.gamenative.wow.ui.components.FwDialog
@@ -137,7 +138,7 @@ fun ForeverywhereApp(onLaunch: (appId: String) -> Unit) {
         launcher.appUpdate?.takeIf { !appUpdateDismissed && !launcher.isDownloadingAppUpdate }?.let { update ->
             FwDialog(
                 title = "App update ${update.version}",
-                message = "A new version of WoW Foreverywhere is available.",
+                message = "A new version of ${AppName.FULL} is available.",
                 confirm = "Update now",
                 onConfirm = {
                     appUpdateDismissed = true

@@ -36,6 +36,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import app.gamenative.wow.AppName
 import app.gamenative.wow.ui.components.ForeverArt
 import app.gamenative.wow.ui.components.GameIcon
 import app.gamenative.wow.ui.components.GameIconImage
@@ -113,7 +114,7 @@ private fun Header(launcher: LauncherController) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             GameIconImage(launcher.version.icon, 34.dp) { Box(Modifier.size(34.dp)) }
-            Text("Foreverywhere", style = Fw.Title.copy(fontSize = 21.sp))
+            Text(AppName.SHORT, style = Fw.Title.copy(fontSize = 21.sp))
             if (launcher.version.isExperimental) {
                 Text(launcher.version.displayName, style = Fw.Data, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f, fill = false))
                 Text("Experimental", style = Fw.Data.copy(color = Fw.Warn), modifier = Modifier.background(Fw.Stone, Fw.Pill).padding(horizontal = 10.dp, vertical = 4.dp))

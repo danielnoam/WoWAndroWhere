@@ -6,6 +6,7 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.core.content.FileProvider
 import app.gamenative.BuildConfig
+import app.gamenative.wow.AppName
 import java.io.File
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -69,7 +70,7 @@ object AppUpdater {
         runCatching {
             val request = Request.Builder()
                 .url(RELEASES_URL)
-                .header("User-Agent", "WoW-Foreverywhere")
+                .header("User-Agent", AppName.FILE)
                 .header("Accept", "application/vnd.github+json")
                 .build()
             Net.http.newCall(request).execute().use { response ->
@@ -89,7 +90,7 @@ object AppUpdater {
         onProgress: (Float) -> Unit,
     ): File = withContext(Dispatchers.IO) {
         val dir = File(context.cacheDir, "updates").apply { mkdirs() }
-        val dest = File(dir, "WoW-Foreverywhere-${release.version}.apk")
+        val dest = File(dir, "${AppName.FILE}-${release.version}.apk")
         if (dest.exists() && dest.length() == release.sizeBytes && release.sizeBytes > 0) {
             onProgress(1f)
             return@withContext dest

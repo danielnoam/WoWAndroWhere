@@ -1,5 +1,4 @@
 ﻿<resources>
-    <string name="app_name">GameNative</string>
     <string name="home">主頁</string>
     <string name="download">下載</string>
     <string name="install">安裝</string>

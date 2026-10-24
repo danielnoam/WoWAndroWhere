@@ -52,4 +52,5 @@ What the app does, by area, with the version each feature came in. Versions up t
 - In-app app updater from GitHub releases (base)
 - Signed release builds published by tag (0.2.0)
 - App updates and the Source code link come from this fork, signed with its own key (0.4.1)
+- Named WoW AndroWhere in the app, launcher label (all languages), README and release downloads (unreleased)
 - Pull requests run the launcher unit tests and a build; manual test builds publish a release-signed APK as a pre-release the updater ignores (0.4.1)

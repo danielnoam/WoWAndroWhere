@@ -1,17 +1,17 @@
 <div align="center">
 
-# WoW Foreverywhere
+# WoW AndroWhere
 
 **World of Warcraft: Forever on Snapdragon Android handhelds. No PC needed.**
 
 Install the app, let it download the game from Blizzard's servers, pick your addons, and press Play.
 
-[![Latest release](https://img.shields.io/github/v/release/YoruDev-Ryland/WoWForeverywhere?label=release&color=c9a06a)](https://github.com/YoruDev-Ryland/WoWForeverywhere/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/YoruDev-Ryland/WoWForeverywhere/total?color=3fa7c2)](https://github.com/YoruDev-Ryland/WoWForeverywhere/releases)
+[![Latest release](https://img.shields.io/github/v/release/danielnoam/WoWAndroWhere?label=release&color=c9a06a)](https://github.com/danielnoam/WoWAndroWhere/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/danielnoam/WoWAndroWhere/total?color=3fa7c2)](https://github.com/danielnoam/WoWAndroWhere/releases)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-a8a08f)](LICENSE)
-[![Support on Ko-fi](https://img.shields.io/badge/support-Ko--fi-c9a06a)](https://ko-fi.com/rkremeier)
+[![Support WoW Foreverywhere on Ko-fi](https://img.shields.io/badge/support_upstream-Ko--fi-c9a06a)](https://ko-fi.com/rkremeier)
 
-<img src=".github/readme/home.jpg" alt="The Foreverywhere home screen with Play, Addons, Game files, Account and Settings tiles" width="900">
+<img src=".github/readme/home.jpg" alt="The WoW AndroWhere home screen with Play, Addons, Game files, Account and Settings tiles" width="900">
 
 </div>
 
@@ -19,11 +19,11 @@ Install the app, let it download the game from Blizzard's servers, pick your add
 > ### New in 0.3.0: CurseForge support
 > The addon browser now includes the full **CurseForge** catalog. Search, install and update CurseForge addons right on your handheld, with WoW Forever versions picked automatically. No account or key needed.
 >
-> **[Download the latest release](https://github.com/YoruDev-Ryland/WoWForeverywhere/releases/latest)** · [What's new in 0.3.0](https://github.com/YoruDev-Ryland/WoWForeverywhere/releases/tag/v0.3.0)
+> **[Download the latest release](https://github.com/danielnoam/WoWAndroWhere/releases/latest)** · [Changelog](CHANGELOG.md)
 
 ## Features
 
-- **Installs the game for you.** Foreverywhere downloads the WoW Forever client straight from Blizzard's CDN to internal storage or an SD card. Downloads continue in the background, can be paused and resumed, and every file is verified.
+- **Installs the game for you.** The app downloads the WoW Forever client straight from Blizzard's CDN to internal storage or an SD card. Downloads continue in the background, can be paused and resumed, and every file is verified.
 - **Finds the copy you already have.** If WoW Forever is already on the device (copied from a PC, or set up for another launcher), the app finds it and uses it without downloading anything.
 - **Keeps it up to date.** When Blizzard patches the game, the app offers the update before you play.
 - **Built-in addon manager.** Search, install, update and remove addons from CurseForge, Wago, WoWInterface and GitHub, browse by category, and see at a glance which addons are made for Forever.
@@ -33,7 +33,7 @@ Install the app, let it download the game from Blizzard's servers, pick your add
 The game runs as Blizzard's own Windows ARM64 client under Wine, with DXVK and a tuned Turnip Vulkan driver for Adreno GPUs. Nothing is emulated as x86.
 
 > [!NOTE]
-> Foreverywhere is an unofficial community project. It is not affiliated with or endorsed by Blizzard Entertainment. You need your own Battle.net account with access to WoW Forever. The app and this repository contain no Blizzard game files; everything is downloaded from Blizzard's servers on your device.
+> WoW AndroWhere is an unofficial community project. It is not affiliated with or endorsed by Blizzard Entertainment. You need your own Battle.net account with access to WoW Forever. The app and this repository contain no Blizzard game files; everything is downloaded from Blizzard's servers on your device.
 
 ## Requirements
 
@@ -56,12 +56,12 @@ The game runs as Blizzard's own Windows ARM64 client under Wine, with DXVK and a
 | RedMagic 11 Pro | Snapdragon 8 Elite | Reported working in-world |
 | Samsung Galaxy S23, S24, S25, Z Fold | Snapdragon 8 Gen 2 and later | Supported |
 
-If you try a device that isn't listed, please [open an issue](https://github.com/YoruDev-Ryland/WoWForeverywhere/issues) with the result.
+If you try a device that isn't listed, please [open an issue](https://github.com/danielnoam/WoWAndroWhere/issues) with the result.
 
 ## Getting started
 
-1. Download **WoW-Foreverywhere.apk** from the [latest release](https://github.com/YoruDev-Ryland/WoWForeverywhere/releases/latest) and open it on your device. Android asks you to allow installs from your browser or file manager the first time.
-2. Open **Foreverywhere** and tap **Get started**. The app checks your device and asks for file access, which it needs to install the game in a folder you can reach.
+1. Download **WoW-AndroWhere.apk** from the [latest release](https://github.com/danielnoam/WoWAndroWhere/releases/latest) and open it on your device. Android asks you to allow installs from your browser or file manager the first time.
+2. Open **WoW AndroWhere** and tap **Get started**. The app checks your device and asks for file access, which it needs to install the game in a folder you can reach.
 3. **Find game.** The app looks for an existing install on internal storage and SD cards. Pick one to use it as it is, or choose **Install fresh**.
 4. **Install.** Choose internal storage or the SD card and start the download. You can leave the app while it runs; progress shows in your notifications.
 5. **Sign in.** Optionally save your Battle.net email and password so the game logs you in automatically.
@@ -125,7 +125,7 @@ Saving your login is optional, and you can remove it any time under **Account**.
 - The email and password are sealed together with AES-256-GCM using a key held by the Android Keystore. The key can't be exported, and it stays in the device's secure hardware where the device has it.
 - The saved login is excluded from cloud backups and from phone-to-phone transfers.
 - Screenshots and screen recordings of the login form are blocked.
-- To sign in, the game reads your login from a short-lived `login.txt` file in its own folder. This is how the WoW client accepts a login without the Battle.net app. Foreverywhere writes the file when you press Play and wipes it about 20 seconds after the game reads it, or within three minutes at most. It is also wiped when you leave or close the game.
+- To sign in, the game reads your login from a short-lived `login.txt` file in its own folder. This is how the WoW client accepts a login without the Battle.net app. The app writes the file when you press Play and wipes it about 20 seconds after the game reads it, or within three minutes at most. It is also wiped when you leave or close the game.
 
 Because the game needs the password in plain text for those few seconds, any app with full storage access could read it in that window. If that is a concern, skip saving your login and sign in inside the game instead.
 
@@ -141,7 +141,7 @@ Because the game needs the password in plain text for those few seconds, any app
 
 ### Other WoW versions (experimental)
 
-Foreverywhere is made for WoW Forever, but **Settings → Game version** can switch the app to another official version: Classic Era, Burning Crusade Anniversary, Mists of Pandaria Classic or Retail. The whole app then works with that version, including installing, updating, playing and the addon browser. Each version keeps its own install and addons, and switching back to WoW Forever leaves your Forever setup as it was.
+WoW AndroWhere is made for WoW Forever, but **Settings → Game version** can switch the app to another official version: Classic Era, Burning Crusade Anniversary, Mists of Pandaria Classic or Retail. The whole app then works with that version, including installing, updating, playing and the addon browser. Each version keeps its own install and addons, and switching back to WoW Forever leaves your Forever setup as it was.
 
 These versions are experimental and get little support. They may run poorly or not start at all, and automatic sign-in may not work on every version.
 
@@ -177,7 +177,7 @@ Release builds are signed with `app/keystores/keystore.properties` when it exist
 
 ## Credits
 
-Foreverywhere is a fork of [**wow-forever-android**](https://github.com/jaredgei/wow-forever-android) by jaredgei, which made WoW Forever run on Android handhelds in the first place. It in turn builds on:
+WoW AndroWhere is a fork of [**WoW Foreverywhere**](https://github.com/YoruDev-Ryland/WoWForeverywhere) by YoruDev-Ryland, which built the launcher, installer and addon manager. That is a fork of [**wow-forever-android**](https://github.com/jaredgei/wow-forever-android) by jaredgei, which made WoW Forever run on Android handhelds in the first place. wow-forever-android in turn builds on:
 
 - [**GameNative**](https://github.com/utkarshdalal/GameNative), [**Pluvia**](https://github.com/oxters168/Pluvia), [**Winlator**](https://github.com/brunodev85/winlator) and the [**Bionic Vulkan wrapper**](https://github.com/leegao/bionic-vulkan-wrapper) for the Android app, Wine container management and X server.
 - The **WoW Forever RP6 community bundle** and [**arusiasotto**](https://github.com/arusiasotto/wow-forever-a840) for the tuned Proton 11 ARM64EC, DXVK and Turnip builds.
@@ -187,7 +187,7 @@ World of Warcraft, WoW Forever and the artwork shown in the app are owned by Bli
 
 ## Support
 
-Foreverywhere is free and open source. If it saves you time, you can support its development on [Ko-fi](https://ko-fi.com/rkremeier).
+WoW AndroWhere is free and open source, built on WoW Foreverywhere. If it saves you time, you can support WoW Foreverywhere's development on [Ko-fi](https://ko-fi.com/rkremeier).
 
 ## License
 

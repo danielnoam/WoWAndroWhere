@@ -126,6 +126,6 @@ class CurseForgeProviderTest {
         assertEquals(listOf("334372", "4444"), proxied.search("questie", 0).map { it.projectId })
         val req = server.takeRequest()
         assertNull(req.headers["x-api-key"])
-        assertTrue(req.headers["User-Agent"]!!.startsWith("WoWForeverywhere/"))
+        assertTrue(req.headers["User-Agent"]!!.startsWith("WoW-AndroWhere/"))
     }
 }
