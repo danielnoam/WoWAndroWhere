@@ -1,6 +1,26 @@
 {
- "generated": "2026-10-24T13:26:57+00:00",
+ "generated": "2026-10-24T13:35:24+00:00",
  "addons": [
+  {
+   "repo": "Aldori15/Questie",
+   "name": "Questie",
+   "summary": "Shows quest givers, objectives and turn-ins on your map and minimap.",
+   "category": "QUESTS",
+   "author": "Aldori15",
+   "icon": "https://avatars.githubusercontent.com/u/15916673?v=4",
+   "website": "https://github.com/Aldori15/Questie",
+   "stars": 62,
+   "downloads": 0,
+   "updated": "2026-10-16T00:00:38Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "d695e9048e6df8b48d36a6db9436d82ca3bbbd87",
+     "version": "2026-10-16 (d695e90)",
+     "url": "https://github.com/Aldori15/Questie/archive/d695e9048e6df8b48d36a6db9436d82ca3bbbd87.zip"
+    }
+   }
+  },
   {
    "repo": "ErebusAres/ZygorGuidesRemaster-3.3.5a_WOTLK",
    "name": "Zygor Guides",
@@ -502,6 +522,26 @@
    }
   },
   {
+   "repo": "NoM0Re/PallyPower-Improved-3.3.5",
+   "name": "PallyPower",
+   "summary": "Paladin blessing and aura assignments for groups.",
+   "category": "CLASS",
+   "author": "NoM0Re",
+   "icon": "https://avatars.githubusercontent.com/u/1629787?v=4",
+   "website": "https://github.com/NoM0Re/PallyPower-Improved-3.3.5",
+   "stars": 31,
+   "downloads": 0,
+   "updated": "2026-10-08T00:08:16Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "8a87a53bb16ff680e5a2bff0977385235e7553a2",
+     "version": "2026-10-08 (8a87a53)",
+     "url": "https://github.com/NoM0Re/PallyPower-Improved-3.3.5/archive/8a87a53bb16ff680e5a2bff0977385235e7553a2.zip"
+    }
+   }
+  },
+  {
    "repo": "bkader/EclipseBar-WotLK",
    "name": "EclipseBar",
    "summary": "Eclipse tracker for balance druids.",
@@ -558,6 +598,26 @@
      "fileId": "0d05ed12a968673527a93f54e64633f0970c4aac",
      "version": "2019-05-26 (0d05ed1)",
      "url": "https://github.com/Einherjarn/RatingBuster-3.3.5/archive/0d05ed12a968673527a93f54e64633f0970c4aac.zip"
+    }
+   }
+  },
+  {
+   "repo": "ManneN1/GladiusEx-WotLK",
+   "name": "GladiusEx",
+   "summary": "Arena enemy frames with cooldowns and trinkets.",
+   "category": "PVP",
+   "author": "ManneN1",
+   "icon": "https://avatars.githubusercontent.com/u/16864855?v=4",
+   "website": "https://github.com/ManneN1/GladiusEx-WotLK",
+   "stars": 14,
+   "downloads": 0,
+   "updated": "2026-07-04T13:21:05Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "25a676c6e6fdedf7ba4ee5ab35a94f93c9d19848",
+     "version": "2026-07-04 (25a676c)",
+     "url": "https://github.com/ManneN1/GladiusEx-WotLK/archive/25a676c6e6fdedf7ba4ee5ab35a94f93c9d19848.zip"
     }
    }
   },
