@@ -7,7 +7,7 @@ import timber.log.Timber
 
 object Links {
     const val KOFI = "https://ko-fi.com/rkremeier"
-    const val REPO = "https://github.com/YoruDev-Ryland/WoWForeverywhere"
+    const val REPO = "https://github.com/danielnoam/WoWAndroWhere"
 
     /** Opens [url] in the device's browser. Returns false when nothing can handle it. */
     fun open(context: Context, url: String): Boolean = runCatching {

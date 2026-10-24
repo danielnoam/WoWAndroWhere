@@ -14,7 +14,7 @@ import org.json.JSONObject
 import timber.log.Timber
 
 object AppUpdater {
-    private const val RELEASES_URL = "https://api.github.com/repos/YoruDev-Ryland/WoWForeverywhere/releases/latest"
+    private const val RELEASES_URL = "https://api.github.com/repos/danielnoam/WoWAndroWhere/releases/latest"
 
     data class Release(
         val version: String,
