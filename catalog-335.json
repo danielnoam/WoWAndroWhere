@@ -1,0 +1,685 @@
+{
+ "generated": "2026-10-24T13:26:57+00:00",
+ "addons": [
+  {
+   "repo": "ErebusAres/ZygorGuidesRemaster-3.3.5a_WOTLK",
+   "name": "Zygor Guides",
+   "summary": "Step-by-step leveling guides with waypoints.",
+   "category": "QUESTS",
+   "author": "ErebusAres",
+   "icon": "https://avatars.githubusercontent.com/u/3603760?v=4",
+   "website": "https://github.com/ErebusAres/ZygorGuidesRemaster-3.3.5a_WOTLK",
+   "stars": 85,
+   "downloads": 0,
+   "updated": "2026-10-05T02:38:55Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "9087c457e20fb96e73e5b362dd6fc50324b75718",
+     "version": "2026-10-05 (9087c45)",
+     "url": "https://github.com/ErebusAres/ZygorGuidesRemaster-3.3.5a_WOTLK/archive/9087c457e20fb96e73e5b362dd6fc50324b75718.zip"
+    }
+   }
+  },
+  {
+   "repo": "anzz1/Carbonite-3.3.5",
+   "name": "Carbonite",
+   "summary": "Map, quest helper and minimap replacement in one.",
+   "category": "MAP",
+   "author": "anzz1",
+   "icon": "https://avatars.githubusercontent.com/u/13628128?v=4",
+   "website": "https://github.com/anzz1/Carbonite-3.3.5",
+   "stars": 4,
+   "downloads": 0,
+   "updated": "2025-10-19T01:41:56Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "ca4254e623d987a5f7c6d57f9efd86a6eaf0a4b2",
+     "version": "2025-10-19 (ca4254e)",
+     "url": "https://github.com/anzz1/Carbonite-3.3.5/archive/ca4254e623d987a5f7c6d57f9efd86a6eaf0a4b2.zip"
+    }
+   }
+  },
+  {
+   "repo": "s0h2x/pretty_minimap",
+   "name": "pretty_minimap",
+   "summary": "A cleaner, square minimap.",
+   "category": "MAP",
+   "author": "s0h2x",
+   "icon": "https://avatars.githubusercontent.com/u/33549022?v=4",
+   "website": "https://github.com/s0h2x/pretty_minimap",
+   "stars": 26,
+   "downloads": 0,
+   "updated": "2023-04-19T06:14:09Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "fed230049292ec5c19fe27495b4c76832761d301",
+     "version": "2023-04-19 (fed2300)",
+     "url": "https://github.com/s0h2x/pretty_minimap/archive/fed230049292ec5c19fe27495b4c76832761d301.zip"
+    }
+   }
+  },
+  {
+   "repo": "Zidras/DBM-Warmane",
+   "name": "Deadly Boss Mods (Warmane)",
+   "summary": "Boss warnings and timers, kept up to date for Warmane.",
+   "category": "RAIDS",
+   "author": "Zidras",
+   "icon": "https://avatars.githubusercontent.com/u/10605951?v=4",
+   "website": "https://github.com/Zidras/DBM-Warmane",
+   "stars": 238,
+   "downloads": 0,
+   "updated": "2026-08-16T20:38:14Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "6165654fb413f4166b1c142809ae287b1227ba6a",
+     "version": "2026-08-16 (6165654)",
+     "url": "https://github.com/Zidras/DBM-Warmane/archive/6165654fb413f4166b1c142809ae287b1227ba6a.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/HalionHelper-WoTLK",
+   "name": "HalionHelper",
+   "summary": "Shows the corporeality and phase changes in the Halion fight.",
+   "category": "RAIDS",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/HalionHelper-WoTLK",
+   "stars": 4,
+   "downloads": 0,
+   "updated": "2022-08-07T15:32:35Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "fab3d0f7b496a6cbed352d796876efbd6f826305",
+     "version": "2022-08-07 (fab3d0f)",
+     "url": "https://github.com/bkader/HalionHelper-WoTLK/archive/fab3d0f7b496a6cbed352d796876efbd6f826305.zip"
+    }
+   }
+  },
+  {
+   "repo": "ExoJdi/Method-Raid-Tools-3.3.5a",
+   "name": "Method Raid Tools",
+   "summary": "Raid cooldowns, notes and raid checks.",
+   "category": "RAIDS",
+   "author": "ExoJdi",
+   "icon": "https://avatars.githubusercontent.com/u/41266623?v=4",
+   "website": "https://github.com/ExoJdi/Method-Raid-Tools-3.3.5a",
+   "stars": 20,
+   "downloads": 0,
+   "updated": "2026-06-10T23:25:24Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "55ee4a9d7425911842028b1beafabc23a090d235",
+     "version": "2026-06-10 (55ee4a9)",
+     "url": "https://github.com/ExoJdi/Method-Raid-Tools-3.3.5a/archive/55ee4a9d7425911842028b1beafabc23a090d235.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/KRU-WoTLK",
+   "name": "Kader's Raid Utilities",
+   "summary": "Raid utilities such as consumable checks and announcements.",
+   "category": "RAIDS",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/KRU-WoTLK",
+   "stars": 6,
+   "downloads": 0,
+   "updated": "2022-05-25T16:59:31Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "2282c3c4be9acebc4d76a554abf49685af42b555",
+     "version": "2022-05-25 (2282c3c)",
+     "url": "https://github.com/bkader/KRU-WoTLK/archive/2282c3c4be9acebc4d76a554abf49685af42b555.zip"
+    }
+   }
+  },
+  {
+   "repo": "Ostoic/RaidBrowser",
+   "name": "RaidBrowser",
+   "summary": "Lists raid groups advertised in chat on Warmane.",
+   "category": "RAIDS",
+   "author": "Ostoic",
+   "icon": "https://avatars.githubusercontent.com/u/8475295?v=4",
+   "website": "https://github.com/Ostoic/RaidBrowser",
+   "stars": 48,
+   "downloads": 0,
+   "updated": "2023-02-17T03:36:14Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "2b6066ef92a6a683b7d79ac8e9fc09885199ec96",
+     "version": "2023-02-17 (2b6066e)",
+     "url": "https://github.com/Ostoic/RaidBrowser/archive/2b6066ef92a6a683b7d79ac8e9fc09885199ec96.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/Skada-WoTLK",
+   "name": "Skada",
+   "summary": "Lightweight, modular damage and healing meter.",
+   "category": "COMBAT",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/Skada-WoTLK",
+   "stars": 144,
+   "downloads": 0,
+   "updated": "2024-03-23T11:26:17Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "5653a241a7a97a5988280d916ff3a9e31ec55948",
+     "version": "2024-03-23 (5653a24)",
+     "url": "https://github.com/bkader/Skada-WoTLK/archive/5653a241a7a97a5988280d916ff3a9e31ec55948.zip"
+    }
+   }
+  },
+  {
+   "repo": "Bunny67/Details-WotLK",
+   "name": "Details!",
+   "summary": "Damage meter with detailed breakdowns and graphs.",
+   "category": "COMBAT",
+   "author": "Bunny67",
+   "icon": "https://avatars.githubusercontent.com/u/5816685?v=4",
+   "website": "https://github.com/Bunny67/Details-WotLK",
+   "stars": 70,
+   "downloads": 0,
+   "updated": "2021-04-12T17:17:46Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "97e1cac2e4b5f68a3572f2f4872c9422759a1bca",
+     "version": "2021-04-12 (97e1cac)",
+     "url": "https://github.com/Bunny67/Details-WotLK/archive/97e1cac2e4b5f68a3572f2f4872c9422759a1bca.zip"
+    }
+   }
+  },
+  {
+   "repo": "hypopheria2k/xCT_Plus_wotlk",
+   "name": "xCT+",
+   "summary": "Scrolling combat text you can configure.",
+   "category": "COMBAT",
+   "author": "hypopheria2k",
+   "icon": "https://avatars.githubusercontent.com/u/242176551?v=4",
+   "website": "https://github.com/hypopheria2k/xCT_Plus_wotlk",
+   "stars": 7,
+   "downloads": 0,
+   "updated": "2026-05-01T17:48:27Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "8c9969e0893f67edb373e292b5e04d83dc4e4c96",
+     "version": "2026-05-01 (8c9969e)",
+     "url": "https://github.com/hypopheria2k/xCT_Plus_wotlk/archive/8c9969e0893f67edb373e292b5e04d83dc4e4c96.zip"
+    }
+   }
+  },
+  {
+   "repo": "ElvUI-WotLK/ElvUI",
+   "name": "ElvUI",
+   "summary": "Complete user interface replacement.",
+   "category": "INTERFACE",
+   "author": "ElvUI-WotLK",
+   "icon": "https://avatars.githubusercontent.com/u/6401782?v=4",
+   "website": "https://github.com/ElvUI-WotLK/ElvUI",
+   "stars": 487,
+   "downloads": 0,
+   "updated": "2022-10-26T15:52:08Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "58ea24f7979740221389ce09685eb445723a6346",
+     "version": "2022-10-26 (58ea24f)",
+     "url": "https://github.com/ElvUI-WotLK/ElvUI/archive/58ea24f7979740221389ce09685eb445723a6346.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/Dominos",
+   "name": "Dominos",
+   "summary": "Movable, configurable action bars.",
+   "category": "ACTION_BARS",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/Dominos",
+   "stars": 16,
+   "downloads": 0,
+   "updated": "2022-05-25T17:08:48Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "1a7a1a477941019c9320676341c6de65efd3e0e2",
+     "version": "2022-05-25 (1a7a1a4)",
+     "url": "https://github.com/bkader/Dominos/archive/1a7a1a477941019c9320676341c6de65efd3e0e2.zip"
+    }
+   }
+  },
+  {
+   "repo": "sirus-addons/MoveAnything",
+   "name": "MoveAnything",
+   "summary": "Move, scale and hide any frame in the interface.",
+   "category": "INTERFACE",
+   "author": "sirus-addons",
+   "icon": "https://avatars.githubusercontent.com/u/43137656?v=4",
+   "website": "https://github.com/sirus-addons/MoveAnything",
+   "stars": 10,
+   "downloads": 0,
+   "updated": "2025-07-18T15:49:49Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "d82cf926086f7cf53a1c9fcf29502ae49651ebb7",
+     "version": "2025-07-18 (d82cf92)",
+     "url": "https://github.com/sirus-addons/MoveAnything/archive/d82cf926086f7cf53a1c9fcf29502ae49651ebb7.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/RUF-WoTLK",
+   "name": "Raeli's Unit Frames",
+   "summary": "Configurable unit frames.",
+   "category": "UNIT_FRAMES",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/RUF-WoTLK",
+   "stars": 12,
+   "downloads": 0,
+   "updated": "2022-08-07T15:33:36Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "9ffc395f356e82943546c5cc281308e41d7db83f",
+     "version": "2022-08-07 (9ffc395)",
+     "url": "https://github.com/bkader/RUF-WoTLK/archive/9ffc395f356e82943546c5cc281308e41d7db83f.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/Grid2-WoTLK",
+   "name": "Grid2",
+   "summary": "Compact party and raid frames for healers.",
+   "category": "UNIT_FRAMES",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/Grid2-WoTLK",
+   "stars": 27,
+   "downloads": 0,
+   "updated": "2022-10-04T04:33:28Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "fc8d5e139b9490236b6676e1d891f98bfe4b2a10",
+     "version": "2022-10-04 (fc8d5e1)",
+     "url": "https://github.com/bkader/Grid2-WoTLK/archive/fc8d5e139b9490236b6676e1d891f98bfe4b2a10.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/TidyPlates_WoTLK",
+   "name": "Tidy Plates",
+   "summary": "Cleaner, themeable nameplates.",
+   "category": "UNIT_FRAMES",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/TidyPlates_WoTLK",
+   "stars": 51,
+   "downloads": 0,
+   "updated": "2022-08-07T15:20:35Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "a668fc23d329356ad6e808fc084fd0f4094b43e3",
+     "version": "2022-08-07 (a668fc2)",
+     "url": "https://github.com/bkader/TidyPlates_WoTLK/archive/a668fc23d329356ad6e808fc084fd0f4094b43e3.zip"
+    }
+   }
+  },
+  {
+   "repo": "KhalGH/PlateBuffs-WoTLK",
+   "name": "PlateBuffs",
+   "summary": "Shows buffs and debuffs on nameplates.",
+   "category": "BUFFS",
+   "author": "KhalGH",
+   "icon": "https://avatars.githubusercontent.com/u/111320187?v=4",
+   "website": "https://github.com/KhalGH/PlateBuffs-WoTLK",
+   "stars": 21,
+   "downloads": 0,
+   "updated": "2026-09-29T23:37:05Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "6584ceb51a1e906be373ac1be61178658a968e50",
+     "version": "2026-09-29 (6584ceb)",
+     "url": "https://github.com/KhalGH/PlateBuffs-WoTLK/archive/6584ceb51a1e906be373ac1be61178658a968e50.zip"
+    }
+   }
+  },
+  {
+   "repo": "Bunny67/WeakAuras-WotLK",
+   "name": "WeakAuras",
+   "summary": "Custom displays for buffs, cooldowns and procs.",
+   "category": "BUFFS",
+   "author": "Bunny67",
+   "icon": "https://avatars.githubusercontent.com/u/5816685?v=4",
+   "website": "https://github.com/Bunny67/WeakAuras-WotLK",
+   "stars": 184,
+   "downloads": 0,
+   "updated": "2024-04-25T16:23:48Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "58c99532640eea021c0b07478469a9e7e612a54e",
+     "version": "2024-04-25 (58c9953)",
+     "url": "https://github.com/Bunny67/WeakAuras-WotLK/archive/58c99532640eea021c0b07478469a9e7e612a54e.zip"
+    }
+   }
+  },
+  {
+   "repo": "NoM0Re/OmniCC-WotLK",
+   "name": "OmniCC",
+   "summary": "Cooldown numbers on buttons and icons.",
+   "category": "BUFFS",
+   "author": "NoM0Re",
+   "icon": "https://avatars.githubusercontent.com/u/1629787?v=4",
+   "website": "https://github.com/NoM0Re/OmniCC-WotLK",
+   "stars": 16,
+   "downloads": 0,
+   "updated": "2026-07-08T00:03:37Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "0564580a6f8c3a539a37990c7191a66339c51117",
+     "version": "2026-07-08 (0564580)",
+     "url": "https://github.com/NoM0Re/OmniCC-WotLK/archive/0564580a6f8c3a539a37990c7191a66339c51117.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/TellMeWhen_3.3.5",
+   "name": "TellMeWhen",
+   "summary": "Icons that show when cooldowns, buffs and procs are up.",
+   "category": "BUFFS",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/TellMeWhen_3.3.5",
+   "stars": 19,
+   "downloads": 0,
+   "updated": "2022-08-07T15:34:43Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "f02014b9b325bc25ea434c3da88783c8dd3d800c",
+     "version": "2022-08-07 (f02014b)",
+     "url": "https://github.com/bkader/TellMeWhen_3.3.5/archive/f02014b9b325bc25ea434c3da88783c8dd3d800c.zip"
+    }
+   }
+  },
+  {
+   "repo": "RichSteini/Bagnon-3.3.5",
+   "name": "Bagnon",
+   "summary": "One bag window with search and sorting.",
+   "category": "BAGS",
+   "author": "RichSteini",
+   "icon": "https://avatars.githubusercontent.com/u/50737013?v=4",
+   "website": "https://github.com/RichSteini/Bagnon-3.3.5",
+   "stars": 31,
+   "downloads": 0,
+   "updated": "2023-10-18T18:56:57Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "27a08f89819311d772e7ec7a71a41eafb813f122",
+     "version": "2023-10-18 (27a08f8)",
+     "url": "https://github.com/RichSteini/Bagnon-3.3.5/archive/27a08f89819311d772e7ec7a71a41eafb813f122.zip"
+    }
+   }
+  },
+  {
+   "repo": "Sattva-108/AdiBags-WoTLK-3.3.5",
+   "name": "AdiBags",
+   "summary": "Bags sorted into categories automatically.",
+   "category": "BAGS",
+   "author": "Sattva-108",
+   "icon": "https://avatars.githubusercontent.com/u/74269253?v=4",
+   "website": "https://github.com/Sattva-108/AdiBags",
+   "stars": 35,
+   "downloads": 0,
+   "updated": "2025-07-09T20:17:31Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "d8b49ed56ddf81825ab2a4bc22c08fb7a0d59eed",
+     "version": "2025-07-09 (d8b49ed)",
+     "url": "https://github.com/Sattva-108/AdiBags-WoTLK-3.3.5/archive/d8b49ed56ddf81825ab2a4bc22c08fb7a0d59eed.zip"
+    }
+   }
+  },
+  {
+   "repo": "alchem1ster/WotLK-Auctionator",
+   "name": "Auctionator",
+   "summary": "Faster auction house buying and selling.",
+   "category": "AUCTION",
+   "author": "alchem1ster",
+   "icon": "https://avatars.githubusercontent.com/u/3815426?v=4",
+   "website": "https://github.com/alchem1ster/WotLK-Auctionator",
+   "stars": 61,
+   "downloads": 0,
+   "updated": "2023-05-14T14:49:10Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "b4e3eb68dcc7cc1142b73d8a978d471bf0d4110a",
+     "version": "2023-05-14 (b4e3eb6)",
+     "url": "https://github.com/alchem1ster/WotLK-Auctionator/archive/b4e3eb68dcc7cc1142b73d8a978d471bf0d4110a.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/Talented_WoTLK",
+   "name": "Talented",
+   "summary": "Better talent window with saved builds.",
+   "category": "CLASS",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/Talented_WoTLK",
+   "stars": 31,
+   "downloads": 0,
+   "updated": "2022-07-08T13:36:19Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "648a0ead7d664f3b220088738bc1c7e6041be090",
+     "version": "2022-07-08 (648a0ea)",
+     "url": "https://github.com/bkader/Talented_WoTLK/archive/648a0ead7d664f3b220088738bc1c7e6041be090.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/EclipseBar-WotLK",
+   "name": "EclipseBar",
+   "summary": "Eclipse tracker for balance druids.",
+   "category": "CLASS",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/EclipseBar-WotLK",
+   "stars": 4,
+   "downloads": 0,
+   "updated": "2022-08-07T15:29:58Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "c42b6a82a75abbdb17bb3eb322a5b67fb97d1d53",
+     "version": "2022-08-07 (c42b6a8)",
+     "url": "https://github.com/bkader/EclipseBar-WotLK/archive/c42b6a82a75abbdb17bb3eb322a5b67fb97d1d53.zip"
+    }
+   }
+  },
+  {
+   "repo": "Arcitec/GearScoreLite_Reborn",
+   "name": "GearScoreLite: Reborn",
+   "summary": "Gear score in tooltips and the inspect window.",
+   "category": "TOOLTIPS",
+   "author": "Arcitec",
+   "icon": "https://avatars.githubusercontent.com/u/38923130?v=4",
+   "website": "https://github.com/Arcitec/GearScoreLite_Reborn",
+   "stars": 13,
+   "downloads": 0,
+   "updated": "2024-06-27T18:27:43Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "a396cdc93894bca2cab351627c97996253f86236",
+     "version": "2024-06-27 (a396cdc)",
+     "url": "https://github.com/Arcitec/GearScoreLite_Reborn/archive/a396cdc93894bca2cab351627c97996253f86236.zip"
+    }
+   }
+  },
+  {
+   "repo": "Einherjarn/RatingBuster-3.3.5",
+   "name": "RatingBuster",
+   "summary": "Converts item ratings into stat changes in tooltips.",
+   "category": "TOOLTIPS",
+   "author": "Einherjarn",
+   "icon": "https://avatars.githubusercontent.com/u/31859362?v=4",
+   "website": "https://github.com/Einherjarn/RatingBuster-3.3.5",
+   "stars": 2,
+   "downloads": 0,
+   "updated": "2019-05-26T00:02:41Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "0d05ed12a968673527a93f54e64633f0970c4aac",
+     "version": "2019-05-26 (0d05ed1)",
+     "url": "https://github.com/Einherjarn/RatingBuster-3.3.5/archive/0d05ed12a968673527a93f54e64633f0970c4aac.zip"
+    }
+   }
+  },
+  {
+   "repo": "KhalGH/BattleGroundHealers-WotLK",
+   "name": "BattleGroundHealers",
+   "summary": "Marks enemy healers in battlegrounds.",
+   "category": "PVP",
+   "author": "KhalGH",
+   "icon": "https://avatars.githubusercontent.com/u/111320187?v=4",
+   "website": "https://github.com/KhalGH/BattleGroundHealers-WotLK",
+   "stars": 13,
+   "downloads": 0,
+   "updated": "2026-09-28T04:06:05Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "a1f531f2e19c8b4e8534584d30078471abbda02c",
+     "version": "2026-09-28 (a1f531f)",
+     "url": "https://github.com/KhalGH/BattleGroundHealers-WotLK/archive/a1f531f2e19c8b4e8534584d30078471abbda02c.zip"
+    }
+   }
+  },
+  {
+   "repo": "Arcitec/STFU_Chat_Filter",
+   "name": "STFU Chat Filter",
+   "summary": "Filters spam and gold sellers out of chat.",
+   "category": "CHAT",
+   "author": "Arcitec",
+   "icon": "https://avatars.githubusercontent.com/u/38923130?v=4",
+   "website": "https://github.com/Arcitec/STFU_Chat_Filter",
+   "stars": 5,
+   "downloads": 0,
+   "updated": "2024-06-04T18:46:15Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "df3fb1e70789e746eb8e495f13ddf862351c8cb2",
+     "version": "2024-06-04 (df3fb1e)",
+     "url": "https://github.com/Arcitec/STFU_Chat_Filter/archive/df3fb1e70789e746eb8e495f13ddf862351c8cb2.zip"
+    }
+   }
+  },
+  {
+   "repo": "s0h2x/Immersion-WotLK",
+   "name": "Immersion",
+   "summary": "Full-screen quest dialogs with the speaking NPC.",
+   "category": "QUESTS",
+   "author": "s0h2x",
+   "icon": "https://avatars.githubusercontent.com/u/33549022?v=4",
+   "website": "https://github.com/s0h2x/Immersion-WotLK",
+   "stars": 65,
+   "downloads": 0,
+   "updated": "2024-11-06T06:53:37Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "e0b208b2ae38b3ccfd2b682689021bba7523395f",
+     "version": "2024-11-06 (e0b208b)",
+     "url": "https://github.com/s0h2x/Immersion-WotLK/archive/e0b208b2ae38b3ccfd2b682689021bba7523395f.zip"
+    }
+   }
+  },
+  {
+   "repo": "GetLocalPlayer/DressMe",
+   "name": "DressMe",
+   "summary": "Try on items and save outfits in a dressing room.",
+   "category": "OTHER",
+   "author": "GetLocalPlayer",
+   "icon": "https://avatars.githubusercontent.com/u/19322847?v=4",
+   "website": "https://github.com/GetLocalPlayer/DressMe",
+   "stars": 20,
+   "downloads": 0,
+   "updated": "2021-05-13T11:14:11Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "6b94a86251f3e2669d88216b7d81bb8e962d2bcd",
+     "version": "2021-05-13 (6b94a86)",
+     "url": "https://github.com/GetLocalPlayer/DressMe/archive/6b94a86251f3e2669d88216b7d81bb8e962d2bcd.zip"
+    }
+   }
+  },
+  {
+   "repo": "s0h2x/Equipence",
+   "name": "Equipence",
+   "summary": "Item levels and quality on the character window.",
+   "category": "INTERFACE",
+   "author": "s0h2x",
+   "icon": "https://avatars.githubusercontent.com/u/33549022?v=4",
+   "website": "https://github.com/s0h2x/Equipence",
+   "stars": 6,
+   "downloads": 0,
+   "updated": "2026-05-10T01:22:08Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "c18cf61ea2de1df52e71fc4d6289e18a468de4ed",
+     "version": "2026-05-10 (c18cf61)",
+     "url": "https://github.com/s0h2x/Equipence/archive/c18cf61ea2de1df52e71fc4d6289e18a468de4ed.zip"
+    }
+   }
+  },
+  {
+   "repo": "bkader/SharedMedia",
+   "name": "SharedMedia",
+   "summary": "Extra fonts, bars and sounds for other addons.",
+   "category": "LIBRARIES",
+   "author": "bkader",
+   "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
+   "website": "https://github.com/bkader/SharedMedia",
+   "stars": 27,
+   "downloads": 0,
+   "updated": "2023-01-10T03:09:01Z",
+   "requires": [],
+   "files": {
+    "wotlk335": {
+     "fileId": "a690a74b5a377266d02aee2a014aeaae34ec1d93",
+     "version": "2023-01-10 (a690a74)",
+     "url": "https://github.com/bkader/SharedMedia/archive/a690a74b5a377266d02aee2a014aeaae34ec1d93.zip"
+    }
+   }
+  }
+ ]
+}
