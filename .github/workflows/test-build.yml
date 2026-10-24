@@ -1,0 +1,93 @@
+name: Test build
+
+# Pull requests: unit tests and a build check, without secrets.
+# Manual runs: a test APK signed with the release key, published as the "test-build" pre-release so it
+# installs over the release app straight from the releases page. The in-app updater only reads the
+# latest full release, so a pre-release never reaches players.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install the NDK
+        run: |
+          NDK=$(sed -n 's/.*ndkVersion = "\(.*\)".*/\1/p' app/build.gradle.kts)
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;$NDK" > /dev/null
+      - name: Fetch runtime components
+        run: tools/fetch_components.sh
+      - run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+      - name: Unit tests
+        run: ./gradlew --no-daemon testModernDebugUnitTest --tests "app.gamenative.wow.legacy.*" --tests "app.gamenative.ui.screen.wow.*"
+      - name: Build
+        run: ./gradlew --no-daemon assembleModernDebug
+
+  publish:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    concurrency:
+      group: test-build
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install the NDK
+        run: |
+          NDK=$(sed -n 's/.*ndkVersion = "\(.*\)".*/\1/p' app/build.gradle.kts)
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "ndk;$NDK" > /dev/null
+      - name: Fetch runtime components
+        run: tools/fetch_components.sh
+      - name: Configure signing
+        env:
+          KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::error::RELEASE_KEYSTORE_BASE64 is not set; test builds are signed with the release key."
+            exit 1
+          fi
+          mkdir -p app/keystores
+          echo "$KEYSTORE_BASE64" | base64 -d > app/keystores/release.jks
+          {
+            echo "storeFile=keystores/release.jks"
+            echo "storePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEYSTORE_PASSWORD"
+          } > app/keystores/keystore.properties
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+      - name: Build
+        run: ./gradlew --no-daemon assembleModernRelease
+      - name: Publish the test pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/modern/release/app-modern-release.apk dist/WoW-Foreverywhere-test.apk
+          gh release delete test-build --cleanup-tag --yes || true
+          gh release create test-build dist/WoW-Foreverywhere-test.apk --prerelease --target "$GITHUB_SHA" \
+            --title "Test build ($(git rev-parse --short HEAD), ${{ github.ref_name }})" \
+            --notes "Test APK from ${{ github.ref_name }}. Not a release; the app never offers it as an update."
+      - name: Remove signing material
+        if: always()
+        run: rm -f app/keystores/release.jks app/keystores/keystore.properties local.properties

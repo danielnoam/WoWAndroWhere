@@ -7,7 +7,8 @@ Only work that's left. Shipped items move to DONE.md, rejected ones to DROPPED.m
 1. **Updates come from the fork** ([PR #1](https://github.com/danielnoam/WoWAndroWhere/pull/1), open). `AppUpdater.kt` and the Source code link point at `danielnoam/WoWAndroWhere`; `versionName` 0.4.1 so the updater sees it as newer than upstream's 0.4.0; release notes rewritten for the fork.
    - Blocked on Daniel: generate the release keystore and add `RELEASE_KEYSTORE_BASE64`, `RELEASE_KEYSTORE_PASSWORD`, `RELEASE_KEY_ALIAS` as Actions secrets. Then merge PR #1 and push the `v0.4.1` tag.
    - On the phone: the first fork APK needs an uninstall of the upstream app (different signing key). Saved login and app settings are lost; game files and addons stay.
-2. **Other upstream links.** The GitHub addon catalog (`GitHubProvider.CATALOG_URL`) and the README (badges, download links, issues) still point at upstream. Decide per link: the catalog can stay on upstream's nightly build (no cost, but it's their branch) or the fork's `addon-catalog` workflow can publish its own; the README should point at the fork's releases.
+2. **PR checks and test builds** (in PR #1). `.github/workflows/test-build.yml`: pull requests run the launcher unit tests and `assembleModernDebug` without secrets. A manual run builds a release-signed APK from any branch and publishes it as the `test-build` pre-release, which the updater never offers. Needs the signing secrets above.
+3. **Other upstream links.** The GitHub addon catalog (`GitHubProvider.CATALOG_URL`) and the README (badges, download links, issues) still point at upstream. Decide per link: the catalog can stay on upstream's nightly build (no cost, but it's their branch) or the fork's `addon-catalog` workflow can publish its own; the README should point at the fork's releases.
 
 ## Private servers (3.3.5a)
 
@@ -26,4 +27,3 @@ Depends on the 3.3.5a spike reaching the login screen. ConsolePortLK only target
 ## Proposed by Claude, not agreed yet
 
 - **Own the CurseForge proxy.** Release builds without a key send every CurseForge request to `cf.yorudev.com`, upstream's server. Either run `server/curseforge-proxy` with Daniel's own key and build with `-PCURSEFORGE_PROXY=...`, or accept upstream's server and say so in NOTES.md.
-- **Checks on pull requests.** No workflow runs on PRs, so "merge when green" checks nothing. Add a PR workflow that runs the unit tests and an `assembleModernDebug`.
