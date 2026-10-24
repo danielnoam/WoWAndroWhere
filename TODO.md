@@ -2,13 +2,9 @@
 
 Only work that's left. Shipped items move to DONE.md, rejected ones to DROPPED.md.
 
-## Next: 0.4.1, the fork's first release
+## Fork housekeeping
 
-1. **Updates come from the fork** ([PR #1](https://github.com/danielnoam/WoWAndroWhere/pull/1), open). `AppUpdater.kt` and the Source code link point at `danielnoam/WoWAndroWhere`; `versionName` 0.4.1 so the updater sees it as newer than upstream's 0.4.0; release notes rewritten for the fork.
-   - Blocked on Daniel: generate the release keystore and add `RELEASE_KEYSTORE_BASE64`, `RELEASE_KEYSTORE_PASSWORD`, `RELEASE_KEY_ALIAS` as Actions secrets. Then merge PR #1 and push the `v0.4.1` tag.
-   - On the phone: the first fork APK needs an uninstall of the upstream app (different signing key). Saved login and app settings are lost; game files and addons stay.
-2. **PR checks and test builds** (in PR #1). `.github/workflows/test-build.yml`: pull requests run the launcher unit tests and `assembleModernDebug` without secrets. A manual run builds a release-signed APK from any branch and publishes it as the `test-build` pre-release, which the updater never offers. Needs the signing secrets above.
-3. **Other upstream links.** The GitHub addon catalog (`GitHubProvider.CATALOG_URL`) and the README (badges, download links, issues) still point at upstream. Decide per link: the catalog can stay on upstream's nightly build (no cost, but it's their branch) or the fork's `addon-catalog` workflow can publish its own; the README should point at the fork's releases.
+1. **Other upstream links.** The GitHub addon catalog (`GitHubProvider.CATALOG_URL`) and the README (badges, download links, issues) still point at upstream. Decide per link: the catalog can stay on upstream's nightly build (no cost, but it's their branch) or the fork's `addon-catalog` workflow can publish its own; the README should point at the fork's releases.
 
 ## Private servers (3.3.5a)
 

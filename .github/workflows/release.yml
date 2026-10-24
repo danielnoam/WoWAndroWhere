@@ -1,7 +1,8 @@
 name: Release
 
 # Builds the signed APK for a version tag (v1.2.3) and publishes it as the latest GitHub release,
-# which is also where the app's built-in updater looks.
+# which is also where the app's built-in updater looks. A manual run builds the tag if it exists,
+# otherwise the commit it was started on, and creates the tag there when it publishes.
 on:
   push:
     tags:
@@ -9,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing tag to build and publish (for example v0.2.0)"
+        description: "Tag to build and publish (for example v0.2.0); created on the run's commit if missing"
         required: true
 
 permissions:
@@ -27,7 +28,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ env.TAG }}
+          fetch-depth: 0
+
+      - name: Check out the tag if it exists
+        run: if git rev-parse -q --verify "refs/tags/$TAG" > /dev/null; then git checkout -q "$TAG"; fi
 
       - uses: actions/setup-java@v4
         with:
@@ -92,6 +96,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.TAG }}
+          target_commitish: ${{ github.sha }}
           name: WoW Foreverywhere ${{ env.TAG }}
           body_path: .github/release-notes.md
           make_latest: true

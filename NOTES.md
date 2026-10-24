@@ -2,6 +2,10 @@
 
 Why things are the way they are, newest first.
 
+## 2026-10-24: Claude releases by a manual run, not a tag push
+
+Claude's container can only push its own working branch, not tags. So a release from Claude is a manual run of `release.yml` on `main` with the version as input: it builds `main` and creates the tag on that commit when it publishes. A pushed tag still works the same as before.
+
 ## 2026-10-24: Release builds can bake the CurseForge key into the APK
 
 `release.yml` writes the `CURSEFORGE_API_KEY` secret into `local.properties`, and `app/build.gradle.kts` calls CurseForge directly with the key whenever it is set. So adding that secret to the fork would ship the key in every APK. Leave it unset; release builds then use the proxy. Without `-PCURSEFORGE_PROXY`, that proxy is upstream's `cf.yorudev.com`, so CurseForge searches from the fork pass through a server Daniel doesn't run. It sees which addons a device searches for and its IP, nothing more.

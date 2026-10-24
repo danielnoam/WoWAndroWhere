@@ -2,6 +2,12 @@
 
 Releases up to 0.4.0 are upstream's (YoruDev-Ryland/WoWForeverywhere), which this fork started from.
 
+## 0.4.1
+
+The first release from this fork.
+
+- **App updates come from WoW AndroWhere.** The app checks this fork's releases for updates, and Settings → Source code opens it. If your current copy came from the upstream WoW Foreverywhere releases, uninstall it before installing this one. Your game files and addons stay on your storage; the saved login and app settings need to be set again.
+
 ## 0.4.0
 
 - **Other WoW versions (experimental).** Settings → Game version lets you pick Classic Era, Burning Crusade Anniversary, Mists of Pandaria Classic or Retail. The whole app then installs, updates, starts and finds addons for that version. Each version keeps its own install and addons, and you can switch back to WoW Forever without losing anything. These versions may run poorly or not start, and automatic sign-in may not work on all of them.
