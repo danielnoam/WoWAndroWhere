@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-25T11:58:53+00:00",
+ "generated": "2026-10-26T13:31:07+00:00",
  "addons": [
   {
    "repo": "Aldori15/Questie",
@@ -9,7 +9,7 @@
    "author": "Aldori15",
    "icon": "https://avatars.githubusercontent.com/u/15916673?v=4",
    "website": "https://github.com/Aldori15/Questie",
-   "stars": 63,
+   "stars": 65,
    "downloads": 0,
    "updated": "2026-10-16T00:00:38Z",
    "requires": [],
@@ -29,7 +29,7 @@
    "author": "ErebusAres",
    "icon": "https://avatars.githubusercontent.com/u/3603760?v=4",
    "website": "https://github.com/ErebusAres/ZygorGuidesRemaster-3.3.5a_WOTLK",
-   "stars": 86,
+   "stars": 87,
    "downloads": 0,
    "updated": "2026-10-05T02:38:55Z",
    "requires": [],
@@ -89,7 +89,7 @@
    "author": "Zidras",
    "icon": "https://avatars.githubusercontent.com/u/10605951?v=4",
    "website": "https://github.com/Zidras/DBM-Warmane",
-   "stars": 238,
+   "stars": 237,
    "downloads": 0,
    "updated": "2026-08-16T20:38:14Z",
    "requires": [],
