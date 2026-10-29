@@ -2,11 +2,10 @@
 
 Releases up to 0.4.0 are upstream's (YoruDev-Ryland/WoWForeverywhere), which this fork started from.
 
-## Unreleased
+## 0.9.0
 
 - **Vanilla 1.12.1 and Burning Crusade 2.4.3 private servers, experimental.** Two new game versions when you make a profile, next to 3.3.5a: Private server (1.12.1), which includes Turtle WoW, and Private server (2.4.3). Choose your own client folder and add your servers as you do for 3.3.5a. The app sets the realm, the resolution and the renderer, and warns you if the folder holds a different version. Addons has a small starter catalog for each (pfUI, pfQuest, ShaguDPS and more), and the Client tab has the switches for your client's patch files. Controller Menus and the Level Up Banner are 3.3.5a only for now, so you type your account and password in the game. The controller layout from 3.3.5a is always on: the sticks move you and aim the mouse, the stick buttons click, and the other buttons press F1 to F12, which you can bind in the game's Key Bindings.
 - **Cataclysm 4.3.4 and Mists of Pandaria 5.4.8 private servers, experimental.** Two more versions in New profile, set up the same way. The app runs their 32-bit Wow.exe, since only 32-bit games can run through the emulator. These clients are much heavier than 3.3.5a, so expect a lower frame rate. Turn on Faster emulation and Use lighter graphics in Client. There is no addon catalog for them yet, but WoWInterface and GitHub links work.
-
 - **Your own server (3.3.5a), experimental.** The Server screen has a new section, Your own server. **On this device** sets up a private server that runs on your handheld, just for you: no other players and no internet once it is set up. Setup downloads about 0.7 GB, or 1.4 GB with mob pathing (on by default; without it monsters sometimes walk through walls), and uses 2.6 to 4.8 GB. It keeps going if you leave the app. The server then shows up in your server list as "Solo, this device". Press Play and the app starts it, which takes about a minute, logs you in with an account it made for you, and stops it when the game closes. GM commands such as .tele and .levelup are on for your account and can be turned off. **On a PC** connects to a server you run on your computer, such as Dad's MMO Lab's offline server: enter the PC's address, check the connection, and add it to your servers.
 
 ## 0.8.8
