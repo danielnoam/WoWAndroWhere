@@ -2,7 +2,7 @@
 # Runs inside termux/termux-docker:aarch64 (Android's libc, Termux packages), called by solo-server.yml.
 # Builds AzerothCore's authserver and worldserver, bundles them with Termux's MariaDB and every library
 # they load from $PREFIX/lib, then imports the world database once so the phone gets a ready data directory.
-# In: /work/ac (AzerothCore source). Out: /work/out/server (usr tree) and /work/out/db (MariaDB data directory).
+# In: /work/ac (AzerothCore source, already patched by patch-azerothcore.py). Out: /work/out/server (usr tree) and /work/out/db (MariaDB data directory).
 set -euxo pipefail
 
 W=/work
@@ -16,9 +16,6 @@ apt-get -y -o Dpkg::Options::=--force-confnew install \
 
 MARIADB_VERSION=$(mariadbd --version | sed -n 's/.*Ver \([0-9.]*\)-MariaDB.*/\1/p')
 echo "$MARIADB_VERSION" > $W/mariadb-version
-
-# Android (bionic) fixes: glibc's cpu_set_t field type isn't there.
-sed -i 's/\*(__cpu_mask\*)(&mask)/*(unsigned long*)(\&mask)/' $W/ac/src/common/Threading/ProcessPriority.cpp
 
 cmake -S $W/ac -B $W/build -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \

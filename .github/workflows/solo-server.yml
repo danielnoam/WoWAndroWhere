@@ -35,6 +35,7 @@ jobs:
           git init -q work/ac
           git -C work/ac fetch -q --depth 1 https://github.com/azerothcore/azerothcore-wotlk.git "$AC_COMMIT"
           git -C work/ac checkout -q FETCH_HEAD
+          python3 -I .github/solo-server/patch-azerothcore.py work/ac
           cp .github/solo-server/build.sh work/
           chmod -R a+rwX work
       - name: Build in Termux
