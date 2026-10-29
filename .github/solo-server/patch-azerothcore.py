@@ -61,6 +61,17 @@ PATCHES = [
     ("src/server/game/Entities/Unit/Unit.cpp",
      "data << GameTime::GetGameTimeMS().count();",
      "data << int64(GameTime::GetGameTimeMS().count());"),
+    # The same for prepared statements: chrono counts arrive as long long, which has no instantiation.
+    ("src/server/database/Database/PreparedStatement.cpp",
+     "template void PreparedStatementBase::SetValidData(const uint8 index, int64 const& value);\n",
+     "template void PreparedStatementBase::SetValidData(const uint8 index, int64 const& value);\n"
+     "#if defined(__ANDROID__)\n"
+     "template<>\n"
+     "Acore::Types::is_non_string_view_v<long long> PreparedStatementBase::SetValidData(const uint8 index, long long const& value)\n"
+     "{\n"
+     "    SetValidData(index, static_cast<int64>(value));\n"
+     "}\n"
+     "#endif\n"),
 ]
 
 for rel, old, new in PATCHES:
