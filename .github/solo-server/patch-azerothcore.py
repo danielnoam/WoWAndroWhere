@@ -64,6 +64,13 @@ PATCHES = [
      "    bool isSupportClientDB = mysql_get_client_version() >= MIN_MYSQL_CLIENT_VERSION;\n"
      "    bool isSameClientDB = mysql_get_client_version() == MYSQL_VERSION_ID;\n"
      "#endif\n"),
+    # The server version check reads one character per version part, so MariaDB 13.x compares as "1" < "8".
+    ("src/server/database/Database/DatabaseWorkerPool.cpp",
+     "bool DatabaseIncompatibleVersion(std::string const mysqlVersion)\n{\n",
+     "bool DatabaseIncompatibleVersion(std::string const mysqlVersion)\n{\n"
+     "#if defined(LIBMARIADB)\n"
+     "    return false;\n"
+     "#endif\n"),
     # With _GNU_SOURCE, bionic's strerror_r is the GNU one that returns char*.
     ("deps/gsoap/stdsoap2.cpp",
      "(_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600)) || defined(__ANDROID__) || !defined(__GLIBC__))\n    err = strerror_r",

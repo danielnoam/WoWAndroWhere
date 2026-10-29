@@ -66,6 +66,7 @@ SOCK=$W/mysql.sock
 mariadb-install-db --no-defaults --datadir=$D --auth-root-authentication-method=normal --skip-test-db
 mariadbd --no-defaults --datadir=$D --socket=$SOCK --bind-address=127.0.0.1 --port=3306 \
     --innodb-use-native-aio=0 --innodb-buffer-pool-size=2G --innodb-log-file-size=512M \
+    --innodb-flush-log-at-trx-commit=0 --innodb-doublewrite=0 \
     --performance-schema=OFF --skip-log-bin &
 DBPID=$!
 for _ in $(seq 120); do mariadb --socket=$SOCK -uroot -e 'SELECT 1' >/dev/null 2>&1 && break; sleep 1; done
@@ -84,7 +85,7 @@ sed -e "s|^SourceDirectory *=.*|SourceDirectory = \"$W/ac\"|" \
     -e 's|^Updates.AutoSetup *=.*|Updates.AutoSetup = 1|' \
     -e 's|^Updates.EnableDatabases *=.*|Updates.EnableDatabases = 7|' \
     $W/inst/etc/dbimport.conf.dist > $W/dbimport.conf
-$W/inst/bin/dbimport -c $W/dbimport.conf
+timeout 3600 $W/inst/bin/dbimport -c $W/dbimport.conf </dev/null
 
 mariadb --socket=$SOCK -uroot <<'SQL'
 UPDATE acore_auth.realmlist SET name = 'Solo', address = '127.0.0.1', localAddress = '127.0.0.1' WHERE id = 1;
