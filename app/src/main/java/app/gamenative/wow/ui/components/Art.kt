@@ -53,7 +53,9 @@ val GameVersion.icon: GameIcon
     get() = when (this) {
         GameVersion.FOREVER -> GameIcon.FOREVER
         GameVersion.RETAIL -> GameIcon.RETAIL
-        GameVersion.CLASSIC_ERA, GameVersion.ANNIVERSARY, GameVersion.MISTS, GameVersion.PRIVATE_335 -> GameIcon.CLASSIC
+        GameVersion.CLASSIC_ERA, GameVersion.ANNIVERSARY, GameVersion.MISTS,
+        GameVersion.PRIVATE_112, GameVersion.PRIVATE_243, GameVersion.PRIVATE_335, GameVersion.PRIVATE_434, GameVersion.PRIVATE_548,
+        -> GameIcon.CLASSIC
     }
 
 /**

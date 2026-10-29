@@ -67,6 +67,18 @@ class FlavorSpec(
          * CurseForge and Wago list Blizzard's 3.4 Wrath Classic, not 3.3.5a, so they aren't used for it.
          */
         val WOTLK_335 = FlavorSpec(0, "", "wotlk335", emptyList(), 30300..30399, branchZips = true) { major, minor, _ -> major == 3 && minor == 3 }
+
+        /** Like [WOTLK_335]: plain `<Folder>.toc`. Below Classic Era's 113xx, so its addons don't count. */
+        val VANILLA_112 = FlavorSpec(0, "", "vanilla112", emptyList(), 10000..11299, branchZips = true) { major, minor, _ -> major == 1 && minor == 12 }
+
+        /** Below Burning Crusade Anniversary's 205xx. */
+        val TBC_243 = FlavorSpec(0, "", "tbc243", emptyList(), 20000..20499, branchZips = true) { major, minor, _ -> major == 2 && minor == 4 }
+
+        /** Below Cataclysm Classic's 404xx. */
+        val CATA_434 = FlavorSpec(0, "", "cata434", emptyList(), 40000..40399, branchZips = true) { major, minor, _ -> major == 4 && minor == 3 }
+
+        /** Below Mists of Pandaria Classic's 505xx. */
+        val MOP_548 = FlavorSpec(0, "", "mop548", emptyList(), 50000..50499, branchZips = true) { major, minor, _ -> major == 5 && minor == 4 }
     }
 }
 
@@ -86,7 +98,11 @@ fun GameVersion.addonTarget(): AddonTarget = when (this) {
     GameVersion.ANNIVERSARY -> AddonTarget(FlavorSpec.ANNIVERSARY, null)
     GameVersion.MISTS -> AddonTarget(FlavorSpec.MISTS, null)
     GameVersion.RETAIL -> AddonTarget(FlavorSpec.RETAIL, null)
+    GameVersion.PRIVATE_112 -> AddonTarget(FlavorSpec.VANILLA_112, null)
+    GameVersion.PRIVATE_243 -> AddonTarget(FlavorSpec.TBC_243, null)
     GameVersion.PRIVATE_335 -> AddonTarget(FlavorSpec.WOTLK_335, null)
+    GameVersion.PRIVATE_434 -> AddonTarget(FlavorSpec.CATA_434, null)
+    GameVersion.PRIVATE_548 -> AddonTarget(FlavorSpec.MOP_548, null)
 }
 
 object FlavorRules {

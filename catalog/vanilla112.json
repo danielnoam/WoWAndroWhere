@@ -1,0 +1,11 @@
+{
+  "_readme": "1.12.1 addons (Vanilla private servers and Turtle WoW), built like wotlk335.json by the 'Private server addon catalogs' workflow. A repo is kept only when its TOC says Interface 110xx to 112xx, so Classic Era addons stay out.",
+  "addons": [
+    { "repo": "shagu/pfUI", "name": "pfUI", "category": "INTERFACE", "summary": "A full interface replacement: unit frames, action bars, bags, chat and more." },
+    { "repo": "shagu/pfQuest", "name": "pfQuest", "category": "QUESTS", "summary": "Quest givers, objectives, mobs and items on your map, with a database browser." },
+    { "repo": "shagu/pfQuest-turtle", "name": "pfQuest Turtle WoW data", "category": "QUESTS", "summary": "Adds Turtle WoW's own quests and zones to pfQuest.", "requires": ["shagu/pfQuest"] },
+    { "repo": "shagu/ShaguTweaks", "name": "ShaguTweaks", "category": "INTERFACE", "summary": "Small quality of life changes to the default interface, each one a switch." },
+    { "repo": "shagu/ShaguDPS", "name": "ShaguDPS", "category": "COMBAT", "summary": "A light damage and healing meter." },
+    { "repo": "shagu/ShaguPlates", "name": "ShaguPlates", "category": "UNIT_FRAMES", "summary": "Nameplates with health, cast bars and debuffs." }
+  ]
+}

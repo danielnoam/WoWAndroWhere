@@ -63,7 +63,7 @@ object ClientMods {
         return File(root, "Data/$locale/patch-$locale-$OUR_SUFFIX.MPQ")
     }
 
-    private fun exe(root: File) = File(root, LegacyClient.EXE)
+    private fun exe(root: File) = LegacyClient.exe(root)
 
     fun loginEnabled(root: File) = ourArchive(root).isFile
 

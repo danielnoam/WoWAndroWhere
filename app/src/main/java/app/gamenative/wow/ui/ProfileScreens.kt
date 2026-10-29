@@ -41,6 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import app.gamenative.wow.legacy.LegacyGame
 import app.gamenative.wow.product.GameVersion
 import app.gamenative.wow.profile.Profile
 import app.gamenative.wow.profile.Profiles
@@ -202,7 +203,7 @@ fun NewProfileScreen(launcher: LauncherController, onCreated: (GameVersion) -> U
         version?.let { v ->
             Text(
                 if (v.isPrivateServer) {
-                    "Next, choose your 3.3.5a client folder and add your servers. The folder can be one another profile uses: each profile keeps its own addons, client patches and servers."
+                    "Next, choose your ${LegacyGame.of(v).label} client folder and add your servers. The folder can be one another profile uses: each profile keeps its own addons, client patches and servers."
                 } else {
                     "Next, download ${v.displayName}, or pick a copy already on this device. A copy another profile uses works too: each profile keeps its own addons."
                 },

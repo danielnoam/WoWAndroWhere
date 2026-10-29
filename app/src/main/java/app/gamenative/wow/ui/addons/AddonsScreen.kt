@@ -432,7 +432,12 @@ internal fun addonsControllerFor(
 ): AddonsController? = product?.let { AddonsController(File(root), it, scope, curseForge, profile) }
 
 /** The private server client's own `Interface/AddOns`, once a client folder is chosen. */
-internal fun legacyAddonsControllerFor(root: String, scope: kotlinx.coroutines.CoroutineScope, profile: AddonProfile = AddonProfile.ALL): AddonsController? =
+internal fun legacyAddonsControllerFor(
+    root: String,
+    version: app.gamenative.wow.product.GameVersion,
+    scope: kotlinx.coroutines.CoroutineScope,
+    profile: AddonProfile = AddonProfile.ALL,
+): AddonsController? =
     root.takeIf { it.isNotBlank() }?.let {
-        AddonsController(File(it, "Interface/AddOns"), app.gamenative.wow.product.GameVersion.PRIVATE_335, scope, profile = profile)
+        AddonsController(File(it, "Interface/AddOns"), version, scope, profile = profile)
     }

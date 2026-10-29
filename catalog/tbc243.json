@@ -1,0 +1,9 @@
+{
+  "_readme": "2.4.3 addons (Burning Crusade private servers), built like wotlk335.json by the 'Private server addon catalogs' workflow. A repo is kept only when its TOC says Interface 200xx to 204xx, so Anniversary addons stay out.",
+  "addons": [
+    { "repo": "shagu/pfUI", "name": "pfUI", "category": "INTERFACE", "summary": "A full interface replacement: unit frames, action bars, bags, chat and more." },
+    { "repo": "shagu/pfQuest", "name": "pfQuest", "category": "QUESTS", "summary": "Quest givers, objectives, mobs and items on your map, with a database browser." },
+    { "repo": "shagu/ShaguDPS", "name": "ShaguDPS", "category": "COMBAT", "summary": "A light damage and healing meter." },
+    { "repo": "shagu/ShaguPlates", "name": "ShaguPlates", "category": "UNIT_FRAMES", "summary": "Nameplates with health, cast bars and debuffs." }
+  ]
+}

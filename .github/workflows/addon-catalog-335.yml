@@ -1,7 +1,7 @@
-name: Addon catalog 3.3.5a
+name: Private server addon catalogs
 
-# Rebuilds the 3.3.5a addon catalog for the private server game version and publishes it to the
-# `addon-catalog-335` branch as catalog-335.json (fetched by the app from raw.githubusercontent.com).
+# Rebuilds the addon catalogs for the private server game versions (1.12.1, 2.4.3, 3.3.5a) and publishes
+# them to the `addon-catalog-335` branch as catalog-<version>.json (fetched by the app from raw.githubusercontent.com).
 on:
   schedule:
     - cron: "37 6 * * *"
@@ -11,6 +11,8 @@ on:
       - main
     paths:
       - catalog/wotlk335.json
+      - catalog/vanilla112.json
+      - catalog/tbc243.json
       - tools/catalog/build_catalog_335.py
 
 permissions:
@@ -26,10 +28,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build catalog
+      - name: Build catalogs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python3 tools/catalog/build_catalog_335.py catalog/wotlk335.json "$RUNNER_TEMP/catalog-335.json"
+        run: |
+          python3 tools/catalog/build_catalog_335.py catalog/wotlk335.json "$RUNNER_TEMP/catalog-335.json"
+          python3 tools/catalog/build_catalog_335.py catalog/vanilla112.json "$RUNNER_TEMP/catalog-112.json" vanilla112 '11[0-2]\d\d'
+          python3 tools/catalog/build_catalog_335.py catalog/tbc243.json "$RUNNER_TEMP/catalog-243.json" tbc243 '20[0-4]\d\d'
 
       - name: Publish to addon-catalog-335 branch
         run: |
@@ -42,11 +47,11 @@ jobs:
             git switch --orphan addon-catalog-335
             git rm -rf --quiet . || true
           fi
-          cp "$RUNNER_TEMP/catalog-335.json" catalog-335.json
-          git add catalog-335.json
+          cp "$RUNNER_TEMP"/catalog-*.json .
+          git add catalog-*.json
           if git diff --cached --quiet -I '"generated"'; then
             echo "Catalog unchanged"
             exit 0
           fi
-          git commit -m "Update 3.3.5a addon catalog"
+          git commit -m "Update private server addon catalogs"
           git push origin addon-catalog-335

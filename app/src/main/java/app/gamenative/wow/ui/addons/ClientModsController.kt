@@ -3,6 +3,7 @@ package app.gamenative.wow.ui.addons
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import app.gamenative.wow.legacy.LegacyGame
 import app.gamenative.wow.legacy.mods.AndroWherePatch
 import app.gamenative.wow.legacy.mods.ClientMods
 import app.gamenative.wow.legacy.mods.ClientPatch
@@ -17,7 +18,12 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 /** UI state for the 3.3.5a client add-ons: our login screen add-on and the client's own patch archives. */
-class ClientModsController(val root: File, private val scope: CoroutineScope, private val onChanged: () -> Unit = {}) {
+class ClientModsController(
+    val root: File,
+    private val scope: CoroutineScope,
+    private val onChanged: () -> Unit = {},
+    val game: LegacyGame = LegacyGame.WOTLK,
+) {
     /** Our patches and whether each is installed; null until read. */
     var ours by mutableStateOf<Map<AndroWherePatch, Boolean>?>(null)
         private set
@@ -35,7 +41,7 @@ class ClientModsController(val root: File, private val scope: CoroutineScope, pr
         scope.launch {
             rules = withContext(Dispatchers.IO) { PatchRules.read(root) }
             val (installed, found) = withContext(Dispatchers.IO) {
-                AndroWherePatch.entries.associateWith { runCatching { ClientMods.installed(root, it) }.getOrDefault(false) } to
+                AndroWherePatch.entries.filter { game.hasAndroWherePatches }.associateWith { runCatching { ClientMods.installed(root, it) }.getOrDefault(false) } to
                     runCatching { ClientMods.patches(root) }.onFailure { Timber.w(it, "Listing client patches failed") }.getOrDefault(emptyList())
             }
             ours = installed

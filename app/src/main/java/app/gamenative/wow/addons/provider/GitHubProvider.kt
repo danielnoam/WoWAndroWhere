@@ -28,7 +28,7 @@ import okhttp3.OkHttpClient
 class GitHubProvider(
     private val http: OkHttpClient = Net.http,
     private val apiBase: String = "https://api.github.com",
-    private val catalogUrl: String = CATALOG_URL,
+    private val catalogUrl: String? = CATALOG_URL,
     private val fallbackCatalogUrl: String? = null,
     private val clock: () -> Long = System::currentTimeMillis,
     private val target: AddonTarget = AddonTarget.FOREVER,

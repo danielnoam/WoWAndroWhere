@@ -53,6 +53,7 @@ import app.gamenative.wow.product.GameVersions
 import app.gamenative.wow.product.detectProduct
 import app.gamenative.wow.legacy.ConsolePortLK
 import app.gamenative.wow.legacy.LegacyClient
+import app.gamenative.wow.legacy.LegacyGame
 import app.gamenative.wow.legacy.LegacySettings
 import app.gamenative.wow.legacy.PadKeyboardButton
 import app.gamenative.wow.legacy.mods.ClientMods
@@ -983,20 +984,22 @@ internal fun prepareLaunch(
     return CONTAINER_ID
 }
 
-/** Private-server spike: a 32-bit 3.3.5a-era client in its own container, run through WoW64 emulation. */
+/** A 32-bit private server client (1.12.1, 2.4.3 or 3.3.5a) in its own container, run through WoW64 emulation. */
 internal fun prepareLegacyLaunch(
     context: Context,
     settings: LegacySettings,
+    game: LegacyGame,
     gpu: GpuProfile,
     screenSize: String,
     onStatus: (String) -> Unit,
 ): String {
     installBundledComponents(context, onStatus)
     val root = File(settings.root)
-    check(File(root, LegacyClient.EXE).isFile) { "No ${LegacyClient.EXE} in ${settings.root}." }
+    val exe = LegacyClient.exe(root)
+    check(exe.isFile) { "No ${LegacyClient.EXE} in ${settings.root}." }
     check(settings.realmlist.isNotBlank()) { "Enter the server's realmlist address." }
     try {
-        LegacyClient.applyConfig(root, settings, screenSize)
+        LegacyClient.applyConfig(root, settings, screenSize, game)
         app.gamenative.wow.legacy.mods.FastLogin.prepare(context, root, settings)
     } catch (e: Exception) {
         if (e.isPermissionDenied()) throw StorageAccessDeniedException(e)
@@ -1007,7 +1010,7 @@ internal fun prepareLegacyLaunch(
     val config = baseContainerConfig(LEGACY_CONTAINER_ID, "WoW Private Server", root, gpu, screenSize).apply {
         put("dxwrapper", settings.renderer.dxwrapper)
         put("dxwrapperConfig", Container.DEFAULT_DXWRAPPERCONFIG)
-        put("executablePath", "G:\\${LegacyClient.EXE}")
+        put("executablePath", "G:\\${exe.name}")
         put("execArgs", settings.renderer.execArgs)
         put("emulator", LegacyClient.EMULATOR)
         put("box64Version", LegacyClient.WOWBOX64_VERSION)
@@ -1029,7 +1032,7 @@ internal fun prepareLegacyLaunch(
     legacy.putExtra("wineLog", if (settings.saveLog) "1" else null)
     legacy.putExtra(PadKeyboardButton.EXTRA, if (ClientMods.loginEnabled(root)) "1" else null)
     hideMouseToggle(legacy)
-    runCatching { ConsolePortLK.applyControls(context, legacy, root) }.onFailure { Timber.w(it, "ConsolePortLK controls") }
+    runCatching { ConsolePortLK.applyControls(context, legacy, root, always = !game.hasAndroWherePatches) }.onFailure { Timber.w(it, "ConsolePortLK controls") }
     legacy.saveData()
     return LEGACY_CONTAINER_ID
 }

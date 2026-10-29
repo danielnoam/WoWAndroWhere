@@ -1,5 +1,6 @@
 package app.gamenative.wow.legacy
 
+import app.gamenative.wow.product.GameVersion
 import java.io.File
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -147,5 +148,61 @@ class LegacyClientTest {
         assertTrue("SET farclip \"400\"" in lines)
         assertTrue("SET ffxGlow \"0\"" in lines)
         assertEquals(1, lines.count { it.startsWith("SET farclip ") })
+    }
+
+    @Test
+    fun vanillaWritesTheRealmlistNextToWowExe() {
+        val root = Files.createTempDirectory("legacy").toFile()
+        File(root, "Data").mkdirs()
+        File(root, "realmlist.wtf").writeText("set realmlist old.server\r\n")
+        LegacyClient.applyConfig(root, LegacySettings(realmlist = "logon.example.com"), "1280x720", LegacyGame.VANILLA)
+        assertEquals("set realmlist logon.example.com\n", File(root, "realmlist.wtf").readText())
+        assertEquals("logon.example.com", LegacyClient.readRealmlist(root))
+        root.deleteRecursively()
+    }
+
+    @Test
+    fun laterClientsLeaveARootRealmlistAlone() {
+        val root = Files.createTempDirectory("legacy").toFile()
+        File(root, "Data/enUS").mkdirs()
+        LegacyClient.applyConfig(root, LegacySettings(realmlist = "logon.example.com"), "1280x720", LegacyGame.TBC)
+        assertTrue(File(root, "Data/enUS/realmlist.wtf").isFile)
+        assertTrue(!File(root, "realmlist.wtf").exists())
+        root.deleteRecursively()
+    }
+
+    @Test
+    fun vanillaWithDxvkDropsGxApi() {
+        val existing = listOf("SET gxApi \"opengl\"")
+        val dxvk = LegacyClient.buildConfigWtf(existing, LegacySettings(realmlist = "x"), "1280x720", "enUS", LegacyGame.VANILLA)
+        assertTrue(dxvk.none { it.startsWith("SET gxApi") })
+        val gl = LegacyClient.buildConfigWtf(null, LegacySettings(realmlist = "x", renderer = LegacyRenderer.OPENGL), "1280x720", "enUS", LegacyGame.VANILLA)
+        assertTrue("SET gxApi \"opengl\"" in gl)
+        val tbc = LegacyClient.buildConfigWtf(null, LegacySettings(realmlist = "x"), "1280x720", "enUS", LegacyGame.TBC)
+        assertTrue("SET gxApi \"d3d9\"" in tbc)
+    }
+
+    @Test
+    fun findsVanillaExeWhateverItsCase() {
+        val root = Files.createTempDirectory("legacy").toFile()
+        File(root, "WoW.exe").writeBytes(ByteArray(1))
+        File(root, "Data").mkdirs()
+        assertEquals(root, LegacyClient.findRoot(root))
+        assertEquals("WoW.exe", LegacyClient.exe(root).name)
+        root.deleteRecursively()
+    }
+
+    @Test
+    fun eachGameAcceptsOnlyItsOwnClient() {
+        assertTrue(LegacyGame.VANILLA.accepts(ClientBuild(1, 12, 1, 5875)))
+        assertTrue(!LegacyGame.VANILLA.accepts(ClientBuild(3, 3, 5, 12340)))
+        assertTrue(LegacyGame.TBC.accepts(ClientBuild(2, 4, 3, 8606)))
+        assertTrue(LegacyGame.WOTLK.accepts(null))
+        assertTrue(LegacyGame.CATA.accepts(ClientBuild(4, 3, 4, 15595)))
+        assertTrue(LegacyGame.MOP.accepts(ClientBuild(5, 4, 8, 18414)))
+        assertTrue(!LegacyGame.MOP.accepts(ClientBuild(4, 3, 4, 15595)))
+        assertTrue(LegacyGame.of(GameVersion.PRIVATE_548) == LegacyGame.MOP)
+        assertTrue(LegacyGame.of(GameVersion.PRIVATE_243) == LegacyGame.TBC)
+        assertTrue(!LegacyGame.TBC.hasAndroWherePatches && LegacyGame.WOTLK.hasAndroWherePatches)
     }
 }

@@ -25,7 +25,7 @@ import app.gamenative.wow.ui.components.FwChip
 import app.gamenative.wow.ui.components.FwRow
 import app.gamenative.wow.ui.theme.Fw
 
-/** The Client tab on 3.3.5a: our patches to install or remove, and switches for the patches already in the client. */
+/** The Client tab on private servers: our patches to install or remove (3.3.5a only), and switches for the patches already in the client. */
 @Composable
 internal fun ClientModsPanel(c: ClientModsController, modifier: Modifier = Modifier) {
     LaunchedEffect(c) { c.refresh() }
@@ -33,36 +33,38 @@ internal fun ClientModsPanel(c: ClientModsController, modifier: Modifier = Modif
         (c.working ?: c.message)?.let { status ->
             item { Text(status, style = Fw.Secondary.copy(color = if (c.working != null) Fw.Brass else Fw.Warn)) }
         }
-        item { Text("AndroWhere patches", style = Fw.Label.copy(color = Fw.Ash), modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)) }
-        item {
-            Text(
-                "Made for this app. Install adds one to your client, Remove puts the client back as it was.",
-                style = Fw.Secondary,
-                modifier = Modifier.padding(bottom = 4.dp),
-            )
-        }
-        val ours = c.ours
-        if (ours == null) {
-            item { Text("Checking the client…", style = Fw.Secondary) }
-        } else {
-            items(AndroWherePatch.entries, key = { it.name }) { patch ->
-                val installed = ours[patch] == true
-                Row(
-                    Modifier.fillMaxWidth().background(Fw.Stone, Fw.Shape).padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(16.dp),
-                ) {
-                    Column(Modifier.weight(1f)) {
-                        Text(patch.title, style = Fw.Text)
-                        Text(patch.summary, style = Fw.Secondary)
-                        Text(if (installed) "Installed" else "Not installed", style = Fw.Data.copy(color = if (installed) Fw.Brass else Fw.Ash))
+        if (c.game.hasAndroWherePatches) {
+            item { Text("AndroWhere patches", style = Fw.Label.copy(color = Fw.Ash), modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)) }
+            item {
+                Text(
+                    "Made for this app. Install adds one to your client, Remove puts the client back as it was.",
+                    style = Fw.Secondary,
+                    modifier = Modifier.padding(bottom = 4.dp),
+                )
+            }
+            val ours = c.ours
+            if (ours == null) {
+                item { Text("Checking the client…", style = Fw.Secondary) }
+            } else {
+                items(AndroWherePatch.entries, key = { it.name }) { patch ->
+                    val installed = ours[patch] == true
+                    Row(
+                        Modifier.fillMaxWidth().background(Fw.Stone, Fw.Shape).padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    ) {
+                        Column(Modifier.weight(1f)) {
+                            Text(patch.title, style = Fw.Text)
+                            Text(patch.summary, style = Fw.Secondary)
+                            Text(if (installed) "Installed" else "Not installed", style = Fw.Data.copy(color = if (installed) Fw.Brass else Fw.Ash))
+                        }
+                        FwButton(
+                            if (installed) "Remove" else "Install",
+                            { c.setInstalled(patch, !installed) },
+                            kind = if (installed) FwButtonKind.Ghost else FwButtonKind.Primary,
+                            enabled = c.working == null,
+                        )
                     }
-                    FwButton(
-                        if (installed) "Remove" else "Install",
-                        { c.setInstalled(patch, !installed) },
-                        kind = if (installed) FwButtonKind.Ghost else FwButtonKind.Primary,
-                        enabled = c.working == null,
-                    )
                 }
             }
         }

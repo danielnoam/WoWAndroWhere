@@ -26,10 +26,11 @@ object ConsolePortLK {
     fun isInstalled(addonsDir: File) = File(addonsDir, "$MAIN_FOLDER/$MAIN_FOLDER.toc").isFile
 
     /**
-     * Uses the controller profile while ConsolePortLK or our login screen add-on is installed and the player hasn't
-     * picked another profile for the container, and goes back to the default profile once both are gone.
+     * Uses the controller profile while ConsolePortLK or our login screen add-on is installed, or [always] (1.12 and
+     * 2.4.3, which have neither), and the player hasn't picked another profile for the container. Goes back to the
+     * default profile once both are gone.
      */
-    fun applyControls(context: Context, container: Container, clientRoot: File) {
+    fun applyControls(context: Context, container: Container, clientRoot: File, always: Boolean = false) {
         val manager = InputControlsManager(context)
         val current = container.getExtra("profileId", "0").toIntOrNull() ?: 0
         val existing = manager.getProfiles(false).firstOrNull { it.name == PROFILE_NAME }
@@ -38,7 +39,7 @@ object ConsolePortLK {
         val off = Profiles.active?.let { MAIN_FOLDER in ProfileAddons.disabledFolders(context, it.home) } ?: false
         val consolePort = isInstalled(addonsDir) && !off
         if (consolePort) writeSetupAddon(context, addonsDir) else File(addonsDir, SETUP_FOLDER).deleteRecursively()
-        if (!consolePort && !ClientMods.loginEnabled(clientRoot)) {
+        if (!always && !consolePort && !ClientMods.loginEnabled(clientRoot)) {
             if (existing != null && current == existing.id) container.putExtra("profileId", null)
             return
         }

@@ -138,7 +138,7 @@ private fun Header(launcher: LauncherController, onOpenSettings: () -> Unit, onO
             ProfileButton(launcher, onOpenProfiles, Modifier.weight(1f, fill = false))
         }
         val version = launcher.versionStatus
-        // A 3.3.5a client never updates, so there's no status to show for it.
+        // A private server client never updates, so there's no status to show for it.
         val (text, color) = when {
             launcher.isPrivate -> null to Fw.Ash
             launcher.filesMissing -> "Game not installed" to Fw.Ash
@@ -195,7 +195,7 @@ private fun PlayTile(launcher: LauncherController, onOpenGame: () -> Unit, onOpe
         )
         when {
             launcher.busy -> Text(if (launcher.isUpdating) launcher.updateStatusText else launcher.statusText, style = Fw.Text)
-            launcher.isPrivate && launcher.filesMissing -> Text("Choose your 3.3.5a client folder and enter your server's realmlist.", style = Fw.Secondary)
+            launcher.isPrivate && launcher.filesMissing -> Text("Choose your ${launcher.legacyGame.label} client folder and enter your server's realmlist.", style = Fw.Secondary)
             launcher.isPrivate && launcher.legacy.realmlist.isBlank() -> Text("Enter your server's realmlist in Server.", style = Fw.Secondary.copy(color = Fw.Warn))
             // The Battle.net login below is for Blizzard versions only.
             launcher.isPrivate -> Unit
@@ -220,7 +220,7 @@ private fun SmallTiles(
     modifier: Modifier,
 ) {
     Column(modifier, verticalArrangement = Arrangement.spacedBy(14.dp)) {
-        // 3.3.5a: Server and Client on top, Addons below.
+        // Private servers: Server and Client on top, Addons below.
         if (launcher.isPrivate) {
             Row(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
                 FwTile("Server", Modifier.weight(1f).fillMaxHeight(), art = ForeverArt.ASHENVALE, onClick = onOpenGame) {

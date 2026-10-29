@@ -28,6 +28,8 @@ What the app does, by area, with the version each feature came in. Versions up t
 - New profile screen: pick the version and name, then that version's download, find or 3.3.5a folder setup; replaces Settings → Game version (0.8.0)
 - Profiles sharing a folder keep their own addons (AddOns.txt written at launch), server list, passwords and 3.3.5a client patches (0.8.0)
 - Private server (3.3.5a) game version: your own client folder and realmlist, its own home screen, Play, and Client and server screen (0.5.0)
+- Private server (1.12.1, Turtle WoW included) and (2.4.3) game versions on the same launch path, experimental: realmlist next to WoW.exe on 1.12, folder rejected when its client is another version, own addon flavours and starter catalogs, patch switches in the Client tab, controller layout always on (unreleased)
+- Private server (4.3.4) and (5.4.8) game versions on the same path, experimental: 32-bit Wow.exe only, own addon flavours below Cataclysm and MoP Classic, no catalog yet (unreleased)
 - 3.3.5a clients run through Box64 WoW64, started directly instead of through winhandler; DXVK renderer, OpenGL as a fallback (0.5.0)
 - Saved, encrypted private server password for each server, in Client and server, used by Controller Menus' Fill in password; Install is offered until the add-on is in (0.5.0, Type password replaced 0.7.0); a saved password shows as dots (0.8.1)
 - No Enable Mouse button over the WoW containers (0.7.0)

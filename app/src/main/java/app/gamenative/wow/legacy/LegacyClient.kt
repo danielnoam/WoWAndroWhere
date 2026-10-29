@@ -6,7 +6,7 @@ import app.gamenative.wow.profile.Profiles
 import java.io.File
 import java.io.RandomAccessFile
 
-/** A pre-CASC 32-bit client (1.12, 2.4.3, 3.3.5a) for private servers. Players supply the folder. */
+/** The version of a pre-CASC 32-bit client (1.12, 2.4.3, 3.3.5a) for private servers. Players supply the folder. */
 data class ClientBuild(val major: Int, val minor: Int, val patch: Int, val build: Int) {
     override fun toString() = "$major.$minor.$patch.$build"
 }
@@ -46,8 +46,8 @@ object LegacyClient {
     private const val DEBUG_CLEARED = "leftover_debug_cleared"
     private const val LOG_WAITING = "log_waiting"
 
-    /** Built by the "Addon catalog 3.3.5a" workflow from `catalog/wotlk335.json`. */
-    const val ADDON_CATALOG_URL = "https://raw.githubusercontent.com/danielnoam/WoWAndroWhere/addon-catalog-335/catalog-335.json"
+    /** Built by the "Private server addon catalogs" workflow from the lists in `catalog/`. */
+    fun catalogUrl(key: String) = "https://raw.githubusercontent.com/danielnoam/WoWAndroWhere/addon-catalog-335/catalog-$key.json"
 
     private const val FIXED_FILE_INFO_SIGNATURE = 0xFEEF04BDL
     private val LOCALE = Regex("[a-z]{2}[A-Z]{2}")
@@ -133,10 +133,13 @@ object LegacyClient {
     /** The selected server's saved password. */
     internal fun serverPassword(context: Context): String? = LegacyServers.password(context, load(context).serverId)
 
+    /** The client's exe, named `WoW.exe` on 1.12, under whatever case it has. */
+    fun exe(root: File): File = root.listFiles()?.firstOrNull { it.isFile && it.name.equals(EXE, ignoreCase = true) } ?: File(root, EXE)
+
     /** The folder holding [EXE] and `Data/`, searching [dir] and one level below it. */
     fun findRoot(dir: File): File? =
         sequenceOf(dir).plus(dir.listFiles()?.filter { it.isDirectory }.orEmpty())
-            .firstOrNull { File(it, EXE).isFile && File(it, "Data").isDirectory }
+            .firstOrNull { exe(it).isFile && File(it, "Data").isDirectory }
 
     fun detectBuild(exe: File): ClientBuild? = runCatching {
         RandomAccessFile(exe, "r").use { file ->
@@ -172,15 +175,18 @@ object LegacyClient {
             ?.firstNotNullOfOrNull { REALMLIST_LINE.matchEntire(it.trim())?.groupValues?.get(1)?.trim('"', ' ') }
             ?.takeIf { it.isNotBlank() }
 
-    /** Sets the realm in every locale's `realmlist.wtf`, keeping its other lines, and in `WTF/Config.wtf`. */
-    fun applyConfig(root: File, settings: LegacySettings, screenSize: String) {
+    /**
+     * Sets the realm in every locale's `realmlist.wtf` (the one next to Wow.exe on 1.12), keeping its other lines,
+     * and in `WTF/Config.wtf`.
+     */
+    fun applyConfig(root: File, settings: LegacySettings, screenSize: String, game: LegacyGame = LegacyGame.WOTLK) {
         val locales = locales(root)
-        locales.forEach {
-            val file = File(root, "Data/$it/realmlist.wtf")
-            file.writeText(updateRealmlist(file.takeIf { f -> f.isFile }?.readText(), settings.realmlist))
+        val realmlists = locales.map { File(root, "Data/$it/realmlist.wtf") } + listOfNotNull(File(root, "realmlist.wtf").takeIf { game.rootRealmlist })
+        realmlists.forEach { file ->
+            file.writeText(updateRealmlist(file.takeIf { it.isFile }?.readText(), settings.realmlist))
         }
         val config = File(root, "WTF/Config.wtf")
-        val lines = buildConfigWtf(config.takeIf { it.isFile }?.readLines(), settings, screenSize, locales.firstOrNull() ?: "enUS")
+        val lines = buildConfigWtf(config.takeIf { it.isFile }?.readLines(), settings, screenSize, locales.firstOrNull() ?: "enUS", game)
         config.parentFile?.mkdirs()
         config.writeText(lines.joinToString("\n", postfix = "\n"))
     }
@@ -219,11 +225,21 @@ object LegacyClient {
         return (listOf(line) + others).joinToString("\n", postfix = "\n")
     }
 
-    /** Realm, renderer and resolution are always enforced; the rest is only a first-boot default so in-game changes stick. */
-    internal fun buildConfigWtf(existing: List<String>?, settings: LegacySettings, screenSize: String, locale: String): List<String> {
+    /**
+     * Realm, renderer and resolution are always enforced; the rest is only a first-boot default so in-game changes stick.
+     * 1.12 may not know `d3d9`, so with DXVK its gxApi line is dropped and the client falls back to Direct3D, its default.
+     */
+    internal fun buildConfigWtf(
+        existing: List<String>?,
+        settings: LegacySettings,
+        screenSize: String,
+        locale: String,
+        game: LegacyGame = LegacyGame.WOTLK,
+    ): List<String> {
+        val gxApi = settings.renderer.gxApi.takeUnless { game == LegacyGame.VANILLA && settings.renderer == LegacyRenderer.DXVK }
         val forced = linkedMapOf(
             "realmList" to settings.realmlist.trim(),
-            "gxApi" to settings.renderer.gxApi,
+            "gxApi" to gxApi,
             "gxResolution" to screenSize,
         )
         val defaults = linkedMapOf(
@@ -234,7 +250,7 @@ object LegacyClient {
         )
         val lines = existing.orEmpty().filter { line -> forced.keys.none { line.startsWith("SET $it ", ignoreCase = true) } }
         val missing = defaults.filterKeys { key -> lines.none { it.startsWith("SET $key ", ignoreCase = true) } }
-        return lines + (forced + missing).map { "SET ${it.key} \"${it.value}\"" }
+        return lines + (forced.filterValues { it != null } + missing).map { "SET ${it.key} \"${it.value}\"" }
     }
 
     private const val MAX_EXE_BYTES = 64L * 1024 * 1024

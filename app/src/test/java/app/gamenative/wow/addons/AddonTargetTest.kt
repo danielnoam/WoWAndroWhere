@@ -112,4 +112,20 @@ class AddonTargetTest {
         assertEquals(AddonFlavor.OTHER, FlavorRules.classify(listOf(classic), target))
         assertTrue(target.main.branchZips)
     }
+
+    @Test
+    fun olderPrivateServersTargetTheirOwnInterfaces() {
+        fun toc(n: Int) = listOf(TocParser.parse("Foo", "Foo.toc", "## Interface: $n\n"))
+        val vanilla = GameVersion.PRIVATE_112.addonTarget()
+        val tbc = GameVersion.PRIVATE_243.addonTarget()
+        assertEquals(AddonFlavor.MAIN, FlavorRules.classify(toc(11200), vanilla))
+        assertEquals(AddonFlavor.OTHER, FlavorRules.classify(toc(11507), vanilla))
+        assertEquals(AddonFlavor.MAIN, FlavorRules.classify(toc(20400), tbc))
+        assertEquals(AddonFlavor.OTHER, FlavorRules.classify(toc(20505), tbc))
+        assertEquals(AddonFlavor.OTHER, FlavorRules.classify(toc(30300), tbc))
+        assertEquals(AddonFlavor.MAIN, FlavorRules.classify(toc(40300), GameVersion.PRIVATE_434.addonTarget()))
+        assertEquals(AddonFlavor.OTHER, FlavorRules.classify(toc(40402), GameVersion.PRIVATE_434.addonTarget()))
+        assertEquals(AddonFlavor.MAIN, FlavorRules.classify(toc(50400), GameVersion.PRIVATE_548.addonTarget()))
+        assertEquals(AddonFlavor.OTHER, FlavorRules.classify(toc(50500), GameVersion.PRIVATE_548.addonTarget()))
+    }
 }

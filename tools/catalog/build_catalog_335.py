@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Builds catalog-335.json, the addon catalog for the 3.3.5a private server game version.
+r"""Builds an addon catalog for a private server game version: catalog-335.json for 3.3.5a by default.
 
-Most 3.3.5a backports never publish releases, so each entry is a snapshot of a branch: the
+Most addons for these clients never publish releases, so each entry is a snapshot of a branch: the
 download is the commit's source zip and the commit is the file id, so a new commit shows up as
-an update. A repo is kept only when the folders the app would install have a TOC for
-Interface 303xx.
+an update. A repo is kept only when the folders the app would install have a TOC for the
+version's interface numbers (303xx for 3.3.5a).
 
     python3 tools/catalog/build_catalog_335.py catalog/wotlk335.json out/catalog-335.json
+    python3 tools/catalog/build_catalog_335.py catalog/vanilla112.json out/catalog-112.json vanilla112 '11[0-2]\d\d'
 """
 import datetime
 import json
@@ -21,6 +22,10 @@ import urllib.request
 API = "https://api.github.com"
 KEY = "wotlk335"
 INTERFACE = re.compile(r"^\ufeff?##\s*Interface:\s*303\d\d\b", re.MULTILINE)
+
+
+def interface_pattern(numbers):
+    return re.compile(r"^\ufeff?##\s*Interface:\s*(?:" + numbers + r")\b", re.MULTILINE)
 
 
 def fetch(url, accept="application/vnd.github+json"):
@@ -38,8 +43,8 @@ def get(url):
 
 def addon_tocs(paths):
     """The TOCs the app would name the installed folders after, following AddonArchive: TOCs at the top
-    make the repo one addon, otherwise each top-level folder with TOCs is one. The app prefers a 303xx
-    TOC among them, so one is enough."""
+    make the repo one addon, otherwise each top-level folder with TOCs is one. The app prefers a TOC
+    for its version among them, so one is enough."""
     tocs = [p for p in paths if p.lower().endswith(".toc")]
     top = [p for p in tocs if "/" not in p]
     return top or [p for p in tocs if p.count("/") == 1]
@@ -57,7 +62,7 @@ def build_entry(entry):
     if not tocs:
         raise ValueError("no addon TOC at the top or one folder down")
     if not any(INTERFACE.search(fetch(f"https://raw.githubusercontent.com/{repo}/{sha}/{urllib.parse.quote(t)}", accept="*/*").decode("utf-8", "replace")) for t in tocs):
-        raise ValueError(f"no Interface 303xx in {', '.join(posixpath.basename(t) for t in tocs)}")
+        raise ValueError(f"no Interface {INTERFACE.pattern} in {', '.join(posixpath.basename(t) for t in tocs)}")
     date = commit["commit"]["committer"]["date"][:10]
     owner = repo.split("/")[0]
     return {
@@ -77,7 +82,10 @@ def build_entry(entry):
 
 
 def main():
+    global KEY, INTERFACE
     src, dest = sys.argv[1], sys.argv[2]
+    if len(sys.argv) > 4:
+        KEY, INTERFACE = sys.argv[3], interface_pattern(sys.argv[4])
     with open(src) as f:
         sources = json.load(f)
     out = []

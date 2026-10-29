@@ -51,7 +51,7 @@ fun ForeverywhereApp(onLaunch: (appId: String) -> Unit) {
     val addonsNow = remember(launcher.profile?.id, launcher.version, launcher.gamePath, launcher.files.product, launcher.legacy.root, launcher.curseForge) {
         val profile = launcher.addonProfile()
         if (launcher.isPrivate) {
-            legacyAddonsControllerFor(launcher.legacy.root, scope, profile)
+            legacyAddonsControllerFor(launcher.legacy.root, launcher.version, scope, profile)
         } else {
             addonsControllerFor(launcher.gamePath, launcher.files.product, scope, launcher.curseForge, profile)
         }

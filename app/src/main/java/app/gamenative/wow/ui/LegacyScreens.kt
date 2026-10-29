@@ -46,6 +46,9 @@ import app.gamenative.wow.ui.components.FwRow
 import app.gamenative.wow.ui.components.FwTextField
 import app.gamenative.wow.ui.theme.Fw
 import java.io.File
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * The 3.3.5a "Server" screen: the profile's servers, the selected server's password and how the login
@@ -254,6 +257,10 @@ private fun LoginSection(launcher: LauncherController, setHint: (String) -> Unit
         Text("Choose your client folder on the Client screen first.", style = Fw.Text)
         return
     }
+    if (!launcher.legacyGame.hasAndroWherePatches) {
+        Text("Controller Menus, which fills in your password on the login screen, is for 3.3.5a only for now. Type your account and password in the game.", style = Fw.Text)
+        return
+    }
     val root = File(settings.root)
     val scope = rememberCoroutineScope()
     val mods = remember(root) { ClientModsController(root, scope, launcher::recordClientMods) }
@@ -336,13 +343,21 @@ private fun FolderSection(launcher: LauncherController, setHint: (String) -> Uni
     val context = LocalContext.current
     val settings = launcher.legacy
     var folderError by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
+    val game = launcher.legacyGame
     val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
         val path = StorageUtils.getPathFromTreeUri(context, uri) ?: return@rememberLauncherForActivityResult
-        val root = LegacyClient.findRoot(File(path))
-        folderError = if (root == null) "No ${LegacyClient.EXE} with a Data folder in $path." else null
-        root?.let {
-            val existing = LegacyClient.readRealmlist(it)
-            launcher.updateLegacy(settings.copy(root = it.absolutePath, realmlist = existing ?: settings.realmlist))
+        scope.launch {
+            val root = withContext(Dispatchers.IO) { LegacyClient.findRoot(File(path)) }
+            val build = root?.let { withContext(Dispatchers.IO) { LegacyClient.detectBuild(LegacyClient.exe(it)) } }
+            folderError = when {
+                root == null -> "No ${LegacyClient.EXE} with a Data folder in $path."
+                !game.accepts(build) -> "This folder has a $build client, and this profile is for ${game.label}. Make a profile for that version instead."
+                else -> null
+            }
+            if (folderError != null || root == null) return@launch
+            val existing = withContext(Dispatchers.IO) { LegacyClient.readRealmlist(root) }
+            launcher.updateLegacy(launcher.legacy.copy(root = root.absolutePath, realmlist = existing ?: launcher.legacy.realmlist))
         }
     }
     val first = remember { FocusRequester() }
