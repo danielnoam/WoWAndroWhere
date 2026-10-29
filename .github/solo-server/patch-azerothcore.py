@@ -53,6 +53,17 @@ PATCHES = [
     ("src/server/database/Database/MySQLConnection.cpp",
      SSL_BLOCK,
      SSL_BLOCK_MARIADB),
+    # MariaDB's client library has its own version (3.x), separate from the server version in MYSQL_VERSION_ID.
+    ("src/server/database/Database/DatabaseWorkerPool.cpp",
+     "    bool isSupportClientDB = mysql_get_client_version() >= MIN_MYSQL_CLIENT_VERSION;\n"
+     "    bool isSameClientDB = mysql_get_client_version() == MYSQL_VERSION_ID;\n",
+     "#if defined(LIBMARIADB)\n"
+     "    bool isSupportClientDB = true;\n"
+     "    bool isSameClientDB = mysql_get_client_version() == MARIADB_PACKAGE_VERSION_ID;\n"
+     "#else\n"
+     "    bool isSupportClientDB = mysql_get_client_version() >= MIN_MYSQL_CLIENT_VERSION;\n"
+     "    bool isSameClientDB = mysql_get_client_version() == MYSQL_VERSION_ID;\n"
+     "#endif\n"),
     # With _GNU_SOURCE, bionic's strerror_r is the GNU one that returns char*.
     ("deps/gsoap/stdsoap2.cpp",
      "(_POSIX_C_SOURCE >= 200112L || _XOPEN_SOURCE >= 600)) || defined(__ANDROID__) || !defined(__GLIBC__))\n    err = strerror_r",
