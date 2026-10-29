@@ -55,7 +55,7 @@ ls -la $S/bin $S/lib
 # --- world database ---
 D=$OUT/db
 SOCK=$W/mysql.sock
-mariadb-install-db --no-defaults --basedir=$PREFIX --datadir=$D --auth-root-authentication-method=normal --skip-test-db
+mariadb-install-db --no-defaults --datadir=$D --auth-root-authentication-method=normal --skip-test-db
 mariadbd --no-defaults --datadir=$D --socket=$SOCK --bind-address=127.0.0.1 --port=3306 \
     --innodb-use-native-aio=0 --innodb-buffer-pool-size=2G --innodb-log-file-size=512M \
     --performance-schema=OFF --skip-log-bin &
