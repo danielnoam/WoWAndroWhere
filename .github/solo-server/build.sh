@@ -36,6 +36,10 @@ cp $W/inst/etc/authserver.conf.dist $W/inst/etc/worldserver.conf.dist $S/etc/
 cp -rL "$PREFIX/share/mariadb" $S/share/mariadb
 
 # Every shared library the binaries need that comes from Termux (not Android's own /system libs).
+# MariaDB's client library sits in a subfolder of $PREFIX/lib.
+MARIADB_LIB=$(dirname "$(find "$PREFIX/lib" -name 'libmariadb.so*' | head -1)")
+LIBDIRS=("$PREFIX/lib" "$MARIADB_LIB")
+export LD_LIBRARY_PATH="$MARIADB_LIB"
 queue=("$S"/bin/*)
 declare -A seen
 while ((${#queue[@]})); do
@@ -43,14 +47,18 @@ while ((${#queue[@]})); do
     for lib in $(readelf -d "$f" | sed -n 's/.*(NEEDED).*\[\(.*\)\]/\1/p'); do
         [[ -n ${seen[$lib]:-} ]] && continue
         seen[$lib]=1
-        if [[ -e $PREFIX/lib/$lib ]]; then
-            cp -L "$PREFIX/lib/$lib" "$S/lib/$lib"
-            queue+=("$S/lib/$lib")
-        fi
+        for dir in "${LIBDIRS[@]}"; do
+            if [[ -e $dir/$lib ]]; then
+                cp -L "$dir/$lib" "$S/lib/$lib"
+                queue+=("$S/lib/$lib")
+                break
+            fi
+        done
     done
 done
 llvm-strip --strip-unneeded $S/bin/* $S/lib/*.so* || true
 ls -la $S/bin $S/lib
+test -e $S/lib/libmariadb.so || test -e $S/lib/libmariadb.so.3
 
 # --- world database ---
 D=$OUT/db
