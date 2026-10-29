@@ -30,6 +30,8 @@ What the app does, by area, with the version each feature came in. Versions up t
 - Private server (3.3.5a) game version: your own client folder and realmlist, its own home screen, Play, and Client and server screen (0.5.0)
 - Private server (1.12.1, Turtle WoW included) and (2.4.3) game versions on the same launch path, experimental: realmlist next to WoW.exe on 1.12, folder rejected when its client is another version, own addon flavours and starter catalogs, patch switches in the Client tab, controller layout always on (unreleased)
 - Private server (4.3.4) and (5.4.8) game versions on the same path, experimental: 32-bit Wow.exe only, own addon flavours below Cataclysm and MoP Classic, no catalog yet (unreleased)
+- Your own server on 3.3.5a profiles, experimental: a solo AzerothCore server (no bots) the app downloads, checks and runs on the device, with Play starting it and the game's end stopping it; map data fetched folder by folder from AzerothCore's client-data with per-file checksums, mob pathing optional; account made for you with GM commands as a switch; Remove server frees the space (unreleased)
+- Your own server on a PC: address, connection check and Dad's MMO Lab guides, added to the server list (unreleased)
 - 3.3.5a clients run through Box64 WoW64, started directly instead of through winhandler; DXVK renderer, OpenGL as a fallback (0.5.0)
 - Saved, encrypted private server password for each server, in Client and server, used by Controller Menus' Fill in password; Install is offered until the add-on is in (0.5.0, Type password replaced 0.7.0); a saved password shows as dots (0.8.1)
 - No Enable Mouse button over the WoW containers (0.7.0)

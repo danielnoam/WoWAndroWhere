@@ -36,6 +36,7 @@ import app.gamenative.wow.legacy.LegacyClient
 import app.gamenative.wow.legacy.LegacyRenderer
 import app.gamenative.wow.legacy.LegacyServer
 import app.gamenative.wow.legacy.mods.AndroWherePatch
+import app.gamenative.wow.product.GameVersion
 import app.gamenative.wow.ui.addons.ClientModsController
 import app.gamenative.wow.ui.components.FwButton
 import app.gamenative.wow.ui.components.FwButtonKind
@@ -57,16 +58,24 @@ import kotlinx.coroutines.withContext
 fun LegacyServerScreen(launcher: LauncherController, onBack: () -> Unit) {
     var editing by remember { mutableStateOf<String?>(null) }
     var returnTo by remember { mutableStateOf<String?>(launcher.legacy.serverId) }
+    var solo by remember { mutableStateOf<SoloPage?>(null) }
     val server = editing?.let { id -> launcher.servers.firstOrNull { it.id == id } }
     BackHandler(enabled = server != null) {
         returnTo = editing
         editing = null
     }
+    BackHandler(enabled = solo != null && server == null) { solo = null }
     HintPage("Server", onBack, launcher.errorMessage) { setHint ->
-        if (server != null) {
+        if (solo != null && server == null) {
+            when (solo) {
+                SoloPage.DEVICE -> SoloDevicePage(launcher, onDone = { solo = null }, setHint)
+                else -> SoloPcPage(launcher, onAdded = { solo = null; editing = it }, onDone = { solo = null }, setHint)
+            }
+        } else if (server != null) {
             ServerPage(launcher, server, onDone = { returnTo = editing; editing = null }, setHint)
         } else {
             FwSection("Servers") { ServerList(launcher, returnTo, onEdit = { editing = it }, setHint) }
+            if (launcher.version == GameVersion.PRIVATE_335) FwSection("Your own server") { SoloSection(onOpen = { solo = it }, setHint) }
             FwSection(if (launcher.servers.size > 1) "Password for ${launcher.selectedServer.name}" else "Password") {
                 PasswordFields(launcher, launcher.selectedServer, setHint)
             }

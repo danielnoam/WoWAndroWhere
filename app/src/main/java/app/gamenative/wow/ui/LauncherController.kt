@@ -47,6 +47,7 @@ import app.gamenative.wow.profile.Profile
 import app.gamenative.wow.ui.addons.AddonProfile
 import app.gamenative.wow.profile.ProfileAddons
 import app.gamenative.wow.profile.Profiles
+import app.gamenative.wow.solo.SoloServer
 import java.io.File
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -55,6 +56,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -414,6 +416,13 @@ class LauncherController(
         selectServer(server.id)
     }
 
+    /** Adds the player's own server to this profile's list, or updates it, and selects it. */
+    fun addSoloServer(server: LegacyServer) {
+        servers = if (servers.any { it.id == server.id }) servers.map { if (it.id == server.id) server else it } else servers + server
+        LegacyServers.save(context, servers)
+        selectServer(server.id)
+    }
+
     fun removeServer(id: String) {
         if (servers.size < 2) return
         LegacyServers.vault(context, id).clear()
@@ -448,8 +457,10 @@ class LauncherController(
             listOf(wineLog(), sharedLegacyLog(), File(settings.root, LegacyClient.LOG)).forEach { it.delete() }
         }
         val current = profile
+        val solo = selectedServer.solo == LegacyServer.SOLO_DEVICE
         val game = legacyGame
         launch { screenSize, onStatus ->
+            if (solo) runBlocking { SoloServer.start(context, onStatus) }
             if (current != null && settings.root.isNotBlank()) runCatching { ProfileAddons.applyMods(context, current, File(settings.root)) }.onFailure { Timber.w(it, "Applying client patches") }
             applyProfileAddons(File(settings.root, "WTF"))
             prepareLegacyLaunch(context, settings, game, gpu, screenSize, onStatus)

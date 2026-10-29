@@ -91,6 +91,11 @@
             android:name="app.gamenative.wow.install.InstallService"
             android:exported="false"
             android:foregroundServiceType="dataSync" />
+
+        <service
+            android:name="app.gamenative.wow.solo.SoloSetupService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
     </application>
 
 </manifest>
