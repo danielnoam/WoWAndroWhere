@@ -17,14 +17,18 @@ apt-get -y -o Dpkg::Options::=--force-confnew install \
 MARIADB_VERSION=$(mariadbd --version | sed -n 's/.*Ver \([0-9.]*\)-MariaDB.*/\1/p')
 echo "$MARIADB_VERSION" > $W/mariadb-version
 
+# Android (bionic) fixes: glibc's cpu_set_t field type isn't there.
+sed -i 's/\*(__cpu_mask\*)(&mask)/*(unsigned long*)(\&mask)/' $W/ac/src/common/Threading/ProcessPriority.cpp
+
 cmake -S $W/ac -B $W/build -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=$W/inst \
     -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ \
     -DAPPS_BUILD=all -DTOOLS_BUILD=db-only \
     -DSCRIPTS=static -DMODULES=none \
-    -DWITH_WARNINGS=0 -DWITH_COREDEBUG=0 -DBUILD_TESTING=0
-ninja -C $W/build -j"$JOBS" install
+    -DWITH_WARNINGS=0 -DWITH_COREDEBUG=0 -DBUILD_TESTING=0 -DNOJEM=1
+ninja -C $W/build -j"$JOBS" -k 0
+ninja -C $W/build install
 
 # --- server tree ---
 S=$OUT/server/usr
