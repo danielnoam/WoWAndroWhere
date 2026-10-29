@@ -1,0 +1,85 @@
+{
+ "generated": "2026-10-29T21:44:18+00:00",
+ "addons": [
+  {
+   "repo": "shagu/pfUI",
+   "name": "pfUI",
+   "summary": "A full interface replacement: unit frames, action bars, bags, chat and more.",
+   "category": "INTERFACE",
+   "author": "shagu",
+   "icon": "https://avatars.githubusercontent.com/u/11586807?v=4",
+   "website": "https://github.com/shagu/pfUI",
+   "stars": 399,
+   "downloads": 0,
+   "updated": "2025-08-28T10:10:33Z",
+   "requires": [],
+   "files": {
+    "tbc243": {
+     "fileId": "b2f6df84a93a4ce6adbe1fd8f0372454795151f1",
+     "version": "2025-08-28 (b2f6df8)",
+     "url": "https://github.com/shagu/pfUI/archive/b2f6df84a93a4ce6adbe1fd8f0372454795151f1.zip"
+    }
+   }
+  },
+  {
+   "repo": "shagu/pfQuest",
+   "name": "pfQuest",
+   "summary": "Quest givers, objectives, mobs and items on your map, with a database browser.",
+   "category": "QUESTS",
+   "author": "shagu",
+   "icon": "https://avatars.githubusercontent.com/u/11586807?v=4",
+   "website": "https://github.com/shagu/pfQuest",
+   "stars": 270,
+   "downloads": 0,
+   "updated": "2025-08-25T20:25:51Z",
+   "requires": [],
+   "files": {
+    "tbc243": {
+     "fileId": "104f35678ca39ab1fb78b655f815cc7016f5e0c8",
+     "version": "2025-08-25 (104f356)",
+     "url": "https://github.com/shagu/pfQuest/archive/104f35678ca39ab1fb78b655f815cc7016f5e0c8.zip"
+    }
+   }
+  },
+  {
+   "repo": "shagu/ShaguDPS",
+   "name": "ShaguDPS",
+   "summary": "A light damage and healing meter.",
+   "category": "COMBAT",
+   "author": "shagu",
+   "icon": "https://avatars.githubusercontent.com/u/11586807?v=4",
+   "website": "https://github.com/shagu/ShaguDPS",
+   "stars": 47,
+   "downloads": 0,
+   "updated": "2025-07-25T19:04:41Z",
+   "requires": [],
+   "files": {
+    "tbc243": {
+     "fileId": "79c25e60f9ab3f314d69bec3d3edcbf965b7c312",
+     "version": "2025-07-25 (79c25e6)",
+     "url": "https://github.com/shagu/ShaguDPS/archive/79c25e60f9ab3f314d69bec3d3edcbf965b7c312.zip"
+    }
+   }
+  },
+  {
+   "repo": "shagu/ShaguPlates",
+   "name": "ShaguPlates",
+   "summary": "Nameplates with health, cast bars and debuffs.",
+   "category": "UNIT_FRAMES",
+   "author": "shagu",
+   "icon": "https://avatars.githubusercontent.com/u/11586807?v=4",
+   "website": "https://github.com/shagu/ShaguPlates",
+   "stars": 50,
+   "downloads": 0,
+   "updated": "2025-06-05T22:18:39Z",
+   "requires": [],
+   "files": {
+    "tbc243": {
+     "fileId": "9b2ebdf486864fea61a0bb8a5506cc88983ce37b",
+     "version": "2025-06-05 (9b2ebdf)",
+     "url": "https://github.com/shagu/ShaguPlates/archive/9b2ebdf486864fea61a0bb8a5506cc88983ce37b.zip"
+    }
+   }
+  }
+ ]
+}
