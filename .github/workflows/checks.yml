@@ -26,6 +26,6 @@ jobs:
         run: tools/fetch_components.sh
       - run: echo "sdk.dir=$ANDROID_HOME" > local.properties
       - name: Unit tests
-        run: ./gradlew --no-daemon testModernDebugUnitTest --tests "app.gamenative.wow.legacy.*" --tests "app.gamenative.ui.screen.wow.*" --tests "app.gamenative.utils.AppUpdaterTest" --tests "app.gamenative.wow.addons.AddonArchiveTest" --tests "app.gamenative.wow.addons.AddonTargetTest" --tests "app.gamenative.wow.addons.CurseForgeAccessTest"
+        run: ./gradlew --no-daemon testModernDebugUnitTest --tests "app.gamenative.wow.legacy.*" --tests "app.gamenative.wow.solo.*" --tests "app.gamenative.ui.screen.wow.*" --tests "app.gamenative.utils.AppUpdaterTest" --tests "app.gamenative.wow.addons.AddonArchiveTest" --tests "app.gamenative.wow.addons.AddonTargetTest" --tests "app.gamenative.wow.addons.CurseForgeAccessTest"
       - name: Build
         run: ./gradlew --no-daemon assembleModernDebug

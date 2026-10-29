@@ -36,7 +36,7 @@ mkdir -p $S/bin $S/lib $S/etc $S/share
 cp $W/inst/bin/authserver $W/inst/bin/worldserver $S/bin/
 cp "$(command -v mariadbd)" "$(command -v mariadb)" $S/bin/
 cp $W/inst/etc/authserver.conf.dist $W/inst/etc/worldserver.conf.dist $S/etc/
-cp -r "$PREFIX/share/mariadb" $S/share/mariadb
+cp -rL "$PREFIX/share/mariadb" $S/share/mariadb
 
 # Every shared library the binaries need that comes from Termux (not Android's own /system libs).
 queue=("$S"/bin/*)

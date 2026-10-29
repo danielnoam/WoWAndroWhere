@@ -8,9 +8,17 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-/** A saved private server. Its password is sealed in its own [LoginVault], never in this list. */
+/**
+ * A saved private server. Its password is sealed in its own [LoginVault], never in this list. [solo] marks
+ * the player's own server: [SOLO_DEVICE] is the one the app runs, [SOLO_PC] one on their computer.
+ */
 @Serializable
-data class LegacyServer(val id: String, val name: String, val realmlist: String, val account: String = "")
+data class LegacyServer(val id: String, val name: String, val realmlist: String, val account: String = "", val solo: String = "") {
+    companion object {
+        const val SOLO_DEVICE = "device"
+        const val SOLO_PC = "pc"
+    }
+}
 
 /**
  * The private servers saved in the app. [LegacySettings.realmlist] stays the selected server's realmlist,
