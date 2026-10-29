@@ -1,0 +1,98 @@
+name: solo-server
+
+# Builds the solo server the app downloads for "Your own server": AzerothCore 3.3.5a (no bots) and MariaDB,
+# compiled for Android in Termux's environment, with the world database already imported. Publishes them as
+# assets of a solo-server-<commit> release and commits app/src/main/assets/solo/solo-server.json (URLs, sizes,
+# sha256) to the branch it ran on, so the app only accepts these exact files. Also hashes every file in
+# AzerothCore's client-data release so the app can check map data it fetches piece by piece.
+# Runs when this file or the build script changes on a working branch, or by hand.
+on:
+  push:
+    branches-ignore: [main]
+    paths: [.github/workflows/solo-server.yml, .github/solo-server/**]
+  workflow_dispatch:
+    inputs:
+      azerothcore:
+        description: "azerothcore/azerothcore-wotlk commit"
+        default: "993b45959556302a4eccded066085793b4b55322"
+
+env:
+  AC_COMMIT: ${{ inputs.azerothcore || '993b45959556302a4eccded066085793b4b55322' }}
+  CLIENT_DATA_URL: https://github.com/wowgaming/client-data/releases/download/v20.0/Data.zip
+  CLIENT_DATA_SHA256: a3d4df635ae6c2c8f08052c32a79e0f806955150ad36b014a823dd08a32a4610
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 300
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: AzerothCore source
+        run: |
+          mkdir -p work
+          git init -q work/ac
+          git -C work/ac fetch -q --depth 1 https://github.com/azerothcore/azerothcore-wotlk.git "$AC_COMMIT"
+          git -C work/ac checkout -q FETCH_HEAD
+          cp .github/solo-server/build.sh work/
+          chmod -R a+rwX work
+      - name: Build in Termux
+        run: |
+          docker run --rm --privileged -v "$PWD/work:/work" termux/termux-docker:aarch64 bash /work/build.sh
+      - name: Client data hashes
+        run: |
+          curl -sSfL -o Data.zip "$CLIENT_DATA_URL"
+          echo "$CLIENT_DATA_SHA256  Data.zip" | sha256sum -c -
+          python3 -I - <<'PY'
+          import hashlib, zipfile
+          with zipfile.ZipFile("Data.zip") as z, open("client-data.sha256", "w") as out:
+              for i in z.infolist():
+                  if i.is_dir(): continue
+                  h = hashlib.sha256()
+                  with z.open(i) as f:
+                      for chunk in iter(lambda: f.read(1 << 20), b""): h.update(chunk)
+                  out.write(f"{h.hexdigest()}  {i.file_size}  {i.filename}\n")
+          PY
+          wc -l client-data.sha256
+          rm Data.zip
+      - name: Package, publish and commit the manifest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          SHORT="${AC_COMMIT:0:7}"
+          TAG="solo-server-$SHORT"
+          MARIADB="$(cat work/mariadb-version)"
+          sudo chown -R "$(id -u):$(id -g)" work
+          tar -C work/out/server --owner=0 --group=0 -cf - usr | zstd -19 -T0 -q -o "solo-server-$SHORT.tar.zst"
+          tar -C work/out --owner=0 --group=0 -cf - db | zstd -19 -T0 -q -o "solo-db-$SHORT.tar.zst"
+          zstd -19 -q -o client-data.sha256.zst client-data.sha256
+          ls -la *.zst | tee -a "$GITHUB_STEP_SUMMARY"
+          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --title "Solo server $SHORT" \
+            --notes "AzerothCore $AC_COMMIT and MariaDB $MARIADB built for Android by solo-server.yml. Downloaded by the app's Your own server setup." \
+            "solo-server-$SHORT.tar.zst" "solo-db-$SHORT.tar.zst" client-data.sha256.zst
+          BASE="https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG"
+          part() { printf '{"url": "%s/%s", "size": %s, "sha256": "%s"}' "$BASE" "$1" "$(stat -c%s "$1")" "$(sha256sum "$1" | cut -d' ' -f1)"; }
+          unpacked() { du -sb "$1" | cut -f1; }
+          mkdir -p app/src/main/assets/solo
+          cat > app/src/main/assets/solo/solo-server.json <<JSON
+          {
+            "azerothcore": "$AC_COMMIT",
+            "mariadb": "$MARIADB",
+            "server": $(part "solo-server-$SHORT.tar.zst"),
+            "serverUnpacked": $(unpacked work/out/server),
+            "database": $(part "solo-db-$SHORT.tar.zst"),
+            "databaseUnpacked": $(unpacked work/out/db),
+            "clientDataHashes": $(part client-data.sha256.zst),
+            "clientData": {"url": "$CLIENT_DATA_URL", "sha256": "$CLIENT_DATA_SHA256"}
+          }
+          JSON
+          cat app/src/main/assets/solo/solo-server.json | tee -a "$GITHUB_STEP_SUMMARY"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add app/src/main/assets/solo/solo-server.json
+          if git diff --cached --quiet; then echo "No change"; exit 0; fi
+          git commit -m "Solo server $SHORT built from AzerothCore $AC_COMMIT, MariaDB $MARIADB"
+          git pull -q --rebase origin "$GITHUB_REF_NAME"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
