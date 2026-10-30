@@ -90,6 +90,17 @@ PATCHES = [
      "    SetValidData(index, static_cast<int64>(value));\n"
      "}\n"
      "#endif\n"),
+    # Android's getaddrinfo can refuse even a numeric address from a process outside the app's own runtime,
+    # so a literal IP such as the realm's 127.0.0.1 is parsed directly and only names go to the resolver.
+    ("src/common/Asio/Resolver.h",
+     "            boost::system::error_code ec;\n"
+     "            boost::asio::ip::resolver_base::flags flagsResolver",
+     "            boost::system::error_code ec;\n"
+     "            boost::asio::ip::address literal = boost::asio::ip::make_address(host, ec);\n"
+     "            if (!ec)\n"
+     "                return boost::asio::ip::tcp::endpoint(literal, service.empty() ? 0 : static_cast<unsigned short>(std::stoul(service)));\n"
+     "            ec.clear();\n"
+     "            boost::asio::ip::resolver_base::flags flagsResolver"),
 ]
 
 for rel, old, new in PATCHES:

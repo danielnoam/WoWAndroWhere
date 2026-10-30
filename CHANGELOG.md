@@ -2,6 +2,10 @@
 
 Releases up to 0.4.0 are upstream's (YoruDev-Ryland/WoWForeverywhere), which this fork started from.
 
+## Unreleased
+
+- **Your own server: the login server starts.** In 0.9.2 it stopped right away because it couldn't look up the address 127.0.0.1 on Android. The server is rebuilt with that fixed, and with an encryption module the world server needs when you log in. After updating, press Continue setup on On this device: it downloads the new server (about 18 MB) and keeps your account and characters.
+
 ## 0.9.2
 
 - **Your own server: account creation works.** Setup in 0.9.1 stopped at "Creating your account" with a database error (No database selected). Press Continue setup after updating and it picks up from there.

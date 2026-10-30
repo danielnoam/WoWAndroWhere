@@ -45,7 +45,7 @@ jobs:
           git -C work/ac fetch -q --depth 1 https://github.com/azerothcore/azerothcore-wotlk.git "$AC_COMMIT"
           git -C work/ac checkout -q FETCH_HEAD
           python3 -I .github/solo-server/patch-azerothcore.py work/ac
-          cp .github/solo-server/build.sh work/
+          cp .github/solo-server/build.sh .github/solo-server/smoke.sh work/
           chmod -R a+rwX work
       - name: Build in Termux
         run: |
@@ -65,7 +65,19 @@ jobs:
                   out.write(f"{h.hexdigest()}  {i.file_size}  {i.filename}\n")
           PY
           wc -l client-data.sha256
+          # The folders setup fetches without mob pathing, for the start test.
+          python3 -I - <<'PY'
+          import zipfile
+          with zipfile.ZipFile("Data.zip") as z:
+              z.extractall("work/data", [n for n in z.namelist() if n.split("/")[0] in ("dbc", "maps", "vmaps", "Cameras")])
+          PY
+          chmod -R a+rwX work/data
+          du -sh work/data/*
           rm Data.zip
+      - name: Start test in Termux
+        run: |
+          docker run --rm --privileged -v "$PWD/work:/work" termux/termux-docker:aarch64 bash /work/smoke.sh
+          rm -rf work/data
       - name: Package, publish and commit the manifest
         env:
           GH_TOKEN: ${{ github.token }}
