@@ -121,6 +121,10 @@ object SoloServer {
                 "--character-sets-dir=${File(share, "charsets").path}",
                 "--innodb-use-native-aio=0",
                 "--innodb-buffer-pool-size=256M",
+                // Same redo log size the database was built with, so the first start doesn't rewrite it.
+                "--innodb-log-file-size=512M",
+                "--innodb-read-io-threads=2",
+                "--innodb-write-io-threads=2",
                 "--performance-schema=OFF",
                 "--skip-log-bin",
                 "--max-connections=40",
