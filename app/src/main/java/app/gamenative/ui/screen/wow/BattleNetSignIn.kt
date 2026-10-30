@@ -146,7 +146,8 @@ object BattleNetSignIn {
     private const val KEY_EMAIL = "email"
     private const val KEY_PASSWORD = "password"
     private const val AFTER_READ_MS = 20_000L
-    private const val MAX_LIFETIME_MS = 180_000L
+    // A fresh install's first boot streams assets and plays the intro cinematic before reaching the login screen.
+    private const val MAX_LIFETIME_MS = 600_000L
 }
 
 @Composable
