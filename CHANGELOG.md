@@ -5,6 +5,7 @@ Releases up to 0.4.0 are upstream's (YoruDev-Ryland/WoWForeverywhere), which thi
 ## Unreleased
 
 - **Your own server: setup no longer crashes at "Creating your account".** The app closed when it stopped the database after making your account. Setup now finishes, and the server also stops cleanly when the game closes. On this device has a new **Share log** button that sends the server's last messages, so problems can be reported.
+- **Settings list works by touch.** Tapping App, Battle.net, Addon sources or About on the left of Settings now opens that section. Before, only the controller could move through the list.
 
 ## 0.9.0
 
