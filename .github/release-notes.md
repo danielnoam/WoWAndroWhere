@@ -13,4 +13,4 @@ Download **WoWEverywhere.apk** below, or update from inside the app. It installs
 
 If Android says the app "conflicts with an existing package", your current copy came from somewhere else, such as the upstream WoW Foreverywhere releases. Uninstall it first, then install this one. Your game files and addons stay on your storage.
 
-New to the app? See the [README](https://github.com/danielnoam/WoWAndroWhere#getting-started) for setup.
+New to the app? See the [README](https://github.com/danielnoam/WoWEverywhere#getting-started) for setup.

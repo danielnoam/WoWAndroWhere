@@ -3,7 +3,7 @@ package app.gamenative.wow.profile
 import android.content.Context
 import app.gamenative.wow.addons.AddonDb
 import app.gamenative.wow.addons.InstalledAddon
-import app.gamenative.wow.legacy.mods.AndroWherePatch
+import app.gamenative.wow.legacy.mods.EverywherePatch
 import app.gamenative.wow.legacy.mods.ClientMods
 import java.io.File
 
@@ -96,7 +96,7 @@ object ProfileAddons {
         if (Profiles.sharers(profile).isEmpty()) return
         val wanted = prefs(context).getStringSet(MODS + profile.id, null) ?: return
         val login = LOGIN in wanted
-        if (ClientMods.loginEnabled(clientRoot) != login) ClientMods.setInstalled(clientRoot, AndroWherePatch.LOGIN, login)
+        if (ClientMods.loginEnabled(clientRoot) != login) ClientMods.setInstalled(clientRoot, EverywherePatch.LOGIN, login)
         ClientMods.patches(clientRoot).forEach { patch ->
             val on = PATCH_OFF + patch.key !in wanted
             if (patch.enabled != on) ClientMods.setPatchEnabled(patch, on)

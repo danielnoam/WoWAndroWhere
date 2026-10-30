@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import app.gamenative.wow.legacy.LegacyGame
-import app.gamenative.wow.legacy.mods.AndroWherePatch
+import app.gamenative.wow.legacy.mods.EverywherePatch
 import app.gamenative.wow.legacy.mods.ClientMods
 import app.gamenative.wow.legacy.mods.ClientPatch
 import app.gamenative.wow.legacy.mods.PatchRuleSet
@@ -25,7 +25,7 @@ class ClientModsController(
     val game: LegacyGame = LegacyGame.WOTLK,
 ) {
     /** Our patches and whether each is installed; null until read. */
-    var ours by mutableStateOf<Map<AndroWherePatch, Boolean>?>(null)
+    var ours by mutableStateOf<Map<EverywherePatch, Boolean>?>(null)
         private set
     var patches by mutableStateOf<List<ClientPatch>?>(null)
         private set
@@ -41,7 +41,7 @@ class ClientModsController(
         scope.launch {
             rules = withContext(Dispatchers.IO) { PatchRules.read(root) }
             val (installed, found) = withContext(Dispatchers.IO) {
-                AndroWherePatch.entries.filter { game.hasAndroWherePatches }.associateWith { runCatching { ClientMods.installed(root, it) }.getOrDefault(false) } to
+                EverywherePatch.entries.filter { game.hasEverywherePatches }.associateWith { runCatching { ClientMods.installed(root, it) }.getOrDefault(false) } to
                     runCatching { ClientMods.patches(root) }.onFailure { Timber.w(it, "Listing client patches failed") }.getOrDefault(emptyList())
             }
             ours = installed
@@ -49,7 +49,7 @@ class ClientModsController(
         }
     }
 
-    fun setInstalled(patch: AndroWherePatch, installed: Boolean) =
+    fun setInstalled(patch: EverywherePatch, installed: Boolean) =
         act(if (installed) "Installing ${patch.title}" else "Removing ${patch.title}") {
             ClientMods.setInstalled(root, patch, installed)
         }

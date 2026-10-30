@@ -34,7 +34,7 @@ sealed interface SoloStatus {
  * app process. The game ending stops them; so does [stop].
  */
 object SoloServer {
-    const val SHARED_LOG = "AndroWhere-solo.log"
+    const val SHARED_LOG = "WoWEverywhere-solo.log"
     private const val LOG_LIMIT = 4L shl 20
     private const val SHARED_PER_LOG = 256L shl 10
     private const val SIGTERM = 15

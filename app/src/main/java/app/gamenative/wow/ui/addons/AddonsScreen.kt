@@ -127,7 +127,7 @@ fun AddonsScreen(c: AddonsController, onBack: () -> Unit) {
             if (!wideBar) item { FwButton("From link", { showUrlDialog = true }, kind = FwButtonKind.Ghost) }
         }
         ConsolePortCard(c)
-        AndroWherePatchesCard(c)
+        EverywherePatchesCard(c)
         if (c.curseForgeOff && c.mode == AddonsController.Mode.BROWSE && (c.source == null || c.source == "curseforge")) {
             Text(
                 "CurseForge is off. To search it, add your own CurseForge API key or proxy in Settings → CurseForge.",

@@ -15,7 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.gamenative.wow.legacy.mods.AndroWherePatch
+import app.gamenative.wow.legacy.mods.EverywherePatch
 import app.gamenative.wow.legacy.mods.ClientPatch
 import app.gamenative.wow.legacy.mods.PatchRuleSet
 import app.gamenative.wow.legacy.mods.PatchRules
@@ -33,7 +33,7 @@ internal fun ClientModsPanel(c: ClientModsController, modifier: Modifier = Modif
         (c.working ?: c.message)?.let { status ->
             item { Text(status, style = Fw.Secondary.copy(color = if (c.working != null) Fw.Brass else Fw.Warn)) }
         }
-        if (c.game.hasAndroWherePatches) {
+        if (c.game.hasEverywherePatches) {
             item { Text("WoWEverywhere patches", style = Fw.Label.copy(color = Fw.Ash), modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)) }
             item {
                 Text(
@@ -46,7 +46,7 @@ internal fun ClientModsPanel(c: ClientModsController, modifier: Modifier = Modif
             if (ours == null) {
                 item { Text("Checking the client…", style = Fw.Secondary) }
             } else {
-                items(AndroWherePatch.entries, key = { it.name }) { patch ->
+                items(EverywherePatch.entries, key = { it.name }) { patch ->
                     val installed = ours[patch] == true
                     Row(
                         Modifier.fillMaxWidth().background(Fw.Stone, Fw.Shape).padding(16.dp),

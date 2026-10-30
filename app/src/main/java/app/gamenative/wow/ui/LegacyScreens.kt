@@ -38,7 +38,7 @@ import app.gamenative.utils.StorageUtils
 import app.gamenative.wow.legacy.LegacyClient
 import app.gamenative.wow.legacy.LegacyRenderer
 import app.gamenative.wow.legacy.LegacyServer
-import app.gamenative.wow.legacy.mods.AndroWherePatch
+import app.gamenative.wow.legacy.mods.EverywherePatch
 import app.gamenative.wow.product.GameVersion
 import app.gamenative.wow.ui.addons.ClientModsController
 import app.gamenative.wow.ui.components.FwButton
@@ -275,7 +275,7 @@ private fun LoginSection(launcher: LauncherController, setHint: (String) -> Unit
         Text("Choose your client folder on the Client screen first.", style = Fw.Text)
         return
     }
-    if (!launcher.legacyGame.hasAndroWherePatches) {
+    if (!launcher.legacyGame.hasEverywherePatches) {
         Text("Controller Menus, which fills in your password on the login screen, is for 3.3.5a only for now. Type your account and password in the game.", style = Fw.Text)
         return
     }
@@ -283,7 +283,7 @@ private fun LoginSection(launcher: LauncherController, setHint: (String) -> Unit
     val scope = rememberCoroutineScope()
     val mods = remember(root) { ClientModsController(root, scope, launcher::recordClientMods) }
     LaunchedEffect(root) { mods.refresh() }
-    when (mods.ours?.get(AndroWherePatch.LOGIN)) {
+    when (mods.ours?.get(EverywherePatch.LOGIN)) {
         null -> Text("Checking the client…", style = Fw.Secondary)
         false -> {
             Text(
@@ -293,7 +293,7 @@ private fun LoginSection(launcher: LauncherController, setHint: (String) -> Unit
             )
             FwButton(
                 "Install Controller Menus",
-                { mods.setInstalled(AndroWherePatch.LOGIN, true) },
+                { mods.setInstalled(EverywherePatch.LOGIN, true) },
                 modifier = Modifier.hint("Changes 5 bytes of Wow.exe; the original is kept and put back if you remove it.", setHint),
                 enabled = mods.working == null,
             )

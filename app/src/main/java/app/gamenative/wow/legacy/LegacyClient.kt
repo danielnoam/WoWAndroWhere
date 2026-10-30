@@ -35,7 +35,7 @@ data class LegacySettings(
 
 object LegacyClient {
     const val EXE = "Wow.exe"
-    const val LOG = "AndroWhere-wine.log"
+    const val LOG = "WoWEverywhere-wine.log"
 
     /** The bundled 32-bit emulator. FEX's WoW64 DLL isn't bundled, so only Box64 (wowbox64) can run x86 code. */
     const val EMULATOR = "Box64"
