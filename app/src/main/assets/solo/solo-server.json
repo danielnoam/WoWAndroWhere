@@ -1,10 +1,11 @@
 {
   "azerothcore": "993b45959556302a4eccded066085793b4b55322",
+  "build": "993b459-2",
   "mariadb": "13.0.2",
-  "server": {"url": "https://github.com/danielnoam/WoWAndroWhere/releases/download/solo-server-993b459/solo-server-993b459.tar.zst", "size": 17938138, "sha256": "e9d0b41e59deb090a73be713111f41116e83c3b65a8e86eb96fbb638fd50f516"},
-  "serverUnpacked": 78726476,
-  "database": {"url": "https://github.com/danielnoam/WoWAndroWhere/releases/download/solo-server-993b459/solo-db-993b459.tar.zst", "size": 208780015, "sha256": "1d1774178f366975061286960948a3d421d38f78d31fa2a1e4aacdd3e309520a"},
-  "databaseUnpacked": 1496198061,
-  "clientDataHashes": {"url": "https://github.com/danielnoam/WoWAndroWhere/releases/download/solo-server-993b459/client-data.sha256.zst", "size": 730474, "sha256": "6d77b2cf32896d0f67aa59cb5fedfdf72f74f957de327b1ca2217d5dc656e924"},
+  "server": {"url": "https://github.com/danielnoam/WoWAndroWhere/releases/download/solo-server-993b459-2/solo-server-993b459-2.tar.zst", "size": 17978200, "sha256": "dd30a04a7dc0d720c05e59ad2fb9480d1a6e319425a36ed3740907594c916aa6"},
+  "serverUnpacked": 78851508,
+  "database": {"url": "https://github.com/danielnoam/WoWAndroWhere/releases/download/solo-server-993b459-2/solo-db-993b459-2.tar.zst", "size": 208747533, "sha256": "d79629433f751ea4ee2f869bc371f235fc6f8652e8cf1cc1794dd5081fe9ac8e"},
+  "databaseUnpacked": 1496198070,
+  "clientDataHashes": {"url": "https://github.com/danielnoam/WoWAndroWhere/releases/download/solo-server-993b459-2/client-data.sha256.zst", "size": 730474, "sha256": "6d77b2cf32896d0f67aa59cb5fedfdf72f74f957de327b1ca2217d5dc656e924"},
   "clientData": {"url": "https://github.com/wowgaming/client-data/releases/download/v20.0/Data.zip", "sha256": "a3d4df635ae6c2c8f08052c32a79e0f806955150ad36b014a823dd08a32a4610"}
 }
