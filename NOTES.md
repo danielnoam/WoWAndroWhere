@@ -2,6 +2,10 @@
 
 Why things are the way they are, newest first.
 
+## 2026-10-30: New private server profiles take their version from the client
+
+Five "Private server (x.y.z)" rows asked the player something the client folder already answers. New profile now has one Private server row; Create opens the folder picker, and Wow.exe's version resource (the same `detectBuild` the Client screen uses) picks the game by major version. An unreadable version asks, rather than guessing, and a version the app doesn't support is refused. GameVersion still has the five private entries, so existing profiles, their addons and prefs keys don't move. A profile's version stays fixed after it's made, because its addon flavour, catalog and client patches depend on it; picking a different-version folder on the Client screen still says to make a new profile.
+
 ## 2026-10-30: Server list selects on A, edits on Y, and adds through one chooser
 
 Daniel switches servers often, and A opening the edit page each time made switching two presses and a Back. A now only selects; Y opens edit, which is where Remove went, because a Remove on Y was one press from losing a server's password. Touch has a non-focusable pencil on each row so the controller path stays one row per server. Add server asks which kind of server, replacing the separate Your own server section, so every server starts in one place. Because the on-device setup page is no longer always on screen, adding "Solo, this device" to the list once setup has made the account now runs for the whole Server screen (`JoinSoloServer`), not only while that page is open. Profiles that aren't 3.3.5a skip the chooser and go straight to an online server, since the own-server options are 3.3.5a only.

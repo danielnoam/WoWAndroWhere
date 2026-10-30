@@ -5,6 +5,7 @@ Releases up to 0.4.0 are upstream's (YoruDev-Ryland/WoWForeverywhere), which thi
 ## Unreleased
 
 - **Simpler Server screen.** Pressing A on a server, or tapping it, now just selects it. Y, or the pencil on the right, opens it to edit, and Remove server is inside with a confirmation. Add server asks what you're adding: an online server, your own server on this device, or your own server on a PC, so the separate Your own server section is gone. Your own server on this device shows its setup progress there, and Y on "Solo, this device" opens its Start, Stop, Continue setup and Share log page.
+- **One Private server choice for new profiles.** New profile now lists a single Private server option instead of one per version. Choose your client folder and the app reads the version from Wow.exe (1.12.1, 2.4.3, 3.3.5a, 4.3.4 or 5.4.8) and sets the profile up for it. If it can't read the version, it asks you which one it is. Existing profiles are unchanged.
 
 ## 0.9.3
 

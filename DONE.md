@@ -85,6 +85,7 @@ What the app does, by area, with the version each feature came in. Versions up t
 - Battle.net login managed in Settings, shared by every Blizzard profile; no Account tile (0.8.0)
 - Text boxes open the keyboard only when A is pressed or the box is tapped, never when the D-pad passes over them (0.8.1)
 - 3.3.5a Server and Client as two home tiles (0.8.2 two-pane screen, split in 0.8.3): servers, password and login screen options on Server, folder, graphics and logs on Client; a hint line instead of long text
+- New profile has one Private server choice: the client folder is picked first and Wow.exe's version picks 1.12.1, 2.4.3, 3.3.5a, 4.3.4 or 5.4.8, asked when unreadable (unreleased)
 - Server list: A or tap selects, Y or the pencil edits (Remove inside, confirmed), Add server asks online, own server on this device or own server on a PC (unreleased)
 - Settings in two panes (App, Battle.net, Addon sources, About) with a hint line (0.8.3); the list works by touch too (0.9.1)
 - Quieter top bar: no Experimental label, no 3.3.5a client version; the Play card shows only the server (0.8.1)
