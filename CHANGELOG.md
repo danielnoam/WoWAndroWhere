@@ -2,6 +2,10 @@
 
 Releases up to 0.4.0 are upstream's (YoruDev-Ryland/WoWForeverywhere), which this fork started from.
 
+## Unreleased
+
+- **Settings list works by touch.** Tapping App, Battle.net, Addon sources or About on the left of Settings now opens that section. Before, only the controller could move through the list.
+
 ## 0.9.0
 
 - **Vanilla 1.12.1 and Burning Crusade 2.4.3 private servers, experimental.** Two new game versions when you make a profile, next to 3.3.5a: Private server (1.12.1), which includes Turtle WoW, and Private server (2.4.3). Choose your own client folder and add your servers as you do for 3.3.5a. The app sets the realm, the resolution and the renderer, and warns you if the folder holds a different version. Addons has a small starter catalog for each (pfUI, pfQuest, ShaguDPS and more), and the Client tab has the switches for your client's patch files. Controller Menus and the Level Up Banner are 3.3.5a only for now, so you type your account and password in the game. The controller layout from 3.3.5a is always on: the sticks move you and aim the mouse, the stick buttons click, and the other buttons press F1 to F12, which you can bind in the game's Key Bindings.

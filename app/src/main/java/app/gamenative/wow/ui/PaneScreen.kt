@@ -66,6 +66,13 @@ internal fun PaneScreen(
     val nav = remember(panes.size) { List(panes.size) { FocusRequester() } }
     LaunchedEffect(Unit) { runCatching { nav[pane].requestFocus() } }
     BackHandler(enabled = inPane && listBack) { runCatching { nav[pane].requestFocus() } }
+    fun select(index: Int) {
+        if (pane != index) {
+            pane = index
+            onPaneChange(index)
+        }
+        hint = panes[index].hint
+    }
 
     Column(Modifier.fillMaxSize().background(Fw.Ground)) {
         FwTopBar(title, onBack)
@@ -83,18 +90,14 @@ internal fun PaneScreen(
                 panes.forEachIndexed { index, p ->
                     FwRow(
                         selected = index == pane,
-                        onClick = { runCatching { nav[index].requestFocus() } },
+                        // Clickables can't take focus in touch mode, so a tap selects directly.
+                        onClick = {
+                            select(index)
+                            runCatching { nav[index].requestFocus() }
+                        },
                         modifier = Modifier
                             .focusRequester(nav[index])
-                            .onFocusChanged {
-                                if (it.hasFocus) {
-                                    if (pane != index) {
-                                        pane = index
-                                        onPaneChange(index)
-                                    }
-                                    hint = p.hint
-                                }
-                            },
+                            .onFocusChanged { if (it.hasFocus) select(index) },
                     ) { Text(p.title, style = Fw.Text) }
                 }
             }
