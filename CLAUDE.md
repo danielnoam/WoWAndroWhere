@@ -1,6 +1,6 @@
-# WoW AndroWhere
+# WoWEverywhere
 
-Daniel's fork of [YoruDev-Ryland/WoWForeverywhere](https://github.com/YoruDev-Ryland/WoWForeverywhere), an Android launcher that installs and runs Blizzard's Windows ARM64 WoW client under Proton ARM64EC + DXVK + Turnip on Snapdragon handhelds. That project is itself a fork of [jaredgei/wow-forever-android](https://github.com/jaredgei/wow-forever-android) (GameNative/Winlator underneath).
+Daniel's fork (called WoW AndroWhere before 1.0.0) of [YoruDev-Ryland/WoWForeverywhere](https://github.com/YoruDev-Ryland/WoWForeverywhere), an Android launcher that installs and runs Blizzard's Windows ARM64 WoW client under Proton ARM64EC + DXVK + Turnip on Snapdragon handhelds. That project is itself a fork of [jaredgei/wow-forever-android](https://github.com/jaredgei/wow-forever-android) (GameNative/Winlator underneath).
 
 - Design and plans: `docs/superpowers/specs`, `docs/superpowers/plans`, findings in `docs/superpowers/notes`.
 - Launcher code: `app/src/main/java/app/gamenative/ui/screen/wow/` and `app/src/main/java/app/gamenative/wow/`.

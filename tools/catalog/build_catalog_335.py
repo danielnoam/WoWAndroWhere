@@ -29,7 +29,7 @@ def interface_pattern(numbers):
 
 
 def fetch(url, accept="application/vnd.github+json"):
-    req = urllib.request.Request(url, headers={"Accept": accept, "User-Agent": "WoWAndroWhere-catalog"})
+    req = urllib.request.Request(url, headers={"Accept": accept, "User-Agent": "WoWEverywhere-catalog"})
     token = os.environ.get("GITHUB_TOKEN")
     if token and url.startswith(API):
         req.add_header("Authorization", f"Bearer {token}")

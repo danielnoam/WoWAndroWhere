@@ -203,6 +203,6 @@ class LegacyClientTest {
         assertTrue(!LegacyGame.MOP.accepts(ClientBuild(4, 3, 4, 15595)))
         assertTrue(LegacyGame.of(GameVersion.PRIVATE_548) == LegacyGame.MOP)
         assertTrue(LegacyGame.of(GameVersion.PRIVATE_243) == LegacyGame.TBC)
-        assertTrue(!LegacyGame.TBC.hasAndroWherePatches && LegacyGame.WOTLK.hasAndroWherePatches)
+        assertTrue(!LegacyGame.TBC.hasEverywherePatches && LegacyGame.WOTLK.hasEverywherePatches)
     }
 }

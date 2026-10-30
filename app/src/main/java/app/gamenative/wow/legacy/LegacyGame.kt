@@ -16,7 +16,7 @@ enum class LegacyGame(val version: GameVersion, val label: String, val major: In
     ;
 
     /** Controller Menus and the Level Up Banner: their Wow.exe changes and Lua are for 3.3.5a (12340) only. */
-    val hasAndroWherePatches get() = this == WOTLK
+    val hasEverywherePatches get() = this == WOTLK
 
     /** 1.12 keeps `realmlist.wtf` next to Wow.exe; later clients keep one per locale under `Data`. */
     val rootRealmlist get() = this == VANILLA

@@ -14,7 +14,7 @@ object LevelUpBanner {
     fun install(root: File) {
         val dir = dir(root).apply { mkdirs() }
         FILES.forEach { name ->
-            val bytes = checkNotNull(javaClass.getResourceAsStream("/androwhere/addons/$FOLDER/$name")) { "Missing $name" }.use { it.readBytes() }
+            val bytes = checkNotNull(javaClass.getResourceAsStream("/everywhere/addons/$FOLDER/$name")) { "Missing $name" }.use { it.readBytes() }
             File(dir, name).writeBytes(bytes)
         }
     }

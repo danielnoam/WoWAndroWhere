@@ -33,7 +33,7 @@ def main(ours_path, out_path):
     with open(ours_path) as f:
         ours = json.load(f)
     try:
-        req = urllib.request.Request(UPSTREAM, headers={"User-Agent": "WoWAndroWhere-catalog"})
+        req = urllib.request.Request(UPSTREAM, headers={"User-Agent": "WoWEverywhere-catalog"})
         with urllib.request.urlopen(req, timeout=30) as resp:
             upstream = json.load(resp).get("addons", [])
     except Exception as e:  # noqa: BLE001 - upstream is optional

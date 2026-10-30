@@ -4,8 +4,8 @@
 
 **World of Warcraft on Snapdragon Android handhelds: WoW Forever, the official Classic versions and private servers. No PC needed.**
 
-[![Latest release](https://img.shields.io/github/v/release/danielnoam/WoWAndroWhere?label=release&color=c9a06a)](https://github.com/danielnoam/WoWAndroWhere/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/danielnoam/WoWAndroWhere/total?color=3fa7c2)](https://github.com/danielnoam/WoWAndroWhere/releases)
+[![Latest release](https://img.shields.io/github/v/release/danielnoam/WoWEverywhere?label=release&color=c9a06a)](https://github.com/danielnoam/WoWEverywhere/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/danielnoam/WoWEverywhere/total?color=3fa7c2)](https://github.com/danielnoam/WoWEverywhere/releases)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-a8a08f)](LICENSE)
 
 <img src=".github/readme/app/home.png" alt="The WoWEverywhere home screen for a 3.3.5a private server profile" width="900">
@@ -98,11 +98,11 @@ The full list, with the version each feature came in, is in [DONE.md](DONE.md). 
 | **Storage** | About 80 GB free for WoW Forever, or the size of your private server client, plus about 4 GB of internal storage for the app |
 | **Account** | A Battle.net account for WoW Forever and the official versions, or an account on your private server |
 
-Developed and tested on the **AYN Odin 3** (Snapdragon 8 Elite) with 3.3.5a on Warmane. Upstream reports WoW Forever working on the AYN Thor, Retroid Pocket 6, RedMagic 11 Pro and Samsung Galaxy S23 and newer. If you try another device, please [open an issue](https://github.com/danielnoam/WoWAndroWhere/issues) with the result.
+Developed and tested on the **AYN Odin 3** (Snapdragon 8 Elite) with 3.3.5a on Warmane. Upstream reports WoW Forever working on the AYN Thor, Retroid Pocket 6, RedMagic 11 Pro and Samsung Galaxy S23 and newer. If you try another device, please [open an issue](https://github.com/danielnoam/WoWEverywhere/issues) with the result.
 
 ## Getting started
 
-1. Download **WoWEverywhere.apk** from the [latest release](https://github.com/danielnoam/WoWAndroWhere/releases/latest) and open it on your device. Android asks you to allow installs from your browser or file manager the first time.
+1. Download **WoWEverywhere.apk** from the [latest release](https://github.com/danielnoam/WoWEverywhere/releases/latest) and open it on your device. Android asks you to allow installs from your browser or file manager the first time.
 2. Open **WoWEverywhere** and make a profile: pick **WoW Forever**, another official version, or **Private server**.
 3. For WoW Forever and the official versions, the app checks your device, finds an existing install or downloads the game, and offers to save your Battle.net login. For a private server, see below.
 4. Press **Play**.

@@ -12,19 +12,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import app.gamenative.wow.legacy.mods.AndroWherePatch
+import app.gamenative.wow.legacy.mods.EverywherePatch
 import app.gamenative.wow.ui.components.FwButton
 import app.gamenative.wow.ui.components.FwButtonKind
 import app.gamenative.wow.ui.theme.Fw
 
 /** On the 3.3.5a Installed list: offers Controller Menus while it isn't installed. The rest are in the Client tab. */
 @Composable
-internal fun AndroWherePatchesCard(c: AddonsController) {
+internal fun EverywherePatchesCard(c: AddonsController) {
     val mods = c.clientMods ?: return
     LaunchedEffect(mods) { mods.refresh() }
     if (c.mode != AddonsController.Mode.INSTALLED) return
-    if (mods.ours?.get(AndroWherePatch.LOGIN) != false) return
-    val login = AndroWherePatch.LOGIN
+    if (mods.ours?.get(EverywherePatch.LOGIN) != false) return
+    val login = EverywherePatch.LOGIN
     Row(
         Modifier
             .fillMaxWidth()

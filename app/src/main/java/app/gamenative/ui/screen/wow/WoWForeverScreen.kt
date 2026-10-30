@@ -1046,7 +1046,7 @@ internal fun prepareLegacyLaunch(
     legacy.putExtra("wineLog", if (settings.saveLog) "1" else null)
     legacy.putExtra(PadKeyboardButton.EXTRA, if (ClientMods.loginEnabled(root)) "1" else null)
     hideMouseToggle(legacy)
-    runCatching { ConsolePortLK.applyControls(context, legacy, root, always = !game.hasAndroWherePatches) }.onFailure { Timber.w(it, "ConsolePortLK controls") }
+    runCatching { ConsolePortLK.applyControls(context, legacy, root, always = !game.hasEverywherePatches) }.onFailure { Timber.w(it, "ConsolePortLK controls") }
     legacy.saveData()
     return LEGACY_CONTAINER_ID
 }

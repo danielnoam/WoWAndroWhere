@@ -202,7 +202,7 @@ class GitHubProvider(
     private data class ReleaseMetaFlavor(val flavor: String)
 
     companion object {
-        const val CATALOG_URL = "https://raw.githubusercontent.com/danielnoam/WoWAndroWhere/addon-catalog/catalog.json"
+        const val CATALOG_URL = "https://raw.githubusercontent.com/danielnoam/WoWEverywhere/addon-catalog/catalog.json"
 
         /** Upstream's nightly build, used when the fork's catalog can't be fetched. */
         const val UPSTREAM_CATALOG_URL = "https://raw.githubusercontent.com/YoruDev-Ryland/WoWForeverywhere/addon-catalog/catalog.json"

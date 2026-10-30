@@ -194,16 +194,16 @@ class ClientModsTest {
     @Test
     fun levelUpBannerInstallsAsAPlainAddonAndRemovesCleanly() {
         val root = tempDir()
-        assertFalse(ClientMods.installed(root, AndroWherePatch.LEVEL_UP))
+        assertFalse(ClientMods.installed(root, EverywherePatch.LEVEL_UP))
 
-        ClientMods.setInstalled(root, AndroWherePatch.LEVEL_UP, true)
+        ClientMods.setInstalled(root, EverywherePatch.LEVEL_UP, true)
         val dir = File(root, "Interface/AddOns/${LevelUpBanner.FOLDER}")
-        assertTrue(ClientMods.installed(root, AndroWherePatch.LEVEL_UP))
+        assertTrue(ClientMods.installed(root, EverywherePatch.LEVEL_UP))
         assertTrue(File(dir, "${LevelUpBanner.FOLDER}.toc").readText().startsWith("## Interface: 30300"))
         assertTrue(File(dir, "LevelUp.lua").readText().contains("PLAYER_LEVEL_UP"))
         assertFalse(File(root, "Data").exists())
 
-        ClientMods.setInstalled(root, AndroWherePatch.LEVEL_UP, false)
+        ClientMods.setInstalled(root, EverywherePatch.LEVEL_UP, false)
         assertFalse(dir.exists())
         assertTrue(File(root, "Interface/AddOns").isDirectory)
     }
