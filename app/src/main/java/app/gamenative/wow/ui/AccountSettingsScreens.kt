@@ -20,6 +20,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import app.gamenative.wow.product.GameRegion
+import app.gamenative.wow.product.GameRegions
+import app.gamenative.wow.product.RenderSize
+import app.gamenative.wow.product.RenderSizes
+import app.gamenative.ui.screen.wow.fitScreenSizeToWindow
+import app.gamenative.wow.ui.components.FwRow
 import app.gamenative.BuildConfig
 import app.gamenative.utils.renderReleaseNotes
 import androidx.compose.material.icons.Icons
@@ -115,6 +121,62 @@ private fun AppPane(launcher: LauncherController, setHint: (String) -> Unit) {
             )
         }
     }
+    ResolutionChoice(launcher, setHint)
+}
+
+/** Settings, App: the game's screen size, from the device profile or picked here. */
+@Composable
+private fun ResolutionChoice(launcher: LauncherController, setHint: (String) -> Unit) {
+    val context = LocalContext.current
+    var current by remember { mutableStateOf(RenderSizes.selected) }
+    Text("Resolution", style = Fw.Text, modifier = Modifier.padding(top = 8.dp))
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        RenderSize.entries.forEach { r ->
+            val result = remember(r) { fitScreenSizeToWindow(context, launcher.gpu.screenSize, r) }
+            FwRow(
+                selected = r == current,
+                onClick = {
+                    RenderSizes.save(context, r)
+                    current = r
+                },
+                modifier = Modifier.hint(
+                    "The size the game runs at, for every profile. Higher looks sharper but is harder on the device. A change applies the next time you start the game.",
+                    setHint,
+                ),
+            ) {
+                Text(if (r == RenderSize.AUTO) "Automatic, for this device" else r.label, style = Fw.Text, modifier = Modifier.weight(1f))
+                Text(result, style = Fw.Data.copy(color = Fw.Ash))
+                if (r == current) Text("Selected", style = Fw.Data.copy(color = Fw.Brass))
+            }
+        }
+    }
+}
+
+/** Settings, Battle.net: the region the game plays in, written as its portal at the next launch. */
+@Composable
+private fun RegionChoice(launcher: LauncherController, setHint: (String) -> Unit) {
+    val context = LocalContext.current
+    val branch = remember(launcher.gamePath, launcher.files.product) {
+        app.gamenative.wow.product.BuildInfo.read(java.io.File(launcher.gamePath))?.active(launcher.files.product)?.get("Branch")
+    }
+    var current by remember(branch) { mutableStateOf(GameRegions.effective(branch)) }
+    Text("Region", style = Fw.Text, modifier = Modifier.padding(top = 8.dp))
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        GameRegion.entries.forEach { r ->
+            FwRow(
+                selected = r == current,
+                onClick = {
+                    GameRegions.save(context, r)
+                    current = r
+                },
+                modifier = Modifier.hint("The Battle.net region you play in. A change applies the next time you start the game.", setHint),
+            ) {
+                Text(r.label, style = Fw.Text, modifier = Modifier.weight(1f))
+                Text(r.portal, style = Fw.Data.copy(color = Fw.Ash))
+                if (r == current) Text("Selected", style = Fw.Data.copy(color = Fw.Brass))
+            }
+        }
+    }
 }
 
 /** Settings, Battle.net login: one saved login for every Blizzard profile. */
@@ -125,7 +187,7 @@ private fun BattleNetPane(launcher: LauncherController, onEditLogin: () -> Unit,
     } else {
         Text("No login saved. You'll sign in inside the game.", style = Fw.Text)
     }
-    val how = "Saved encrypted with the Android keystore. At Play the game gets it in a temporary file, wiped once read or after three minutes at most."
+    val how = "Saved encrypted with the Android keystore. At Play the game gets it in a temporary file, wiped once read or after ten minutes at most."
     Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         FwButton(if (launcher.hasSavedLogin) "Change login" else "Save login", onEditLogin, modifier = Modifier.hint(how, setHint))
         if (launcher.hasSavedLogin) {
@@ -138,6 +200,7 @@ private fun BattleNetPane(launcher: LauncherController, onEditLogin: () -> Unit,
         }
     }
     Text("Authenticator codes are still typed in the game. Private servers use the password on their Server screen.", style = Fw.Secondary)
+    RegionChoice(launcher, setHint)
 }
 
 @Composable

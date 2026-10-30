@@ -1,5 +1,5 @@
 ## Interface: 30300
-## Title: Level Up Banner (WoW AndroWhere)
+## Title: Level Up Banner (WoWEverywhere)
 ## Notes: Shows the level you reached across the top of the screen. Type /levelbanner to see it. Written by the app.
 
 LevelUp.lua

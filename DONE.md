@@ -7,6 +7,7 @@ What the app does, by area, with the version each feature came in. Versions up t
 - Runs Blizzard's Windows ARM64 client under Proton 11 ARM64EC, DXVK and Turnip on Adreno 7xx/8xx (base)
 - Snapdragon 8 Elite / Adreno 8xx support and Samsung UBWC hint (base)
 - Resolution follows the screen size and aspect ratio, keeping the user's game settings (base)
+- Resolution choice in Settings, App: Automatic, 720p, 900p, 1080p or Native, for every profile (1.0.0, from upstream 0.5.0)
 - Handheld graphics defaults and gamepad mode on in Config.wtf (base)
 - Warning before launching on a device without an Adreno GPU (0.2.0)
 - Stall watchdog writes what blocked the main thread to `crash_logs/` (0.3.0)
@@ -20,6 +21,8 @@ What the app does, by area, with the version each feature came in. Versions up t
 - Game updates before Play, using the full installer so data files are patched too (0.2.0)
 - WoW Forever beta and launch versions, with a switch that reuses game data (0.2.0)
 - Install language written to Config.wtf (0.2.0)
+- Battle.net region chosen at install and in Settings, Battle.net, written as the portal (1.0.0, from upstream 0.5.0)
+- New WoW Forever configs answer the Screen Narrator prompt so login.txt auto login goes through (1.0.0, from jaredgei 2.3.0)
 
 ## Game versions
 
@@ -58,10 +61,10 @@ What the app does, by area, with the version each feature came in. Versions up t
 - 3.3.5a addons: WoWInterface filtered to 3.3, GitHub links without releases install from the default branch and get renamed after their TOC (0.5.0)
 - 3.3.5a addon catalog: over 30 GitHub backports from `catalog/wotlk335.json`, snapshotted nightly by commit and kept only when their TOC says Interface 303xx (0.5.0)
 - Compact Raid Frames and Loss of Control Alerts (RomanSpector's 3.3.5a backports, the ones the WotLK HD pack bundles) in the 3.3.5a addon catalog (0.8.7)
-- Level Up Banner: our own 3.3.5a add-on, installed and removed from the Client tab's AndroWhere patches, /levelbanner to preview (0.8.7)
+- Level Up Banner: our own 3.3.5a add-on, installed and removed from the Client tab's WoWEverywhere patches (AndroWhere patches before 1.0.0), /levelbanner to preview (0.8.7)
 - One-tap ConsolePortLK install on the 3.3.5a client, with a controller-to-keyboard profile used automatically while it is installed (0.5.0)
 - Immersion's quest and gossip windows work with the controller on 3.3.5a when ConsolePortLK is installed (0.5.0)
-- Client tab in Addons on 3.3.5a, for add-ons that change the client itself, with an AndroWhere patches section (Install and Remove) and a card on the Installed list for ones not installed yet (0.6.0)
+- Client tab in Addons on 3.3.5a, for add-ons that change the client itself, with a WoWEverywhere patches section (Install and Remove) and a card on the Installed list for ones not installed yet (0.6.0)
 - Controller Menus (was AndroWhere Login): controller and button hints on the 3.3.5a character select, realm list and dialogs, using a 5-byte Wow.exe patch that is undone when turned off (0.6.0)
 - Log in with A on the 3.3.5a login screen, and optional auto login once per game start: opt-in, the saved password goes into Controller Menus for one launch and is wiped right after the client opens it (0.6.0)
 - Controller on 3.3.5a character creation through Controller Menus: rows for gender, race, class, looks and name, X for a new character on character select (0.6.0)
@@ -75,7 +78,7 @@ What the app does, by area, with the version each feature came in. Versions up t
 ## Sign-in and security
 
 - Saved Battle.net login, AES-256-GCM in the Android Keystore, handed to the game through a short-lived `login.txt` (0.2.0)
-- `login.txt` wiped 20 s after the game reads it, with Hotfix.log and 3-minute backstops (0.2.0)
+- `login.txt` wiped 20 s after the game reads it, with Hotfix.log and 10-minute backstops (0.2.0, 10 minutes since 1.0.0)
 - App data excluded from cloud backup and device transfer; login dialog blocks screenshots (0.2.0)
 - Saving the login works on Android 15 devices without a screen lock (0.2.1)
 
@@ -85,8 +88,8 @@ What the app does, by area, with the version each feature came in. Versions up t
 - Battle.net login managed in Settings, shared by every Blizzard profile; no Account tile (0.8.0)
 - Text boxes open the keyboard only when A is pressed or the box is tapped, never when the D-pad passes over them (0.8.1)
 - 3.3.5a Server and Client as two home tiles (0.8.2 two-pane screen, split in 0.8.3): servers, password and login screen options on Server, folder, graphics and logs on Client; a hint line instead of long text
-- New profile has one Private server choice: the client folder is picked first and Wow.exe's version picks 1.12.1, 2.4.3, 3.3.5a, 4.3.4 or 5.4.8, asked when unreadable (unreleased)
-- Server list: A or tap selects, Y or the pencil edits (Remove inside, confirmed), Add server asks online, own server on this device or own server on a PC (unreleased)
+- New profile has one Private server choice: the client folder is picked first and Wow.exe's version picks 1.12.1, 2.4.3, 3.3.5a, 4.3.4 or 5.4.8, asked when unreadable (1.0.0)
+- Server list: A or tap selects, Y or the pencil edits (Remove inside, confirmed), Add server asks online, own server on this device or own server on a PC (1.0.0)
 - Settings in two panes (App, Battle.net, Addon sources, About) with a hint line (0.8.3); the list works by touch too (0.9.1)
 - Quieter top bar: no Experimental label, no 3.3.5a client version; the Play card shows only the server (0.8.1)
 - First-run flow: welcome and device check, find game, install, sign in (0.2.0)
@@ -94,5 +97,6 @@ What the app does, by area, with the version each feature came in. Versions up t
 - In-app app updater from GitHub releases (base)
 - Signed release builds published by tag (0.2.0)
 - App updates and the Source code link come from this fork, signed with its own key (0.4.1)
-- Named WoW AndroWhere in the app, launcher label (all languages), README and release downloads (0.5.0)
+- Named WoWEverywhere in the app, launcher label, README and release downloads (1.0.0; WoW AndroWhere from 0.5.0)
+- README with contents, fork notice and screenshots rendered in CI from the real screens by the README screenshots workflow (1.0.0)
 - Pull requests run the launcher unit tests and a build (0.4.1)

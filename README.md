@@ -1,39 +1,93 @@
 <div align="center">
 
-# WoW AndroWhere
+# WoWEverywhere
 
-**World of Warcraft: Forever on Snapdragon Android handhelds. No PC needed.**
-
-Install the app, let it download the game from Blizzard's servers, pick your addons, and press Play.
+**World of Warcraft on Snapdragon Android handhelds: WoW Forever, the official Classic versions and private servers. No PC needed.**
 
 [![Latest release](https://img.shields.io/github/v/release/danielnoam/WoWAndroWhere?label=release&color=c9a06a)](https://github.com/danielnoam/WoWAndroWhere/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/danielnoam/WoWAndroWhere/total?color=3fa7c2)](https://github.com/danielnoam/WoWAndroWhere/releases)
 [![License: GPL-3.0](https://img.shields.io/badge/license-GPL--3.0-a8a08f)](LICENSE)
-[![Support WoW Foreverywhere on Ko-fi](https://img.shields.io/badge/support_upstream-Ko--fi-c9a06a)](https://ko-fi.com/rkremeier)
 
-<img src=".github/readme/home.jpg" alt="The WoW AndroWhere home screen with Play, Addons, Game files, Account and Settings tiles" width="900">
+<img src=".github/readme/app/home.png" alt="The WoWEverywhere home screen for a 3.3.5a private server profile" width="900">
 
 </div>
 
-> [!TIP]
-> ### New in 0.3.0: CurseForge support
-> The addon browser now includes the full **CurseForge** catalog. Search, install and update CurseForge addons right on your handheld, with WoW Forever versions picked automatically. Enter your own CurseForge API key or proxy in Settings to turn it on.
->
-> **[Download the latest release](https://github.com/danielnoam/WoWAndroWhere/releases/latest)** · [Changelog](CHANGELOG.md)
+> [!NOTE]
+> **This is a fork.** WoWEverywhere is built on [WoW Foreverywhere](https://github.com/YoruDev-Ryland/WoWForeverywhere) by YoruDev-Ryland, which is itself built on [wow-forever-android](https://github.com/jaredgei/wow-forever-android) by jaredgei. All the work that makes the game run on Android is theirs. If you only play WoW Forever, the upstream app is the one to use. See [Credits](#credits).
+
+## Why this fork
+
+WoW Foreverywhere is made for Blizzard's WoW Forever, and private servers are outside its scope. This fork exists to play private servers, Warmane's 3.3.5a in particular, on a handheld with a controller.
+
+What is different from upstream:
+
+- **Private servers.** Your own 1.12.1, 2.4.3, 3.3.5a, 4.3.4 or 5.4.8 client runs through Box64, with a list of servers, saved passwords and the realm set for you.
+- **Controller on the login screens.** Controller Menus, our own add-on for 3.3.5a, lets the controller drive the login, realm, character select and character creation screens.
+- **Your own server.** A solo 3.3.5a server that the app sets up and runs on the handheld, or one you run on your PC.
+- **Profiles.** Several game setups side by side, each with its own version, folder, addons and servers.
+- **3.3.5a addons.** A catalog of over 30 maintained 3.3.5a backports, a switch for each of your client's patch files, and one-tap ConsolePortLK.
+- **Its own releases.** Signed with this fork's key and updated from this repository. CurseForge uses your own API key, never a shared proxy.
+
+## Contents
+
+- [Why this fork](#why-this-fork)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Requirements](#requirements)
+- [Getting started](#getting-started)
+- [Private servers](#private-servers)
+- [Addons](#addons)
+- [How your logins are stored](#how-your-logins-are-stored)
+- [Troubleshooting](#troubleshooting)
+- [Building from source](#building-from-source)
+- [Credits](#credits)
+- [License](#license)
 
 ## Features
 
-- **Installs the game for you.** The app downloads the WoW Forever client straight from Blizzard's CDN to internal storage or an SD card. Downloads continue in the background, can be paused and resumed, and every file is verified.
-- **Finds the copy you already have.** If WoW Forever is already on the device (copied from a PC, or set up for another launcher), the app finds it and uses it without downloading anything.
-- **Keeps it up to date.** When Blizzard patches the game, the app offers the update before you play.
-- **Built-in addon manager.** Search, install, update and remove addons from CurseForge, Wago, WoWInterface and GitHub, browse by category, and see at a glance which addons are made for Forever.
-- **Signs you in.** Save your Battle.net login once and the game logs in by itself.
-- **Made for a controller.** Every screen works with the D-pad and face buttons, and the layout adapts to small and portrait screens.
+**Playing**
+- Runs Blizzard's Windows ARM64 client natively under Proton ARM64EC, DXVK and a tuned Turnip Vulkan driver for Adreno GPUs. Private server clients, which are 32-bit x86, run through Box64.
+- Every screen works with a controller: D-pad and stick to move, A to select, B to go back, L1 and R1 to switch profiles.
+- Choose the game's resolution (Automatic, 720p, 900p, 1080p or Native), for every profile.
+- Touchscreen mode in the in-game menu: a tap clicks where your finger is.
 
-The game runs as Blizzard's own Windows ARM64 client under Wine, with DXVK and a tuned Turnip Vulkan driver for Adreno GPUs. Nothing is emulated as x86.
+**WoW Forever and official versions**
+- Downloads the game from Blizzard's servers to internal storage or an SD card, in the background, with pause, resume and file checks.
+- Finds an install you already have, including one copied from a PC, and keeps it updated.
+- Signs you in with a saved Battle.net login, and lets you pick your Battle.net region.
+- Classic Era, Burning Crusade Anniversary, Mists of Pandaria Classic and Retail are there too, as experimental versions.
+
+**Private servers**
+- One Private server choice for new profiles: pick your client folder and the app reads its version from Wow.exe.
+- Several saved servers per profile, each with its own account and encrypted password, switched on the login screen with L1 and R1.
+- Controller Menus (3.3.5a): controller support and button hints on the login, realm, character select and character creation screens, log in with A, and hold Select for the keyboard.
+- Your own server (3.3.5a, experimental): the app downloads, sets up and runs a solo AzerothCore server on the device, starts it when you press Play and stops it when the game closes.
+- Client options: DXVK or OpenGL renderer, lighter graphics in one tap, faster emulation, a performance overlay and a log you can share.
+
+**Addons**
+- Browse, search, install, update and remove addons from CurseForge, Wago, WoWInterface and a GitHub catalog, with dependencies handled.
+- The 3.3.5a catalog lists maintained backports such as Questie, Immersion and Compact Raid Frames.
+- The Client tab switches your client's patch files on and off (with the WotLK HD pack's rules) and installs our own Controller Menus and Level Up Banner.
+
+The full list, with the version each feature came in, is in [DONE.md](DONE.md). What changed in each release is in the [changelog](CHANGELOG.md).
+
+## Screenshots
+
+<p align="center">
+  <img src=".github/readme/app/server.png" alt="The Server screen with Warmane and a solo server, the password and login screen options" width="49%">
+  <img src=".github/readme/app/client.png" alt="The Client screen with the client folder, graphics and log options" width="49%">
+</p>
+<p align="center">
+  <img src=".github/readme/app/addons.png" alt="Installed addons for a 3.3.5a client" width="49%">
+  <img src=".github/readme/app/browse.png" alt="The 3.3.5a addon catalog" width="49%">
+</p>
+<p align="center">
+  <img src=".github/readme/app/patches.png" alt="The Client tab with Controller Menus, Level Up Banner and the client's patch files" width="49%">
+  <img src=".github/readme/app/settings.png" alt="Settings with the app version, updates and resolution" width="49%">
+</p>
 
 > [!NOTE]
-> WoW AndroWhere is an unofficial community project. It is not affiliated with or endorsed by Blizzard Entertainment. You need your own Battle.net account with access to WoW Forever. The app and this repository contain no Blizzard game files; everything is downloaded from Blizzard's servers on your device.
+> WoWEverywhere is an unofficial community project. It is not affiliated with or endorsed by Blizzard Entertainment. The app and this repository contain no Blizzard game files. WoW Forever and the official versions are downloaded from Blizzard's servers with your own Battle.net account. For private servers you bring your own client.
 
 ## Requirements
 
@@ -41,121 +95,65 @@ The game runs as Blizzard's own Windows ARM64 client under Wine, with DXVK and a
 | :--- | :--- |
 | **Chip** | Snapdragon 8 series with an Adreno 7xx or 8xx GPU |
 | **Android** | Android 10 or newer, 64-bit |
-| **Storage** | About 80 GB free for the game (internal storage or SD card), plus about 4 GB of internal storage for the app |
-| **Account** | A Battle.net account with WoW Forever |
-| **Network** | Wi-Fi recommended for the first start, when the game downloads its world data |
+| **Storage** | About 80 GB free for WoW Forever, or the size of your private server client, plus about 4 GB of internal storage for the app |
+| **Account** | A Battle.net account for WoW Forever and the official versions, or an account on your private server |
 
-### Devices
-
-| Device | Chip | Status |
-| :--- | :--- | :--- |
-| AYN Thor | Snapdragon 8 Gen 2 | Reaches the game world with controller support |
-| Retroid Pocket 6 | Snapdragon 8 Gen 2 | Reported working |
-| AYN Odin 2 / Odin 2 Mini | Snapdragon 8 Gen 2 | Expected to work |
-| AYN Odin 3 / Odin Portal | Snapdragon 8 Elite | Supported through the bundled Adreno 8xx driver |
-| RedMagic 11 Pro | Snapdragon 8 Elite | Reported working in-world |
-| Samsung Galaxy S23, S24, S25, Z Fold | Snapdragon 8 Gen 2 and later | Supported |
-
-If you try a device that isn't listed, please [open an issue](https://github.com/danielnoam/WoWAndroWhere/issues) with the result.
+Developed and tested on the **AYN Odin 3** (Snapdragon 8 Elite) with 3.3.5a on Warmane. Upstream reports WoW Forever working on the AYN Thor, Retroid Pocket 6, RedMagic 11 Pro and Samsung Galaxy S23 and newer. If you try another device, please [open an issue](https://github.com/danielnoam/WoWAndroWhere/issues) with the result.
 
 ## Getting started
 
-1. Download **WoW-AndroWhere.apk** from the [latest release](https://github.com/danielnoam/WoWAndroWhere/releases/latest) and open it on your device. Android asks you to allow installs from your browser or file manager the first time.
-2. Open **WoW AndroWhere** and tap **Get started**. The app checks your device and asks for file access, which it needs to install the game in a folder you can reach.
-3. **Find game.** The app looks for an existing install on internal storage and SD cards. Pick one to use it as it is, or choose **Install fresh**.
-4. **Install.** Choose internal storage or the SD card and start the download. You can leave the app while it runs; progress shows in your notifications.
-5. **Sign in.** Optionally save your Battle.net email and password so the game logs you in automatically.
-6. Press **Play**.
-
-<p align="center">
-  <img src=".github/readme/find-game.jpg" alt="Find game step listing an existing WoW Forever install" width="49%">
-  <img src=".github/readme/install-game.gif" alt="The game downloading from Blizzard's servers with a progress bar" width="49%">
-</p>
+1. Download **WoWEverywhere.apk** from the [latest release](https://github.com/danielnoam/WoWAndroWhere/releases/latest) and open it on your device. Android asks you to allow installs from your browser or file manager the first time.
+2. Open **WoWEverywhere** and make a profile: pick **WoW Forever**, another official version, or **Private server**.
+3. For WoW Forever and the official versions, the app checks your device, finds an existing install or downloads the game, and offers to save your Battle.net login. For a private server, see below.
+4. Press **Play**.
 
 > [!IMPORTANT]
-> The app downloads the game program, about half a gigabyte. The first time you start the game, it downloads the rest of its world data (about 67 GB) on its own. Your first sessions may load slowly. Leaving the game at the login screen on Wi-Fi for a while speeds this up.
+> If you used WoW AndroWhere (this app's old name), it updates in place and keeps everything. If you used the upstream WoW Foreverywhere app, uninstall it first: this fork is signed with its own key. Your game files and addons stay on your storage.
 
-### Already have the game on a PC?
+> [!TIP]
+> WoW Forever downloads about half a gigabyte up front and the rest of its world data (about 67 GB) the first time you play. Leaving the game at the login screen on Wi-Fi for a while speeds this up.
 
-You can copy it over instead of downloading. Copy the hidden `.build.info` file and the whole `Data` folder from your Battle.net install into a folder on the device, for example `WoW Forever` on your SD card. Make sure your file manager shows hidden files, or `.build.info` gets left behind. The app finds the folder on its next scan, or you can point to it with **Game files → Choose folder**.
+## Private servers
+
+1. Copy your client (1.12.1, 2.4.3, 3.3.5a, 4.3.4 or 5.4.8) to the device, for example from your PC.
+2. Make a **Private server** profile and choose the client folder. The app reads the version from Wow.exe, and asks if it can't.
+3. On **Server**, add your server: its name, realmlist (for Warmane, `logon.warmane.com`) and account name. You can save the password too.
+4. On 3.3.5a, install **Controller Menus** from **Addons → Client** to use the controller on the login screens. With **Fill in password** on, A logs you in.
+5. Press **Play**.
+
+Warmane's email code for a new location goes in the client's Authenticator field. 4.3.4 and 5.4.8 are much heavier than 3.3.5a under emulation, so turn on **Faster emulation** and **Use lighter graphics** on **Client**.
 
 ## Addons
 
-The addon browser brings together CurseForge, Wago, WoWInterface and a curated catalog of addons published on GitHub. The same addon listed on several sites appears once, with a link to each site.
-
-<p align="center">
-  <img src=".github/readme/install-addon.gif" alt="Selecting BigWigs in the addon browser and installing it" width="900">
-</p>
-
-- **Forever or Classic.** Each addon shows the round icon of the game version it was made for. Forever addons come first. Classic addons are listed too, with a note that they may not work in Forever. When a Forever version of an installed Classic addon appears, the app offers to switch.
-- **Categories.** Browse by quests, maps, raids and bosses, unit frames, action bars, bags, auction, professions and more.
-- **Updates.** The home screen shows how many addons have updates, and **Update all** installs them in one go.
-- **Your existing addons.** Addons already in the game's `Interface/AddOns` folder are recognized, including ones installed by other managers.
-- **Install from a link.** Paste a GitHub repository or a link to an addon `.zip` to install something that isn't listed.
-
-<p align="center">
-  <img src=".github/readme/browse.jpg" alt="Addon browser showing Questie with its description and links" width="49%">
-  <img src=".github/readme/category.jpg" alt="Addon browser filtered to raids and bosses" width="49%">
-</p>
-
-### Addon sources
+The addon browser brings together CurseForge, Wago, WoWInterface and GitHub. The same addon listed on several sites appears once, with a link to each site. Addons already in the game's folder are recognized, the home screen shows how many have updates, and **Update all** installs them in one go. You can also paste a GitHub repository or a `.zip` link to install something that isn't listed.
 
 | Source | What you get |
 | :--- | :--- |
-| **GitHub catalog** | Popular addons that publish releases on GitHub, such as Questie, Deadly Boss Mods, BigWigs, Plater, Dominos and Bartender4. No account or key needed. |
-| **WoWInterface** | The full WoWInterface catalog. No account or key needed. |
-| **CurseForge** | The largest catalog. Needs your own CurseForge API key or a proxy you run, entered in Settings. |
-| **Wago Addons** | Available in builds made with a Wago Addons API key. |
+| **GitHub catalog** | For WoW Forever, popular addons with GitHub releases ([`catalog/sources.json`](catalog/sources.json)). For 3.3.5a, maintained backports ([`catalog/wotlk335.json`](catalog/wotlk335.json)). Both refresh every night. |
+| **WoWInterface** | The full WoWInterface catalog, filtered to your game version. |
+| **CurseForge** | Official versions only. Needs your own CurseForge API key or a proxy you run, entered in Settings. |
+| **Wago Addons** | Official versions only, in builds made with a Wago API key. |
 
-The GitHub catalog lives in [`catalog/sources.json`](catalog/sources.json) and is refreshed every night. To suggest an addon, open a pull request that adds its repository. It needs GitHub releases with addon `.zip` files.
+To suggest an addon, open a pull request that adds its repository to the catalog file.
 
-## Playing
+## How your logins are stored
 
-<img src=".github/readme/navigate.gif" alt="Moving between home screen tiles and the addon browser with a controller" width="900">
+Saving a login is optional, and nothing leaves the device except the login itself, sent to the game.
 
-- **Controls.** Use the D-pad or stick to move and **A** to select. **B** goes back. In the game, your handheld's controller works through WoW's own gamepad mode.
-- **Back to the launcher.** While the game is starting, hold **Start + Select + L2 + R2**, or tap the back arrow, to cancel and return to the home screen.
-- **In-game menu.** Press Back during play to open the sidebar with the on-screen keyboard, the performance overlay and **Exit**.
-- **Authenticator codes** are still typed in the game.
+- Battle.net logins and private server passwords are sealed with AES-256-GCM using a key held by the Android Keystore, and are excluded from cloud backups and phone-to-phone transfers. The login form blocks screenshots.
+- WoW Forever reads your Battle.net login from a short-lived `login.txt` in the game folder. The app wipes it about 20 seconds after the game reads it, or after ten minutes at most, and when the game closes.
+- On private servers, **Fill in password** hands the saved password to Controller Menus for one launch and wipes it right after the client reads it, or after three minutes at most.
 
-### How your login is stored
-
-Saving your login is optional, and you can remove it any time under **Settings**. Every WoW Forever and other Blizzard profile uses the same saved login.
-
-- The email and password are sealed together with AES-256-GCM using a key held by the Android Keystore. The key can't be exported, and it stays in the device's secure hardware where the device has it.
-- The saved login is excluded from cloud backups and from phone-to-phone transfers.
-- Screenshots and screen recordings of the login form are blocked.
-- To sign in, the game reads your login from a short-lived `login.txt` file in its own folder. This is how the WoW client accepts a login without the Battle.net app. The app writes the file when you press Play and wipes it about 20 seconds after the game reads it, or within three minutes at most. It is also wiped when you leave or close the game.
-
-Because the game needs the password in plain text for those few seconds, any app with full storage access could read it in that window. If that is a concern, skip saving your login and sign in inside the game instead.
-
-## Settings and game files
-
-<p align="center">
-  <img src=".github/readme/game-files.jpg" alt="Game files screen with the current install and repair options" width="49%">
-  <img src=".github/readme/settings.jpg" alt="Settings screen with app version, support link and addon sources" width="49%">
-</p>
-
-- **Game files** shows where the game is installed and its version. **Install or repair** checks every file and downloads only what's missing or damaged. Once WoW Forever launches, this screen also offers to switch a beta install to the launch version, reusing the game data you already have.
-- **Settings** shows the app version, checks for app updates, and lists which addon sources are available in your build.
-
-### Profiles and other WoW versions
-
-A profile is one game setup: a name, a game version and its folder. The current profile shows at the top left of the home screen. Press it to switch profiles, edit one or add a **New profile**, or press **L1** and **R1** on the home screen to switch to the previous or next one. The whole app then works with that profile, including installing, updating, playing and the addon browser.
-
-WoW AndroWhere is made for WoW Forever, but a profile can also run Classic Era, Burning Crusade Anniversary, Mists of Pandaria Classic, Retail or your own 3.3.5a client for a private server. These versions are experimental and get little support. They may run poorly or not start at all, and automatic sign-in may not work on every version.
-
-Two profiles can use the same game folder. Each keeps its own addons, server list and passwords: when you press Play, the app turns off the other profile's addons in the game's own addon list (`AddOns.txt`). The addon files are shared, so updating an addon updates it for both.
+For those few seconds the password sits in plain text in the game folder, where any app with full storage access could read it. If that is a concern, don't save it and type it in the game instead.
 
 ## Troubleshooting
 
 | Problem | What to do |
 | :--- | :--- |
-| *CAS system was unable to initialize* | The game folder is missing `.build.info`. Run **Game files → Install or repair**, or copy the file again from your PC install. |
-| *No realms available* | The game is out of date. Open the app with Wi-Fi on and accept the update. |
-| The game is slow the first time | It's downloading its world data in the background. Give it time on Wi-Fi. |
-| The keyboard doesn't appear in the game | Force-stop Gboard under **Settings → Apps → Gboard** and open the keyboard again. |
-| The app returns to the home screen after "Starting World of Warcraft" | Check the files in the game's `Errors` folder (`_forever_/Errors` or `_classic_beta_/Errors`). |
+| *CAS system was unable to initialize* | The WoW Forever folder is missing `.build.info`. Run **Game files → Install or repair**, or copy the file again from your PC install. |
+| *No realms available* | WoW Forever is out of date. Open the app with Wi-Fi on and accept the update. |
+| A private server client doesn't start | On **Client**, turn on **Save a log**, play once, and share the log when the game closes. Try the OpenGL renderer. |
+| The keyboard doesn't appear in the game | On 3.3.5a with Controller Menus, hold Select. Otherwise press Back and choose Keyboard. If it still doesn't show, force-stop Gboard. |
 | "This device can't run the game" | The device has no Adreno GPU. The game needs a Snapdragon chip. |
 
 ## Building from source
@@ -168,28 +166,32 @@ tools/fetch_components.sh          # Wine, DXVK and Turnip runtime archives (~13
 ./gradlew testModernDebugUnitTest
 ```
 
-No CurseForge key or proxy is built into the app. Each player enters their own API key, or the address of a proxy they run (see [`server/curseforge-proxy`](server/curseforge-proxy)), in Settings. To enable Wago, put its key in `local.properties`, which is never committed:
+No API keys are built into the app. To enable Wago, put its key in `local.properties`, which is never committed:
 
 ```properties
 WAGO_API_KEY=...
 ```
 
-Release builds are signed with `app/keystores/keystore.properties` when it exists and fall back to the debug key otherwise.
+Release builds are signed with `app/keystores/keystore.properties` when it exists and fall back to the debug key otherwise. The README screenshots are rendered from the app's own screens by the **README screenshots** workflow.
 
 ## Credits
 
-WoW AndroWhere is a fork of [**WoW Foreverywhere**](https://github.com/YoruDev-Ryland/WoWForeverywhere) by YoruDev-Ryland, which built the launcher, installer and addon manager. That is a fork of [**wow-forever-android**](https://github.com/jaredgei/wow-forever-android) by jaredgei, which made WoW Forever run on Android handhelds in the first place. wow-forever-android in turn builds on:
+WoWEverywhere is a fork of [**WoW Foreverywhere**](https://github.com/YoruDev-Ryland/WoWForeverywhere) by **YoruDev-Ryland**, which built the launcher, installer and addon manager. That is a fork of [**wow-forever-android**](https://github.com/jaredgei/wow-forever-android) by **jaredgei**, which made WoW Forever run on Android handhelds in the first place. If this app saves you time, consider supporting WoW Foreverywhere on [Ko-fi](https://ko-fi.com/rkremeier). This fork takes no donations.
+
+They build on:
 
 - [**GameNative**](https://github.com/utkarshdalal/GameNative), [**Pluvia**](https://github.com/oxters168/Pluvia), [**Winlator**](https://github.com/brunodev85/winlator) and the [**Bionic Vulkan wrapper**](https://github.com/leegao/bionic-vulkan-wrapper) for the Android app, Wine container management and X server.
 - The **WoW Forever RP6 community bundle** and [**arusiasotto**](https://github.com/arusiasotto/wow-forever-a840) for the tuned Proton 11 ARM64EC, DXVK and Turnip builds.
-- [**Wine**](https://www.winehq.org/), [**Proton**](https://github.com/ValveSoftware/Proton), [**DXVK**](https://github.com/doitsujin/dxvk), [**Mesa**](https://mesa3d.org/), [**FEX-Emu**](https://github.com/FEX-Emu/FEX), [**box64**](https://github.com/ptitSeb/box64) and [**PulseAudio**](https://www.freedesktop.org/wiki/Software/PulseAudio/).
+- [**Wine**](https://www.winehq.org/), [**Proton**](https://github.com/ValveSoftware/Proton), [**DXVK**](https://github.com/doitsujin/dxvk), [**Mesa**](https://mesa3d.org/), [**FEX-Emu**](https://github.com/FEX-Emu/FEX), [**Box64**](https://github.com/ptitSeb/box64) and [**PulseAudio**](https://www.freedesktop.org/wiki/Software/PulseAudio/).
+
+For private servers, this fork also uses:
+
+- [**AzerothCore**](https://github.com/azerothcore/azerothcore-wotlk) for Your own server, built for Android with [**Termux**](https://github.com/termux/termux-packages) packages.
+- [**ConsolePortLK**](https://github.com/leoaviana/ConsolePortLK) by leoaviana, installed on request.
+- The authors of the 3.3.5a backports in the addon catalog, such as RomanSpector's Compact Raid Frames and Loss of Control Alerts. Each addon is downloaded from its author's own repository.
 
 World of Warcraft, WoW Forever and the artwork shown in the app are owned by Blizzard Entertainment. The app loads that artwork from Blizzard's own servers. Full third-party license details are in [`THIRD_PARTY_NOTICES`](THIRD_PARTY_NOTICES).
 
-## Support
-
-WoW AndroWhere is free and open source, built on WoW Foreverywhere. If it saves you time, you can support WoW Foreverywhere's development on [Ko-fi](https://ko-fi.com/rkremeier).
-
 ## License
 
-[GPL-3.0](LICENSE). The bundled runtime components carry their own licenses; see [`THIRD_PARTY_NOTICES`](THIRD_PARTY_NOTICES).
+[GPL-3.0](LICENSE), like the projects it is built on. The bundled runtime components carry their own licenses; see [`THIRD_PARTY_NOTICES`](THIRD_PARTY_NOTICES).

@@ -1,5 +1,5 @@
 ## Interface: 30300
-## Title: ConsolePortLK setup (WoW AndroWhere)
-## Notes: Sets ConsolePortLK to the Xbox layout and the keys WoW AndroWhere sends, so no calibration is needed, and lets the controller drive Immersion. Written by the app.
+## Title: ConsolePortLK setup (WoWEverywhere)
+## Notes: Sets ConsolePortLK to the Xbox layout and the keys WoWEverywhere sends, so no calibration is needed, and lets the controller drive Immersion. Written by the app.
 
 Setup.lua
