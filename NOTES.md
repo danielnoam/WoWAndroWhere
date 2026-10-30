@@ -2,6 +2,10 @@
 
 Why things are the way they are, newest first.
 
+## 2026-10-30: Solo server processes are stopped with SIGTERM, and their output reader can't crash the app
+
+The 0.9.0 solo setup crashed the app at "Creating your account". The likely cause, found by reading the code (no device log yet): `Process.destroy()` on Android closes the process's output streams right after signalling it, while the thread copying that output to the log is still reading, so the read threw and the exception escaped the thread, which kills the app. Stopping the database after the account was made was the first place that happened; stopping the server when the game ends would have been the next. The server processes are now sent SIGTERM directly (MariaDB and AzerothCore shut down cleanly on it) and the reader catches its own errors. Each log is also capped at 4 MB so a process stuck in an error loop can't fill the storage. **Share log** joins the last 256 KB of each log into the external cache and opens the share sheet; nothing leaves the device unless the player picks a target.
+
 ## 2026-10-30: The solo server build never replaces a published release
 
 `solo-server.yml` used to run on every branch push that touched its files and delete and recreate the `solo-server-<commit>` release. A rebuild is never byte-identical, so the files changed under the same name while main's `solo-server.json` still pinned the old hashes, and setup from main failed until the manifest caught up (it happened during the 0.9.0 cut). The workflow now runs only by hand and stops if the release for that AzerothCore commit already exists. A new build means a new AzerothCore commit, a new release name and a new manifest.

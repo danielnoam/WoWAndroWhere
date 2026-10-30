@@ -34,6 +34,11 @@ sealed interface SoloStatus {
  * app process. The game ending stops them; so does [stop].
  */
 object SoloServer {
+    const val SHARED_LOG = "AndroWhere-solo.log"
+    private const val LOG_LIMIT = 4L shl 20
+    private const val SHARED_PER_LOG = 256L shl 10
+    private const val SIGTERM = 15
+
     private val _status = MutableStateFlow<SoloStatus>(SoloStatus.Stopped)
     val status: StateFlow<SoloStatus> = _status.asStateFlow()
 
@@ -116,6 +121,10 @@ object SoloServer {
                 "--character-sets-dir=${File(share, "charsets").path}",
                 "--innodb-use-native-aio=0",
                 "--innodb-buffer-pool-size=256M",
+                // Same redo log size the database was built with, so the first start doesn't rewrite it.
+                "--innodb-log-file-size=512M",
+                "--innodb-read-io-threads=2",
+                "--innodb-write-io-threads=2",
                 "--performance-schema=OFF",
                 "--skip-log-bin",
                 "--max-connections=40",
@@ -144,20 +153,32 @@ object SoloServer {
         File(paths.run, "$name.pid").writeText(pidOf(process)?.toString().orEmpty())
         val ready = CompletableDeferred<Unit>()
         val tail = ArrayDeque<String>()
+        // An exception escaping this thread would kill the app, and a process in an error loop must not fill the
+        // storage, so read errors end the thread quietly and the log stops at LOG_LIMIT.
         Thread({
-            log.bufferedWriter().use { w ->
-                process.inputStream.bufferedReader().forEachLine { line ->
-                    w.write(line)
-                    w.newLine()
-                    w.flush()
-                    synchronized(tail) {
-                        tail.addLast(line)
-                        if (tail.size > 8) tail.removeFirst()
+            try {
+                log.bufferedWriter().use { w ->
+                    var written = 0L
+                    process.inputStream.bufferedReader().forEachLine { line ->
+                        if (written < LOG_LIMIT) {
+                            w.write(line)
+                            w.newLine()
+                            w.flush()
+                            written += line.length + 1
+                            if (written >= LOG_LIMIT) w.write("[log cut at ${LOG_LIMIT shr 20} MB]\n")
+                        }
+                        synchronized(tail) {
+                            tail.addLast(line)
+                            if (tail.size > 8) tail.removeFirst()
+                        }
+                        if (readyLine != null && line.contains(readyLine)) ready.complete(Unit)
                     }
-                    if (readyLine != null && line.contains(readyLine)) ready.complete(Unit)
                 }
+            } catch (e: Exception) {
+                Timber.w(e, "Stopped reading $name output")
+            } finally {
+                ready.completeExceptionally(IOException("$name stopped: ${synchronized(tail) { tail.lastOrNull() } ?: "no output"}"))
             }
-            ready.completeExceptionally(IOException("$name stopped: ${synchronized(tail) { tail.lastOrNull() } ?: "no output"}"))
         }, "solo-$name").apply { isDaemon = true }.start()
         if (readyLine == null) {
             if (process.waitFor(2, TimeUnit.SECONDS)) throw IOException("$name stopped right away. See ${log.name}.")
@@ -173,10 +194,30 @@ object SoloServer {
         stopProcess("mariadbd", 60)
     }
 
+    /** Asks [name] to shut down cleanly with SIGTERM. Process.destroy() would also close its output under the reader thread. */
     private fun stopProcess(name: String, seconds: Long) {
         val p = running.remove(name) ?: return
-        p.destroy()
+        val pid = pidOf(p)
+        if (pid != null) android.os.Process.sendSignal(pid, SIGTERM) else p.destroy()
         if (!p.waitFor(seconds, TimeUnit.SECONDS)) p.destroyForcibly()
+    }
+
+    /** Joins the last part of each server log into one file the share sheet can send, or null if there are none. */
+    fun shareableLog(context: Context): File? {
+        val logs = SoloPaths.of(context).logs.listFiles { f -> f.extension == "log" }?.sortedBy { it.name }.orEmpty()
+        if (logs.isEmpty()) return null
+        val out = File(context.externalCacheDir, "solo_logs/$SHARED_LOG").apply { parentFile?.mkdirs() }
+        out.bufferedWriter().use { w ->
+            logs.forEach { f ->
+                w.write("===== ${f.name} =====\n")
+                f.inputStream().use { input ->
+                    input.skip((f.length() - SHARED_PER_LOG).coerceAtLeast(0))
+                    w.write(input.readBytes().decodeToString())
+                }
+                w.write("\n")
+            }
+        }
+        return out
     }
 
     /** Ends server processes left behind by an app that was killed while they ran. */
