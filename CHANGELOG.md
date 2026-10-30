@@ -2,7 +2,7 @@
 
 Releases up to 0.4.0 are upstream's (YoruDev-Ryland/WoWForeverywhere), which this fork started from.
 
-## Unreleased
+## 0.9.2
 
 - **Your own server: account creation works.** Setup in 0.9.1 stopped at "Creating your account" with a database error (No database selected). Press Continue setup after updating and it picks up from there.
 
