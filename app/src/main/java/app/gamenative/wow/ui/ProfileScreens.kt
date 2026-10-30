@@ -1,6 +1,8 @@
 package app.gamenative.wow.ui
 
 import android.view.KeyEvent as AndroidKey
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,6 +30,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,10 +40,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import app.gamenative.utils.StorageUtils
+import app.gamenative.wow.legacy.LegacyClient
 import app.gamenative.wow.legacy.LegacyGame
 import app.gamenative.wow.product.GameVersion
 import app.gamenative.wow.profile.Profile
@@ -53,6 +59,10 @@ import app.gamenative.wow.ui.components.FwTextField
 import app.gamenative.wow.ui.components.GameIconImage
 import app.gamenative.wow.ui.components.icon
 import app.gamenative.wow.ui.theme.Fw
+import java.io.File
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /** True for a key press of [code] on a controller or keyboard. */
 internal fun androidx.compose.ui.input.key.KeyEvent.pressed(code: Int) = type == KeyEventType.KeyDown && nativeKeyEvent.keyCode == code
@@ -165,21 +175,57 @@ private fun ProfileEditDialog(launcher: LauncherController, profile: Profile, on
     }
 }
 
-/** Step 1 of a new profile: the game version and a name. Step 2 is the version's own setup. */
+/**
+ * Step 1 of a new profile: the game and a name. Step 2 is the version's own setup. Private servers are one choice:
+ * the client folder is picked here and its Wow.exe says which version the profile is for.
+ */
 @Composable
 fun NewProfileScreen(launcher: LauncherController, onCreated: (GameVersion) -> Unit, onBack: () -> Unit) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     var version by remember { mutableStateOf<GameVersion?>(if (launcher.profiles.isEmpty()) GameVersion.FOREVER else null) }
+    var privateServer by remember { mutableStateOf(false) }
     var name by remember { mutableStateOf("") }
+    var folderError by remember { mutableStateOf<String?>(null) }
+    // A client folder whose Wow.exe has no readable version: the player says which game it is.
+    var unknown by remember { mutableStateOf<File?>(null) }
     val first = remember { FocusRequester() }
     LaunchedEffect(Unit) { runCatching { first.requestFocus() } }
+    val createPrivate = { game: LegacyGame, root: File ->
+        scope.launch {
+            val existing = withContext(Dispatchers.IO) { LegacyClient.readRealmlist(root) }
+            if (launcher.createProfile(name, game.version)) {
+                launcher.updateLegacy(launcher.legacy.copy(root = root.absolutePath, realmlist = existing ?: launcher.legacy.realmlist))
+                onCreated(game.version)
+            }
+        }
+    }
+    val picker = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+        val path = StorageUtils.getPathFromTreeUri(context, uri) ?: return@rememberLauncherForActivityResult
+        scope.launch {
+            val root = withContext(Dispatchers.IO) { LegacyClient.findRoot(File(path)) }
+            if (root == null) {
+                folderError = "No ${LegacyClient.EXE} with a Data folder in $path."
+                return@launch
+            }
+            val build = withContext(Dispatchers.IO) { LegacyClient.detectBuild(LegacyClient.exe(root)) }
+            val game = build?.let { b -> LegacyGame.entries.firstOrNull { it.major == b.major } }
+            folderError = null
+            when {
+                build == null -> unknown = root
+                game == null -> folderError = "This folder has a $build client. Private servers can be ${LegacyGame.entries.joinToString { it.label }}."
+                else -> createPrivate(game, root)
+            }
+        }
+    }
     FwPage("New profile", onBack) {
         FwSection("Game version") {
             Text("Pick the game this profile runs. The app is made for WoW Forever; the other versions are experimental.", style = Fw.Secondary)
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                GameVersion.entries.forEachIndexed { index, v ->
+                GameVersion.entries.filterNot { it.isPrivateServer }.forEachIndexed { index, v ->
                     FwRow(
                         selected = v == version,
-                        onClick = { version = v },
+                        onClick = { version = v; privateServer = false },
                         modifier = if (index == 0) Modifier.focusRequester(first) else Modifier,
                     ) {
                         GameIconImage(v.icon, 24.dp) { Box(Modifier.size(24.dp)) }
@@ -187,6 +233,12 @@ fun NewProfileScreen(launcher: LauncherController, onCreated: (GameVersion) -> U
                         if (v.isExperimental) Text("Experimental", style = Fw.Data.copy(color = Fw.Ash))
                         if (v == version) Text("Selected", style = Fw.Data.copy(color = Fw.Brass))
                     }
+                }
+                FwRow(selected = privateServer, onClick = { version = null; privateServer = true }) {
+                    GameIconImage(GameVersion.PRIVATE_335.icon, 24.dp) { Box(Modifier.size(24.dp)) }
+                    Text("Private server", style = Fw.Text, modifier = Modifier.weight(1f))
+                    Text("Experimental", style = Fw.Data.copy(color = Fw.Ash))
+                    if (privateServer) Text("Selected", style = Fw.Data.copy(color = Fw.Brass))
                 }
             }
         }
@@ -196,29 +248,57 @@ fun NewProfileScreen(launcher: LauncherController, onCreated: (GameVersion) -> U
                 { name = it },
                 "Name",
                 Modifier.fillMaxWidth(),
-                placeholder = version?.let { Profiles.freeName(it.displayName) } ?: "Pick a version first",
+                placeholder = version?.let { Profiles.freeName(it.displayName) } ?: if (privateServer) "Named after the client's version" else "Pick a version first",
             )
             Text("Leave it empty to use the version's name.", style = Fw.Secondary)
         }
-        version?.let { v ->
+        if (privateServer) {
             Text(
-                if (v.isPrivateServer) {
-                    "Next, choose your ${LegacyGame.of(v).label} client folder and add your servers. The folder can be one another profile uses: each profile keeps its own addons, client patches and servers."
-                } else {
-                    "Next, download ${v.displayName}, or pick a copy already on this device. A copy another profile uses works too: each profile keeps its own addons."
-                },
+                "Next, choose your client folder. The app reads its version from ${LegacyClient.EXE} (${LegacyGame.entries.joinToString { it.label }}) " +
+                    "and sets the profile up for it. The folder can be one another profile uses: each profile keeps its own addons, client patches and servers.",
                 style = Fw.Secondary,
             )
         }
+        version?.let { v ->
+            Text("Next, download ${v.displayName}, or pick a copy already on this device. A copy another profile uses works too: each profile keeps its own addons.", style = Fw.Secondary)
+        }
+        folderError?.let { Text(it, style = Fw.Secondary.copy(color = Fw.Warn)) }
         launcher.switchBlocked?.let { Text(it, style = Fw.Secondary.copy(color = Fw.Warn)) }
         FwButton(
-            "Create profile",
+            if (privateServer) "Choose client folder" else "Create profile",
             {
-                val v = version ?: return@FwButton
-                if (launcher.createProfile(name, v)) onCreated(v)
+                if (privateServer) {
+                    picker.launch(null)
+                } else {
+                    val v = version ?: return@FwButton
+                    if (launcher.createProfile(name, v)) onCreated(v)
+                }
             },
-            enabled = version != null && launcher.switchBlocked == null,
+            enabled = (version != null || privateServer) && launcher.switchBlocked == null,
         )
+    }
+    unknown?.let { root -> UnknownClientDialog(onPick = { unknown = null; createPrivate(it, root) }, onDismiss = { unknown = null }) }
+}
+
+/** Which game a client folder holds, when its Wow.exe has no readable version. */
+@Composable
+private fun UnknownClientDialog(onPick: (LegacyGame) -> Unit, onDismiss: () -> Unit) {
+    val first = remember { FocusRequester() }
+    LaunchedEffect(Unit) { runCatching { first.requestFocus() } }
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        Column(
+            Modifier.fillMaxWidth(0.9f).widthIn(max = 520.dp).background(Fw.Stone, RoundedCornerShape(20.dp)).padding(20.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text("Which version is this client?", style = Fw.Title)
+            Text("The app couldn't read the version from ${LegacyClient.EXE}.", style = Fw.Secondary)
+            LegacyGame.entries.forEachIndexed { index, game ->
+                FwRow(selected = false, onClick = { onPick(game) }, modifier = if (index == 0) Modifier.focusRequester(first) else Modifier) {
+                    Text(game.label, style = Fw.Text)
+                }
+            }
+            FwButton("Cancel", onDismiss, kind = FwButtonKind.Ghost)
+        }
     }
 }
 
