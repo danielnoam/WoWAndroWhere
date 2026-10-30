@@ -33,6 +33,9 @@ jobs:
       - run: echo "sdk.dir=$ANDROID_HOME" > local.properties
       - name: Render
         run: ./gradlew --no-daemon testModernDebugUnitTest --tests "app.gamenative.wow.readme.ReadmeScreenshots"
+      - name: Show the test's output
+        if: failure()
+        run: grep -h -A60 -E "Exception|Error" app/build/test-results/testModernDebugUnitTest/*.xml | head -400
       - uses: actions/upload-artifact@v4
         if: always()
         with:
