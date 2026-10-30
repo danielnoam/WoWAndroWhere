@@ -47,7 +47,7 @@ object LegacyClient {
     private const val LOG_WAITING = "log_waiting"
 
     /** Built by the "Private server addon catalogs" workflow from the lists in `catalog/`. */
-    fun catalogUrl(key: String) = "https://raw.githubusercontent.com/danielnoam/WoWAndroWhere/addon-catalog-335/catalog-$key.json"
+    fun catalogUrl(key: String) = "https://raw.githubusercontent.com/danielnoam/WoWEverywhere/addon-catalog-335/catalog-$key.json"
 
     private const val FIXED_FILE_INFO_SIGNATURE = 0xFEEF04BDL
     private val LOCALE = Regex("[a-z]{2}[A-Z]{2}")
