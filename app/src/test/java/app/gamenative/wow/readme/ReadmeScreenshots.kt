@@ -2,6 +2,8 @@ package app.gamenative.wow.readme
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,11 +11,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.core.app.ApplicationProvider
+import app.gamenative.ui.screen.wow.GpuProfile
 import app.gamenative.wow.legacy.LegacyServer
 import app.gamenative.wow.product.GameVersion
 import app.gamenative.wow.profile.Profiles
@@ -27,6 +27,8 @@ import app.gamenative.wow.ui.addons.AddonsScreen
 import app.gamenative.wow.ui.addons.legacyAddonsControllerFor
 import app.gamenative.wow.ui.theme.Fw
 import app.gamenative.wow.ui.theme.ForeverywhereTheme
+import io.mockk.every
+import io.mockk.mockkObject
 import java.io.File
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +51,7 @@ import org.robolectric.annotation.GraphicsMode
 class ReadmeScreenshots {
 
     @get:Rule
-    val compose = createComposeRule()
+    val compose = createAndroidComposeRule<ComponentActivity>()
 
     private val context: Context = ApplicationProvider.getApplicationContext()
     private val out = File(System.getProperty("readme.out") ?: "build/readme-screens").apply { mkdirs() }
@@ -58,6 +60,10 @@ class ReadmeScreenshots {
 
     @Test
     fun capture() {
+        // GPUInformation needs the app's native library; this is the Odin 3's Adreno 8xx profile.
+        mockkObject(GpuProfile.Companion)
+        every { GpuProfile.detect(any()) } returns
+            GpuProfile("Turnip-V32-RP6sched", "noconform,sysmem", "1280x720", "Adreno 8xx", "Snapdragon 8 Elite / Adreno 8xx")
         val client = sampleClient()
         Profiles.load(context)
         val profile = Profiles.create(context, "Warmane", GameVersion.PRIVATE_335)
@@ -111,8 +117,11 @@ class ReadmeScreenshots {
         compose.waitForIdle()
     }
 
+    /** Draws the window in software: Compose's captureToImage waits on a hardware redraw Robolectric never makes. */
     private fun save(name: String) {
-        val bitmap = compose.onRoot().captureToImage().asAndroidBitmap()
+        val view = compose.activity.findViewById<android.view.ViewGroup>(android.R.id.content).getChildAt(0)
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        compose.runOnUiThread { view.draw(Canvas(bitmap)) }
         File(out, "$name.png").outputStream().use { bitmap.compress(Bitmap.CompressFormat.PNG, 100, it) }
     }
 
