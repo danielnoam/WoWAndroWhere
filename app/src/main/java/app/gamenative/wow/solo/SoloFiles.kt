@@ -44,7 +44,11 @@ data class SoloManifest(
     val databaseUnpacked: Long,
     val clientDataHashes: SoloPart,
     val clientData: ClientDataSource,
+    val build: String = "",
 ) {
+    /** Names the server build; changes whenever the server files do, even for the same AzerothCore commit. */
+    val serverBuild get() = build.ifEmpty { azerothcore }
+
     companion object {
         const val ASSET = "solo/solo-server.json"
 
@@ -66,7 +70,7 @@ data class SoloState(
     val pathfinding get() = ClientData.PATHING in dataFolders
 
     fun isReady(manifest: SoloManifest, wantPathing: Boolean) =
-        server == manifest.azerothcore && database.isNotEmpty() && dataFolders.containsAll(ClientData.folders(wantPathing)) && account.isNotEmpty()
+        server == manifest.serverBuild && database.isNotEmpty() && dataFolders.containsAll(ClientData.folders(wantPathing)) && account.isNotEmpty()
 
     companion object {
         fun load(paths: SoloPaths): SoloState =

@@ -40,7 +40,10 @@ cp -rL "$PREFIX/share/mariadb" $S/share/mariadb
 MARIADB_LIB=$(dirname "$(find "$PREFIX/lib" -name 'libmariadb.so*' | head -1)")
 LIBDIRS=("$PREFIX/lib" "$MARIADB_LIB")
 export LD_LIBRARY_PATH="$MARIADB_LIB"
-queue=("$S"/bin/*)
+# OpenSSL 3 keeps RC4, which the world server's packet encryption uses, in its legacy provider module.
+mkdir -p $S/lib/ossl-modules
+cp -L "$PREFIX/lib/ossl-modules/legacy.so" $S/lib/ossl-modules/
+queue=("$S"/bin/* "$S/lib/ossl-modules/legacy.so")
 declare -A seen
 while ((${#queue[@]})); do
     f=${queue[0]}; queue=("${queue[@]:1}")
@@ -56,9 +59,27 @@ while ((${#queue[@]})); do
         done
     done
 done
-llvm-strip --strip-unneeded $S/bin/* $S/lib/*.so* || true
+llvm-strip --strip-unneeded $S/bin/* $S/lib/*.so* $S/lib/ossl-modules/*.so || true
 ls -la $S/bin $S/lib
 test -e $S/lib/libmariadb.so || test -e $S/lib/libmariadb.so.3
+test -e $S/lib/ossl-modules/legacy.so
+
+# A check smoke.sh runs: RC4 through the bundled legacy provider.
+cat > $W/rc4check.c <<'C'
+#include <openssl/evp.h>
+#include <openssl/provider.h>
+#include <stdio.h>
+int main(void) {
+    if (!OSSL_PROVIDER_load(NULL, "legacy") || !OSSL_PROVIDER_load(NULL, "default")) { puts("legacy provider didn't load"); return 1; }
+    EVP_CIPHER_CTX *c = EVP_CIPHER_CTX_new();
+    unsigned char key[20] = {0};
+    if (EVP_EncryptInit_ex(c, EVP_rc4(), NULL, NULL, NULL) != 1 || EVP_CIPHER_CTX_set_key_length(c, 20) != 1
+        || EVP_EncryptInit_ex(c, NULL, NULL, key, NULL) != 1) { puts("RC4 unavailable"); return 1; }
+    puts("RC4 ok");
+    return 0;
+}
+C
+clang $W/rc4check.c -o $W/rc4check -lcrypto
 
 # --- world database ---
 D=$OUT/db

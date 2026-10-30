@@ -90,6 +90,23 @@ PATCHES = [
      "    SetValidData(index, static_cast<int64>(value));\n"
      "}\n"
      "#endif\n"),
+    # The console log is stdout, which is fully buffered when it's a pipe (the app and the start test both read
+    # it), so "ready..." could sit unflushed while the app waited for it. Flush after every line.
+    ("src/common/Logging/AppenderConsole.cpp",
+     "        utf8printf(stdout_stream ? stdout : stderr, \"%s%s\\n\", message->prefix.c_str(), message->text.c_str());\n    }\n}",
+     "        utf8printf(stdout_stream ? stdout : stderr, \"%s%s\\n\", message->prefix.c_str(), message->text.c_str());\n    }\n"
+     "    fflush(stdout_stream ? stdout : stderr);\n}"),
+    # Android's getaddrinfo can refuse even a numeric address from a process outside the app's own runtime,
+    # so a literal IP such as the realm's 127.0.0.1 is parsed directly and only names go to the resolver.
+    ("src/common/Asio/Resolver.h",
+     "            boost::system::error_code ec;\n"
+     "            boost::asio::ip::resolver_base::flags flagsResolver",
+     "            boost::system::error_code ec;\n"
+     "            boost::asio::ip::address literal = boost::asio::ip::make_address(host, ec);\n"
+     "            if (!ec)\n"
+     "                return boost::asio::ip::tcp::endpoint(literal, service.empty() ? 0 : static_cast<unsigned short>(std::stoul(service)));\n"
+     "            ec.clear();\n"
+     "            boost::asio::ip::resolver_base::flags flagsResolver"),
 ]
 
 for rel, old, new in PATCHES:

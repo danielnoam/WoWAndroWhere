@@ -56,12 +56,12 @@ object SoloSetup {
         val needed = sizes(manifest, pathing).disk - onDisk(paths)
         if (needed > freeSpace(context)) throw IOException("Not enough space: setup needs ${gb(needed)} more.")
 
-        if (state.server != manifest.azerothcore) {
+        if (state.server != manifest.serverBuild) {
             val archive = download(paths, manifest.server, "Downloading the server")
             report("Unpacking the server", null)
             replaceDir(paths.usr) { unpack(archive, it, strip = "usr/") }
             archive.delete()
-            state = state.copy(server = manifest.azerothcore).also { SoloState.save(paths, it) }
+            state = state.copy(server = manifest.serverBuild).also { SoloState.save(paths, it) }
         }
 
         // The database holds the player's characters, so a newer server build never replaces it.
