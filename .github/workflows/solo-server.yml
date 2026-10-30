@@ -5,11 +5,9 @@ name: solo-server
 # assets of a solo-server-<commit> release and commits app/src/main/assets/solo/solo-server.json (URLs, sizes,
 # sha256) to the branch it ran on, so the app only accepts these exact files. Also hashes every file in
 # AzerothCore's client-data release so the app can check map data it fetches piece by piece.
-# Runs when this file or the build script changes on a working branch, or by hand.
+# Runs only by hand. A release that already exists is left alone, because the app on main pins its hashes:
+# rebuilding it would publish different files under the same name and break setup until main caught up.
 on:
-  push:
-    branches-ignore: [main]
-    paths: [.github/workflows/solo-server.yml, .github/solo-server/**]
   workflow_dispatch:
     inputs:
       azerothcore:
@@ -29,6 +27,15 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - name: Stop if this build is already published
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="solo-server-${AC_COMMIT:0:7}"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "::error::$TAG already exists. Published builds are never replaced; build another AzerothCore commit instead."
+            exit 1
+          fi
       - name: AzerothCore source
         run: |
           mkdir -p work
@@ -69,7 +76,6 @@ jobs:
           tar -C work/out --owner=0 --group=0 -cf - db | zstd -19 -T0 -q -o "solo-db-$SHORT.tar.zst"
           zstd -19 -q -o client-data.sha256.zst client-data.sha256
           ls -la *.zst | tee -a "$GITHUB_STEP_SUMMARY"
-          gh release delete "$TAG" --yes --cleanup-tag 2>/dev/null || true
           gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --title "Solo server $SHORT" \
             --notes "AzerothCore $AC_COMMIT and MariaDB $MARIADB built for Android by solo-server.yml. Downloaded by the app's Your own server setup." \
             "solo-server-$SHORT.tar.zst" "solo-db-$SHORT.tar.zst" client-data.sha256.zst
