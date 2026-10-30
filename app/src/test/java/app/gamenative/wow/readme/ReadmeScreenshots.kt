@@ -127,7 +127,9 @@ class ReadmeScreenshots {
 
     /** A 3.3.5a client folder: a Wow.exe with only its version resource, a realmlist and a few add-ons. */
     private fun sampleClient(): File {
-        val root = File(context.filesDir, "World of Warcraft 3.3.5a").apply { mkdirs() }
+        // The workflow makes /storage/emulated/0 writable so the Client screen shows a path like the phone's.
+        val sdcard = File("/storage/emulated/0").takeIf { it.canWrite() } ?: context.filesDir
+        val root = File(sdcard, "Games/World of Warcraft 3.3.5a").apply { mkdirs() }
         File(root, "Wow.exe").writeBytes(versionResource(3, 3, 5, 12340))
         File(root, "Data/enUS").mkdirs()
         File(root, "Data/enUS/realmlist.wtf").writeText("set realmlist logon.warmane.com\r\n")

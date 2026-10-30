@@ -31,6 +31,7 @@ jobs:
       - name: Fetch runtime components
         run: tools/fetch_components.sh
       - run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+      - run: sudo mkdir -p /storage/emulated/0 && sudo chmod 777 /storage/emulated/0
       - name: Render
         run: ./gradlew --no-daemon testModernDebugUnitTest --tests "app.gamenative.wow.readme.ReadmeScreenshots"
       - name: Show the test's output
