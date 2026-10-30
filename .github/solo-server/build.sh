@@ -64,6 +64,23 @@ ls -la $S/bin $S/lib
 test -e $S/lib/libmariadb.so || test -e $S/lib/libmariadb.so.3
 test -e $S/lib/ossl-modules/legacy.so
 
+# A check smoke.sh runs: RC4 through the bundled legacy provider.
+cat > $W/rc4check.c <<'C'
+#include <openssl/evp.h>
+#include <openssl/provider.h>
+#include <stdio.h>
+int main(void) {
+    if (!OSSL_PROVIDER_load(NULL, "legacy") || !OSSL_PROVIDER_load(NULL, "default")) { puts("legacy provider didn't load"); return 1; }
+    EVP_CIPHER_CTX *c = EVP_CIPHER_CTX_new();
+    unsigned char key[20] = {0};
+    if (EVP_EncryptInit_ex(c, EVP_rc4(), NULL, NULL, NULL) != 1 || EVP_CIPHER_CTX_set_key_length(c, 20) != 1
+        || EVP_EncryptInit_ex(c, NULL, NULL, key, NULL) != 1) { puts("RC4 unavailable"); return 1; }
+    puts("RC4 ok");
+    return 0;
+}
+C
+clang $W/rc4check.c -o $W/rc4check -lcrypto
+
 # --- world database ---
 D=$OUT/db
 SOCK=$W/mysql.sock

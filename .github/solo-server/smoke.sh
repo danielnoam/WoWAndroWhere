@@ -43,22 +43,8 @@ stop() {
 }
 
 # OpenSSL's legacy provider must load from the bundle: the world server's packet encryption (RC4) needs it.
-cat > $T/rc4.c <<'C'
-#include <openssl/evp.h>
-#include <openssl/provider.h>
-#include <stdio.h>
-int main(void) {
-    if (!OSSL_PROVIDER_load(NULL, "legacy") || !OSSL_PROVIDER_load(NULL, "default")) { puts("legacy provider didn't load"); return 1; }
-    EVP_CIPHER_CTX *c = EVP_CIPHER_CTX_new();
-    unsigned char key[20] = {0};
-    if (EVP_EncryptInit_ex(c, EVP_rc4(), NULL, NULL, NULL) != 1 || EVP_CIPHER_CTX_set_key_length(c, 20) != 1
-        || EVP_EncryptInit_ex(c, NULL, NULL, key, NULL) != 1) { puts("RC4 unavailable"); return 1; }
-    puts("RC4 ok");
-    return 0;
-}
-C
-clang $T/rc4.c -o $T/rc4 -lcrypto
-$T/rc4
+# build.sh compiled the check, since this container has no compiler.
+$W/rc4check
 
 # SoloServer.startDatabase
 SHARE=$S/share/mariadb
