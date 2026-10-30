@@ -2,6 +2,10 @@
 
 Releases up to 0.4.0 are upstream's (YoruDev-Ryland/WoWForeverywhere), which this fork started from.
 
+## Unreleased
+
+- **Your own server: account creation works.** Setup in 0.9.1 stopped at "Creating your account" with a database error (No database selected). Press Continue setup after updating and it picks up from there.
+
 ## 0.9.1
 
 - **Your own server: setup no longer crashes at "Creating your account".** The app closed when it stopped the database after making your account. Setup now finishes, and the server also stops cleanly when the game closes. On this device has a new **Share log** button that sends the server's last messages, so problems can be reported.

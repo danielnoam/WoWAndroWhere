@@ -99,5 +99,6 @@ class SoloTest {
         assertTrue(sql.startsWith("INSERT INTO acore_auth.account (username, salt, verifier, expansion) VALUES ('SOLO', X'"))
         assertTrue(sql.contains("INSERT INTO acore_auth.account_access (id, gmlevel, RealmID) SELECT id, 3, -1"))
         assertFalse(SoloSetup.gmSql("SOLO", on = false).contains("INSERT"))
+        assertFalse(sql.contains("DELETE a "))
     }
 }

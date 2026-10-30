@@ -135,7 +135,8 @@ object SoloSetup {
     }
 
     internal fun gmSql(user: String, on: Boolean): String {
-        val clear = "DELETE a FROM acore_auth.account_access a JOIN acore_auth.account c ON c.id = a.id WHERE c.username = '$user';"
+        // A multi-table DELETE resolves its alias against the default database, so this uses a subquery instead.
+        val clear = "DELETE FROM acore_auth.account_access WHERE id IN (SELECT id FROM acore_auth.account WHERE username = '$user');"
         return if (on) "$clear INSERT INTO acore_auth.account_access (id, gmlevel, RealmID) SELECT id, 3, -1 FROM acore_auth.account WHERE username = '$user';" else clear
     }
 

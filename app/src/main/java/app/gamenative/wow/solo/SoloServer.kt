@@ -84,7 +84,7 @@ object SoloServer {
             val ownDatabase = "mariadbd" !in running
             if (ownDatabase) startDatabase(paths)
             try {
-                val p = command(paths, "mariadb", listOf("--socket=${paths.socket.path}", "-u${SoloConfig.DB_USER}", "-p${SoloConfig.DB_PASSWORD}", "--batch", "-e", sql))
+                val p = command(paths, "mariadb", listOf("--socket=${paths.socket.path}", "-u${SoloConfig.DB_USER}", "-p${SoloConfig.DB_PASSWORD}", "--database=acore_auth", "--batch", "-e", sql))
                     .redirectErrorStream(true).start()
                 val out = p.inputStream.bufferedReader().readText()
                 if (!p.waitFor(60, TimeUnit.SECONDS) || p.exitValue() != 0) throw IOException("Database: ${out.trim().take(300)}")
