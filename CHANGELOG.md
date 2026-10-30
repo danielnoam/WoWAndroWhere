@@ -2,8 +2,12 @@
 
 Releases up to 0.4.0 are upstream's (YoruDev-Ryland/WoWForeverywhere), which this fork started from.
 
-## Unreleased
+## 1.0.0
 
+- **New name: WoWEverywhere.** WoW AndroWhere is now called WoWEverywhere, in the app, the launcher and the download. It updates in place and keeps your profiles, servers, saved logins, game files and addons.
+- **Choose the game's resolution.** Settings, App has Automatic, 720p, 900p, 1080p and Native. It applies to every profile, private servers included, from the next time you start the game. Lower is easier on the device, higher looks sharper. From upstream WoW Foreverywhere.
+- **Choose your Battle.net region.** WoW Forever and the official versions no longer always use the Americas: pick Americas, Europe, Korea or Taiwan when you install, or in Settings, Battle.net. From upstream WoW Foreverywhere.
+- **WoW Forever signs in on a first start.** A new game folder no longer stops at the Screen Narrator question, which kept the saved login from going in, and the login now waits up to ten minutes for a slow first start instead of three. From the original wow-forever-android.
 - **Simpler Server screen.** Pressing A on a server, or tapping it, now just selects it. Y, or the pencil on the right, opens it to edit, and Remove server is inside with a confirmation. Add server asks what you're adding: an online server, your own server on this device, or your own server on a PC, so the separate Your own server section is gone. Your own server on this device shows its setup progress there, and Y on "Solo, this device" opens its Start, Stop, Continue setup and Share log page.
 - **One Private server choice for new profiles.** New profile now lists a single Private server option instead of one per version. Choose your client folder and the app reads the version from Wow.exe (1.12.1, 2.4.3, 3.3.5a, 4.3.4 or 5.4.8) and sets the profile up for it. If it can't read the version, it asks you which one it is. Existing profiles are unchanged.
 
