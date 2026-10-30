@@ -2,7 +2,7 @@ name: solo-server
 
 # Builds the solo server the app downloads for "Your own server": AzerothCore 3.3.5a (no bots) and MariaDB,
 # compiled for Android in Termux's environment, with the world database already imported. Publishes them as
-# assets of a solo-server-<commit> release and commits app/src/main/assets/solo/solo-server.json (URLs, sizes,
+# assets of a solo-server-<commit>-<build> release and commits app/src/main/assets/solo/solo-server.json (URLs, sizes,
 # sha256) to the branch it ran on, so the app only accepts these exact files. Also hashes every file in
 # AzerothCore's client-data release so the app can check map data it fetches piece by piece.
 # Runs only by hand. A release that already exists is left alone, because the app on main pins its hashes:
@@ -16,6 +16,8 @@ on:
 
 env:
   AC_COMMIT: ${{ inputs.azerothcore || '993b45959556302a4eccded066085793b4b55322' }}
+  # Bump when the build changes but the AzerothCore commit doesn't; it is part of the release name.
+  BUILD: "2"
   CLIENT_DATA_URL: https://github.com/wowgaming/client-data/releases/download/v20.0/Data.zip
   CLIENT_DATA_SHA256: a3d4df635ae6c2c8f08052c32a79e0f806955150ad36b014a823dd08a32a4610
 
@@ -31,9 +33,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="solo-server-${AC_COMMIT:0:7}"
+          TAG="solo-server-${AC_COMMIT:0:7}-$BUILD"
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "::error::$TAG already exists. Published builds are never replaced; build another AzerothCore commit instead."
+            echo "::error::$TAG already exists. Published builds are never replaced; bump BUILD or build another AzerothCore commit instead."
             exit 1
           fi
       - name: AzerothCore source
@@ -68,7 +70,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          SHORT="${AC_COMMIT:0:7}"
+          SHORT="${AC_COMMIT:0:7}-$BUILD"
           TAG="solo-server-$SHORT"
           MARIADB="$(cat work/mariadb-version)"
           sudo chown -R "$(id -u):$(id -g)" work
@@ -86,6 +88,7 @@ jobs:
           cat > app/src/main/assets/solo/solo-server.json <<JSON
           {
             "azerothcore": "$AC_COMMIT",
+            "build": "$SHORT",
             "mariadb": "$MARIADB",
             "server": $(part "solo-server-$SHORT.tar.zst"),
             "serverUnpacked": $(unpacked work/out/server),

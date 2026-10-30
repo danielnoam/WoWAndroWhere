@@ -141,6 +141,7 @@ object SoloServer {
             environment()["LD_LIBRARY_PATH"] = File(paths.usr, "lib").path
             environment()["HOME"] = paths.root.path
             environment()["TMPDIR"] = paths.tmp.path
+            environment()["OPENSSL_MODULES"] = File(paths.usr, "lib/ossl-modules").path
         }
     }
 

@@ -40,7 +40,10 @@ cp -rL "$PREFIX/share/mariadb" $S/share/mariadb
 MARIADB_LIB=$(dirname "$(find "$PREFIX/lib" -name 'libmariadb.so*' | head -1)")
 LIBDIRS=("$PREFIX/lib" "$MARIADB_LIB")
 export LD_LIBRARY_PATH="$MARIADB_LIB"
-queue=("$S"/bin/*)
+# OpenSSL 3 keeps RC4, which the world server's packet encryption uses, in its legacy provider module.
+mkdir -p $S/lib/ossl-modules
+cp -L "$PREFIX/lib/ossl-modules/legacy.so" $S/lib/ossl-modules/
+queue=("$S"/bin/* "$S/lib/ossl-modules/legacy.so")
 declare -A seen
 while ((${#queue[@]})); do
     f=${queue[0]}; queue=("${queue[@]:1}")
@@ -56,9 +59,10 @@ while ((${#queue[@]})); do
         done
     done
 done
-llvm-strip --strip-unneeded $S/bin/* $S/lib/*.so* || true
+llvm-strip --strip-unneeded $S/bin/* $S/lib/*.so* $S/lib/ossl-modules/*.so || true
 ls -la $S/bin $S/lib
 test -e $S/lib/libmariadb.so || test -e $S/lib/libmariadb.so.3
+test -e $S/lib/ossl-modules/legacy.so
 
 # --- world database ---
 D=$OUT/db
