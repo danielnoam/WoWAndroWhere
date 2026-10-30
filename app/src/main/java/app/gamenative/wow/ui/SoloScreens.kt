@@ -1,5 +1,6 @@
 package app.gamenative.wow.ui
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +23,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import app.gamenative.wow.legacy.LegacyServer
 import app.gamenative.wow.solo.SoloManifest
 import app.gamenative.wow.solo.SoloPaths
@@ -45,6 +47,22 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 enum class SoloPage { DEVICE, PC }
+
+private suspend fun shareSoloLog(context: Context, onError: (String) -> Unit) {
+    val file = withContext(Dispatchers.IO) { runCatching { SoloServer.shareableLog(context) }.getOrNull() }
+    if (file == null) {
+        onError("There's no server log yet.")
+        return
+    }
+    val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", file)
+    val send = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_STREAM, uri)
+        putExtra(Intent.EXTRA_SUBJECT, SoloServer.SHARED_LOG)
+        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    }
+    context.startActivity(Intent.createChooser(send, "Share server log"))
+}
 
 /** The Server screen's "Your own server" rows: one the app runs on this device, or one on the player's PC. */
 @Composable
@@ -186,6 +204,14 @@ internal fun SoloDevicePage(launcher: LauncherController, onDone: () -> Unit, se
             }
         }
         FwButton("Done", onDone, kind = FwButtonKind.Ghost)
+        if (!running && paths.logs.list()?.isNotEmpty() == true) {
+            FwButton(
+                "Share log",
+                { scope.launch { shareSoloLog(context) { message = it } } },
+                modifier = Modifier.hint("Sends the server's last messages, for example to report a problem. Nothing is sent until you pick where.", setHint),
+                kind = FwButtonKind.Ghost,
+            )
+        }
         if (state.server.isNotEmpty() && !running) {
             FwButton("Remove server", { removing = true }, kind = FwButtonKind.Danger)
         }
