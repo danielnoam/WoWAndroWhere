@@ -64,23 +64,37 @@ private suspend fun shareSoloLog(context: Context, onError: (String) -> Unit) {
     context.startActivity(Intent.createChooser(send, "Share server log"))
 }
 
-/** The Server screen's "Your own server" rows: one the app runs on this device, or one on the player's PC. */
+/** The Add server page's own-server choices: one the app runs on this device, or one on the player's PC. */
 @Composable
-internal fun SoloSection(onOpen: (SoloPage) -> Unit, setHint: (String) -> Unit) {
+internal fun SoloChoices(launcher: LauncherController, onOpen: (SoloPage) -> Unit, setHint: (String) -> Unit) {
     val context = LocalContext.current
     val setup by SoloSetup.state.collectAsState()
     val status by SoloServer.status.collectAsState()
     val ready = remember(setup) { SoloState.load(SoloPaths.of(context)).account.isNotEmpty() }
     FwRow(selected = false, onClick = { onOpen(SoloPage.DEVICE) }, modifier = Modifier.hint("Runs a server on this device, just for you. No other players, no internet needed once it's set up.", setHint)) {
         Column(Modifier.weight(1f)) {
-            Text("On this device", style = Fw.Text)
+            Text("Your own server, on this device", style = Fw.Text)
             Text(deviceSummary(ready, setup, status), style = Fw.Data)
         }
     }
+    val pc = launcher.servers.any { it.solo == LegacyServer.SOLO_PC }
     FwRow(selected = false, onClick = { onOpen(SoloPage.PC) }, modifier = Modifier.hint("Connects to a server you run on your computer, over your home Wi-Fi.", setHint)) {
         Column(Modifier.weight(1f)) {
-            Text("On a PC", style = Fw.Text)
-            Text("Dad's MMO Lab or any 3.3.5a server on your network", style = Fw.Data)
+            Text("Your own server, on a PC", style = Fw.Text)
+            Text(if (pc) "Already in your servers" else "Dad's MMO Lab or any 3.3.5a server on your network", style = Fw.Data)
+        }
+    }
+}
+
+/** Adds "Solo, this device" to the profile's server list once setup has made its account, even if setup finished while this page was closed. */
+@Composable
+internal fun JoinSoloServer(launcher: LauncherController) {
+    val context = LocalContext.current
+    val setup by SoloSetup.state.collectAsState()
+    val state = remember(setup) { SoloState.load(SoloPaths.of(context)) }
+    LaunchedEffect(state.account, state.serverId) {
+        if (state.account.isNotEmpty() && launcher.servers.none { it.id == state.serverId }) {
+            launcher.addSoloServer(LegacyServer(state.serverId, "Solo, this device", "127.0.0.1", state.account, LegacyServer.SOLO_DEVICE))
         }
     }
 }
@@ -88,8 +102,8 @@ internal fun SoloSection(onOpen: (SoloPage) -> Unit, setHint: (String) -> Unit) 
 private fun deviceSummary(ready: Boolean, setup: SoloSetupState, status: SoloStatus) = when {
     setup is SoloSetupState.Running -> setup.step
     setup is SoloSetupState.Failed -> "Setup stopped"
-    !ready -> "Not set up"
-    status is SoloStatus.Running -> "Running"
+    !ready -> "Not set up yet"
+    status is SoloStatus.Running -> "Set up, running"
     status is SoloStatus.Starting -> status.step
     else -> "Set up, stopped"
 }
@@ -110,13 +124,6 @@ internal fun SoloDevicePage(launcher: LauncherController, onDone: () -> Unit, se
     var message by remember { mutableStateOf<String?>(null) }
     val first = remember { FocusRequester() }
     LaunchedEffect(Unit) { runCatching { first.requestFocus() } }
-
-    // Once setup has made the account, the server joins this profile's list like any other.
-    LaunchedEffect(state.account, state.serverId) {
-        if (state.account.isNotEmpty() && launcher.servers.none { it.id == state.serverId }) {
-            launcher.addSoloServer(LegacyServer(state.serverId, "Solo, this device", "127.0.0.1", state.account, LegacyServer.SOLO_DEVICE))
-        }
-    }
 
     Text("Solo server on this device", style = Fw.Title)
     if (manifest == null) {

@@ -2,6 +2,10 @@
 
 Releases up to 0.4.0 are upstream's (YoruDev-Ryland/WoWForeverywhere), which this fork started from.
 
+## Unreleased
+
+- **Simpler Server screen.** Pressing A on a server, or tapping it, now just selects it. Y, or the pencil on the right, opens it to edit, and Remove server is inside with a confirmation. Add server asks what you're adding: an online server, your own server on this device, or your own server on a PC, so the separate Your own server section is gone. Your own server on this device shows its setup progress there, and Y on "Solo, this device" opens its Start, Stop, Continue setup and Share log page.
+
 ## 0.9.3
 
 - **Your own server: the login server starts.** In 0.9.2 it stopped right away because it couldn't look up the address 127.0.0.1 on Android. The server is rebuilt with that fixed, and with an encryption module the world server needs when you log in. After updating, press Continue setup on On this device: it downloads the new server (about 18 MB) and keeps your account and characters.

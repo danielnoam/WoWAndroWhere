@@ -4,6 +4,7 @@ import android.view.KeyEvent as AndroidKey
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +26,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusProperties
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalContext
@@ -52,34 +55,44 @@ import kotlinx.coroutines.withContext
 
 /**
  * The 3.3.5a "Server" screen: the profile's servers, the selected server's password and how the login
- * screen uses it. A on a server selects it and opens its details.
+ * screen uses it. A on a server selects it, Y opens it, and Add server asks which kind of server to add.
  */
 @Composable
 fun LegacyServerScreen(launcher: LauncherController, onBack: () -> Unit) {
     var editing by remember { mutableStateOf<String?>(null) }
+    var adding by remember { mutableStateOf(false) }
     var returnTo by remember { mutableStateOf<String?>(launcher.legacy.serverId) }
     var solo by remember { mutableStateOf<SoloPage?>(null) }
     val server = editing?.let { id -> launcher.servers.firstOrNull { it.id == id } }
-    BackHandler(enabled = server != null) {
-        returnTo = editing
+    val ownServers = launcher.version == GameVersion.PRIVATE_335
+    val close = {
+        returnTo = editing ?: launcher.legacy.serverId
         editing = null
+        adding = false
+        solo = null
     }
-    BackHandler(enabled = solo != null && server == null) { solo = null }
+    val addOnline = {
+        launcher.addServer()
+        adding = false
+        editing = launcher.legacy.serverId
+    }
+    BackHandler(enabled = server != null || adding || solo != null) { close() }
+    if (ownServers) JoinSoloServer(launcher)
     HintPage("Server", onBack, launcher.errorMessage) { setHint ->
-        if (solo != null && server == null) {
-            when (solo) {
-                SoloPage.DEVICE -> SoloDevicePage(launcher, onDone = { solo = null }, setHint)
-                else -> SoloPcPage(launcher, onAdded = { solo = null; editing = it }, onDone = { solo = null }, setHint)
+        when {
+            server?.solo == LegacyServer.SOLO_DEVICE || solo == SoloPage.DEVICE -> SoloDevicePage(launcher, onDone = close, setHint)
+            solo == SoloPage.PC -> SoloPcPage(launcher, onAdded = { solo = null; editing = it }, onDone = close, setHint)
+            server != null -> ServerPage(launcher, server, onDone = close, setHint)
+            adding -> AddServerPage(launcher, onOnline = addOnline, onOwn = { solo = it; adding = false }, onCancel = close, setHint)
+            else -> {
+                FwSection("Servers") {
+                    ServerList(launcher, returnTo, onEdit = { editing = it }, onAdd = { if (ownServers) adding = true else addOnline() }, setHint)
+                }
+                FwSection(if (launcher.servers.size > 1) "Password for ${launcher.selectedServer.name}" else "Password") {
+                    PasswordFields(launcher, launcher.selectedServer, setHint)
+                }
+                FwSection("Login screen") { LoginSection(launcher, setHint) }
             }
-        } else if (server != null) {
-            ServerPage(launcher, server, onDone = { returnTo = editing; editing = null }, setHint)
-        } else {
-            FwSection("Servers") { ServerList(launcher, returnTo, onEdit = { editing = it }, setHint) }
-            if (launcher.version == GameVersion.PRIVATE_335) FwSection("Your own server") { SoloSection(onOpen = { solo = it }, setHint) }
-            FwSection(if (launcher.servers.size > 1) "Password for ${launcher.selectedServer.name}" else "Password") {
-                PasswordFields(launcher, launcher.selectedServer, setHint)
-            }
-            FwSection("Login screen") { LoginSection(launcher, setHint) }
         }
     }
 }
@@ -104,38 +117,25 @@ fun LegacyClientScreen(launcher: LauncherController, onBack: () -> Unit) {
 }
 
 @Composable
-private fun ServerList(launcher: LauncherController, returnTo: String?, onEdit: (String?) -> Unit, setHint: (String) -> Unit) {
-    var removing by remember { mutableStateOf<LegacyServer?>(null) }
-    // Where focus lands after closing a server or the remove dialog: that server, or the first one.
-    var focusAfter by remember { mutableStateOf(returnTo) }
-    var tick by remember { mutableStateOf(0) }
+private fun ServerList(launcher: LauncherController, returnTo: String?, onEdit: (String) -> Unit, onAdd: () -> Unit, setHint: (String) -> Unit) {
     val refocus = remember { FocusRequester() }
-    val target = focusAfter?.takeIf { id -> launcher.servers.any { it.id == id } } ?: launcher.servers.first().id
-    LaunchedEffect(focusAfter, tick) { if (focusAfter != null) runCatching { refocus.requestFocus() } }
-    val canRemove = launcher.servers.size > 1
-    val rowHint = if (canRemove) "A  Select and edit      X  Add server      Y  Remove" else "A  Select and edit      X  Add server"
-    val add = {
-        launcher.addServer()
-        onEdit(launcher.legacy.serverId)
-    }
+    val target = returnTo?.takeIf { id -> launcher.servers.any { it.id == id } } ?: launcher.servers.first().id
+    LaunchedEffect(Unit) { if (returnTo != null) runCatching { refocus.requestFocus() } }
     launcher.servers.forEach { s ->
         FwRow(
             selected = false,
-            onClick = {
-                launcher.selectServer(s.id)
-                onEdit(s.id)
-            },
+            onClick = { launcher.selectServer(s.id) },
             modifier = Modifier
                 .then(if (s.id == target) Modifier.focusRequester(refocus) else Modifier)
-                .hint(rowHint, setHint)
+                .hint("A  Select      Y  Edit      X  Add server", setHint)
                 .onPreviewKeyEvent { e ->
                     when {
                         e.pressed(AndroidKey.KEYCODE_BUTTON_X) -> {
-                            add()
+                            onAdd()
                             true
                         }
-                        e.pressed(AndroidKey.KEYCODE_BUTTON_Y) && canRemove -> {
-                            removing = s
+                        e.pressed(AndroidKey.KEYCODE_BUTTON_Y) -> {
+                            onEdit(s.id)
                             true
                         }
                         else -> false
@@ -147,30 +147,37 @@ private fun ServerList(launcher: LauncherController, returnTo: String?, onEdit: 
                 Text(s.realmlist.ifBlank { "No realmlist yet" }, style = Fw.Data, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             if (s.id == launcher.legacy.serverId) Text("Selected", style = Fw.Data.copy(color = Fw.Brass))
+            Icon(
+                Icons.Filled.Edit,
+                contentDescription = "Edit ${s.name}",
+                tint = Fw.Bone,
+                modifier = Modifier
+                    .size(24.dp)
+                    .focusProperties { canFocus = false }
+                    .clickable { onEdit(s.id) },
+            )
         }
     }
-    FwRow(selected = false, onClick = add, modifier = Modifier.hint("Adds a server and opens it.", setHint)) {
+    FwRow(selected = false, onClick = onAdd, modifier = Modifier.hint("Adds a server.", setHint)) {
         Icon(Icons.Filled.Add, contentDescription = null, tint = Fw.Brass, modifier = Modifier.size(24.dp))
         Text("Add server", style = Fw.Text)
     }
-    removing?.let { s ->
-        FwDialog(
-            title = "Remove ${s.name}?",
-            message = "Its realmlist, account name and saved password are removed from this profile.",
-            confirm = "Remove",
-            onConfirm = {
-                launcher.removeServer(s.id)
-                removing = null
-                focusAfter = launcher.servers.first().id
-                tick++
-            },
-            onDismiss = {
-                removing = null
-                focusAfter = s.id
-                tick++
-            },
-        )
+}
+
+/** Which kind of server to add: one online, or the player's own on this device or a PC. */
+@Composable
+private fun AddServerPage(launcher: LauncherController, onOnline: () -> Unit, onOwn: (SoloPage) -> Unit, onCancel: () -> Unit, setHint: (String) -> Unit) {
+    val first = remember { FocusRequester() }
+    LaunchedEffect(Unit) { runCatching { first.requestFocus() } }
+    Text("Add server", style = Fw.Title)
+    FwRow(selected = false, onClick = onOnline, modifier = Modifier.focusRequester(first).hint("A private server on the internet. You enter its realmlist next.", setHint)) {
+        Column(Modifier.weight(1f)) {
+            Text("Online server", style = Fw.Text)
+            Text("Enter its realmlist, from the server's website", style = Fw.Data)
+        }
     }
+    SoloChoices(launcher, onOwn, setHint)
+    FwButton("Cancel", onCancel, kind = FwButtonKind.Ghost)
 }
 
 /** One server's name, realmlist and account name. Its password is on the Server screen while it's selected. */
@@ -204,19 +211,30 @@ private fun ServerPage(launcher: LauncherController, server: LegacyServer, onDon
             "Account name (optional)",
             Modifier.fillMaxWidth().hint("Fills the login screen's account box. Leave it empty to use the one the game remembers.", setHint),
         )
+        var removing by remember { mutableStateOf(false) }
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             FwButton("Done", onDone, modifier = Modifier.hint("Back to the server list. Changes are saved as you type.", setHint))
             if (launcher.servers.size > 1) {
                 FwButton(
                     "Remove server",
-                    {
-                        launcher.removeServer(server.id)
-                        onDone()
-                    },
+                    { removing = true },
                     modifier = Modifier.hint("Removes this server and its saved password.", setHint),
                     kind = FwButtonKind.Danger,
                 )
             }
+        }
+        if (removing) {
+            FwDialog(
+                title = "Remove ${server.name}?",
+                message = "Its realmlist, account name and saved password are removed from this profile.",
+                confirm = "Remove",
+                onConfirm = {
+                    removing = false
+                    launcher.removeServer(server.id)
+                    onDone()
+                },
+                onDismiss = { removing = false },
+            )
         }
     }
 }
