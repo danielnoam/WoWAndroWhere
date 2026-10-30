@@ -35,8 +35,8 @@ internal fun AndroWherePatchesCard(c: AddonsController) {
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         Column(Modifier.weight(1f)) {
-            Text("AndroWhere patch: ${login.title}", style = Fw.Text)
-            Text("Use the controller on the login, realm and character screens too. More AndroWhere patches are in the Client tab.", style = Fw.Secondary)
+            Text("WoWEverywhere patch: ${login.title}", style = Fw.Text)
+            Text("Use the controller on the login, realm and character screens too. More WoWEverywhere patches are in the Client tab.", style = Fw.Secondary)
         }
         FwButton("Install", { mods.setInstalled(login, true) }, enabled = mods.working == null)
         FwButton("Client tab", { c.switchMode(AddonsController.Mode.CLIENT) }, kind = FwButtonKind.Ghost)

@@ -34,7 +34,7 @@ internal fun ClientModsPanel(c: ClientModsController, modifier: Modifier = Modif
             item { Text(status, style = Fw.Secondary.copy(color = if (c.working != null) Fw.Brass else Fw.Warn)) }
         }
         if (c.game.hasAndroWherePatches) {
-            item { Text("AndroWhere patches", style = Fw.Label.copy(color = Fw.Ash), modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)) }
+            item { Text("WoWEverywhere patches", style = Fw.Label.copy(color = Fw.Ash), modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)) }
             item {
                 Text(
                     "Made for this app. Install adds one to your client, Remove puts the client back as it was.",

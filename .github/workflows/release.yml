@@ -90,21 +90,21 @@ jobs:
       - name: Prepare the APK
         run: |
           mkdir -p dist
-          cp app/build/outputs/apk/modern/release/app-modern-release.apk dist/WoW-AndroWhere.apk
-          "$ANDROID_HOME"/build-tools/*/apksigner verify --print-certs dist/WoW-AndroWhere.apk | grep -i "SHA-256" | head -1
-          (cd dist && sha256sum WoW-AndroWhere.apk > WoW-AndroWhere.apk.sha256)
+          cp app/build/outputs/apk/modern/release/app-modern-release.apk dist/WoWEverywhere.apk
+          "$ANDROID_HOME"/build-tools/*/apksigner verify --print-certs dist/WoWEverywhere.apk | grep -i "SHA-256" | head -1
+          (cd dist && sha256sum WoWEverywhere.apk > WoWEverywhere.apk.sha256)
 
       - name: Publish the release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.TAG }}
           target_commitish: ${{ github.sha }}
-          name: WoW AndroWhere ${{ env.TAG }}
+          name: WoWEverywhere ${{ env.TAG }}
           body_path: .github/release-notes.md
           make_latest: true
           files: |
-            dist/WoW-AndroWhere.apk
-            dist/WoW-AndroWhere.apk.sha256
+            dist/WoWEverywhere.apk
+            dist/WoWEverywhere.apk.sha256
 
       - name: Delete the other releases
         if: github.event_name == 'workflow_dispatch' && inputs.prune
