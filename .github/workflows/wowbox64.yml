@@ -3,11 +3,9 @@ name: wowbox64
 # Builds wowbox64.dll (Box64's WoW64 emulator for 32-bit x86 games) from an official ptitSeb/box64 tag,
 # the same way Box64's own release workflow does, and commits it as app/src/main/assets/wowbox64/wowbox64-<ver>.tzst
 # to the branch it ran on. Built from source so the app never bundles a third-party binary.
-# Runs when this file changes on a working branch, or by hand.
+# By hand only: builds aren't byte-identical, so an automatic run would replace a working asset with a new one.
+# Skips a version that is already bundled.
 on:
-  push:
-    branches-ignore: [main]
-    paths: [.github/workflows/wowbox64.yml]
   workflow_dispatch:
     inputs:
       tag:
@@ -25,12 +23,21 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - name: Skip a bundled version
+        id: bundled
+        run: |
+          if [ -f "app/src/main/assets/wowbox64/wowbox64-${BOX64_TAG#v}.tzst" ]; then
+            echo "wowbox64 ${BOX64_TAG#v} is already bundled" | tee -a "$GITHUB_STEP_SUMMARY"
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/checkout@v4
+        if: steps.bundled.outputs.skip != '1'
         with:
           repository: ptitSeb/box64
           ref: ${{ env.BOX64_TAG }}
           path: box64-src
       - name: Toolchain
+        if: steps.bundled.outputs.skip != '1'
         run: |
           sudo apt-get update
           sudo apt-get -y install git cmake make python3 gcc-aarch64-linux-gnu zstd
@@ -38,6 +45,7 @@ jobs:
           tar -xf llvm-mingw-${LLVM_MINGW_VERSION}-ucrt-ubuntu-22.04-aarch64.tar.xz
           echo "$PWD/llvm-mingw-${LLVM_MINGW_VERSION}-ucrt-ubuntu-22.04-aarch64/bin" >> "$GITHUB_PATH"
       - name: Build
+        if: steps.bundled.outputs.skip != '1'
         working-directory: box64-src
         run: |
           mkdir build && cd build
@@ -45,6 +53,7 @@ jobs:
           make -j"$(nproc)"
           ls -la wowbox64-prefix/src/wowbox64-build/wowbox64.dll
       - name: Package and commit
+        if: steps.bundled.outputs.skip != '1'
         run: |
           VER="${BOX64_TAG#v}"
           OUT="app/src/main/assets/wowbox64/wowbox64-$VER.tzst"
