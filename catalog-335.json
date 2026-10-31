@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-30T11:36:20+00:00",
+ "generated": "2026-10-31T13:02:09+00:00",
  "addons": [
   {
    "repo": "Aldori15/Questie",
@@ -11,13 +11,13 @@
    "website": "https://github.com/Aldori15/Questie",
    "stars": 69,
    "downloads": 0,
-   "updated": "2026-10-29T06:54:21Z",
+   "updated": "2026-10-31T05:55:43Z",
    "requires": [],
    "files": {
     "wotlk335": {
-     "fileId": "908a40b38bd6938b34eca4ce5e776dca2c70de8a",
-     "version": "2026-10-29 (908a40b)",
-     "url": "https://github.com/Aldori15/Questie/archive/908a40b38bd6938b34eca4ce5e776dca2c70de8a.zip"
+     "fileId": "8a2b87a3b80eb4fd221df1d255af425818a2e814",
+     "version": "2026-10-31 (8a2b87a)",
+     "url": "https://github.com/Aldori15/Questie/archive/8a2b87a3b80eb4fd221df1d255af425818a2e814.zip"
     }
    }
   },
@@ -29,7 +29,7 @@
    "author": "ErebusAres",
    "icon": "https://avatars.githubusercontent.com/u/3603760?v=4",
    "website": "https://github.com/ErebusAres/ZygorGuidesRemaster-3.3.5a_WOTLK",
-   "stars": 89,
+   "stars": 90,
    "downloads": 0,
    "updated": "2026-10-27T14:21:23Z",
    "requires": [],
@@ -89,7 +89,7 @@
    "author": "Zidras",
    "icon": "https://avatars.githubusercontent.com/u/10605951?v=4",
    "website": "https://github.com/Zidras/DBM-Warmane",
-   "stars": 237,
+   "stars": 236,
    "downloads": 0,
    "updated": "2026-08-16T20:38:14Z",
    "requires": [],
@@ -189,7 +189,7 @@
    "author": "bkader",
    "icon": "https://avatars.githubusercontent.com/u/4732702?v=4",
    "website": "https://github.com/bkader/Skada-WoTLK",
-   "stars": 145,
+   "stars": 146,
    "downloads": 0,
    "updated": "2024-03-23T11:26:17Z",
    "requires": [],
@@ -409,7 +409,7 @@
    "author": "KhalGH",
    "icon": "https://avatars.githubusercontent.com/u/111320187?v=4",
    "website": "https://github.com/KhalGH/PlateBuffs-WoTLK",
-   "stars": 21,
+   "stars": 22,
    "downloads": 0,
    "updated": "2026-09-29T23:37:05Z",
    "requires": [],
@@ -529,7 +529,7 @@
    "author": "alchem1ster",
    "icon": "https://avatars.githubusercontent.com/u/3815426?v=4",
    "website": "https://github.com/alchem1ster/WotLK-Auctionator",
-   "stars": 61,
+   "stars": 62,
    "downloads": 0,
    "updated": "2023-05-14T14:49:10Z",
    "requires": [],
@@ -709,7 +709,7 @@
    "author": "s0h2x",
    "icon": "https://avatars.githubusercontent.com/u/33549022?v=4",
    "website": "https://github.com/s0h2x/Immersion-WotLK",
-   "stars": 65,
+   "stars": 66,
    "downloads": 0,
    "updated": "2024-11-06T06:53:37Z",
    "requires": [],
